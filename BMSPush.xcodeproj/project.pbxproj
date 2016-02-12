@@ -13,13 +13,12 @@
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
 		561BFE451C6C856900CDB375 /* BMSResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE411C6C856900CDB375 /* BMSResponse.swift */; };
 		56453E741C6DC05A0035C311 /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56453E731C6DC05A0035C311 /* BMSCore.framework */; };
-		56453E751C6DC0790035C311 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 561BFE381C6C855300CDB375 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		561BFE331C6C855300CDB375 /* BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		561BFE361C6C855300CDB375 /* BMSPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMSPush.h; sourceTree = "<group>"; };
-		561BFE381C6C855300CDB375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		561BFE381C6C855300CDB375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "/Users/ananthakrishnankg/Desktop/work/Push_Team/Feb-12-Push/BMSPush/Source/Info.plist"; sourceTree = "<absolute>"; };
 		561BFE3E1C6C856900CDB375 /* BMSConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSConstants.swift; sourceTree = "<group>"; };
 		561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClient.swift; sourceTree = "<group>"; };
 		561BFE401C6C856900CDB375 /* BMSPushUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUtils.swift; sourceTree = "<group>"; };
@@ -137,7 +136,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56453E751C6DC0790035C311 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
