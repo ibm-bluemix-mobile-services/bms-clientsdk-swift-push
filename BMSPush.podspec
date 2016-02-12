@@ -15,6 +15,5 @@ Pod::Spec.new do |s|
   s.dependency 'BMSCore', '~> 0.0.13'
 
   s.ios.deployment_target = '9.0'
-  s.watchos.deployment_target = '2.0'
   
 end
