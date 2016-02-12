@@ -261,7 +261,7 @@ public class BMSPushClient: NSObject {
                     }
                     */
                     // MARK: Only for testing
-                    shouldEnterLoop = true
+                   // shouldEnterLoop = true
                     
                     if shouldEnterLoop {
                         
