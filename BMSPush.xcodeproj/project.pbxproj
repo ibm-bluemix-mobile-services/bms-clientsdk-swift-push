@@ -12,7 +12,6 @@
 		561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */; };
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
 		561BFE451C6C856900CDB375 /* BMSResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE411C6C856900CDB375 /* BMSResponse.swift */; };
-		56453E741C6DC05A0035C311 /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56453E731C6DC05A0035C311 /* BMSCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +22,6 @@
 		561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClient.swift; sourceTree = "<group>"; };
 		561BFE401C6C856900CDB375 /* BMSPushUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUtils.swift; sourceTree = "<group>"; };
 		561BFE411C6C856900CDB375 /* BMSResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSResponse.swift; sourceTree = "<group>"; };
-		56453E731C6DC05A0035C311 /* BMSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BMSCore.framework; path = ../../ProductionFile/bmspush/BMSPush/BMSCore.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,7 +29,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56453E741C6DC05A0035C311 /* BMSCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,7 +38,6 @@
 		561BFE291C6C855300CDB375 = {
 			isa = PBXGroup;
 			children = (
-				56453E731C6DC05A0035C311 /* BMSCore.framework */,
 				561BFE351C6C855300CDB375 /* Source */,
 				561BFE341C6C855300CDB375 /* Products */,
 			);
