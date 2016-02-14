@@ -35,6 +35,66 @@ target 'MyApp' do
     pod 'BMSPush'
 end
 ```
+From the Terminal, go to your project folder and install the dependencies with the following command:
+
+```
+pod install
+
+```
+
+That command installs your dependencies and creates a new Xcode workspace.
+***Note:*** Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
+
+```
+open App.xcworkspace
+
+```
+
+## Enabling iOS applications to receive push notifications
+
+    #### Reference the SDK in your code.
+
+```
+import BMSPush
+import BMSCore
+
+```
+    #### Initializing the Core SDK
+
+```
+let myBMSClient = BMSClient.sharedInstance
+
+myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegionSuffix: "Location wher app Hosted")
+myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
+
+Analytics.initializeWithAppName("BluemixAppRoute", apiKey: "APIKey")
+
+Analytics.startRecordingApplicationLifecycle() 
+
+```
+***AppRoute***
+
+    Specifies the route that is assigned to the server application that you created on Bluemix.
+
+***AppGUID***
+
+    Specifies the unique key that is assigned to the application that you created on Bluemix. This value is 
+    case-sensitive.
+
+***bluemixRegionSuffix***
+
+    Specifies the location where the app hosted. You can use one of three values - `REGION_US_SOUTH`, `REGION_UK` and `REGION_SYDNEY`.
+
+    #### Initializing the Push SDK
+
+```
+let push =  BMSPushClient.sharedInstance
+
+```
+
+    #### Registering iOS applications and devices
+
+    
 
 
 ###Learning More
