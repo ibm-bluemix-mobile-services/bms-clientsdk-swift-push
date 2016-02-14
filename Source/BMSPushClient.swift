@@ -1,10 +1,16 @@
-//
-//  BMSPushClient.swift
-//  BMSPush
-//
-//  Created by Anantha Krishnan K G on 03/02/16.
-//  Copyright © 2016 IBM Corp. All rights reserved.
-//
+/*
+*     Copyright 2015 IBM Corp.
+*     Licensed under the Apache License, Version 2.0 (the "License");
+*     you may not use this file except in compliance with the License.
+*     You may obtain a copy of the License at
+*     http://www.apache.org/licenses/LICENSE-2.0
+*     Unless required by applicable law or agreed to in writing, software
+*     distributed under the License is distributed on an "AS IS" BASIS,
+*     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*     See the License for the specific language governing permissions and
+*     limitations under the License.
+*/
+
 
 import UIKit
 import BMSCore
@@ -85,11 +91,6 @@ public class BMSPushClient: NSObject {
         
         let method =  HttpMethod.GET
         
-        /*
-        Analytics.log([IMFPUSH_CLIENT : "Verifying previous device registration."])
-        loggerObject?.info("Verifying previous device registration.")
-        Analytics.send()
-        */
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Verifying previous device registration.")
         
@@ -100,12 +101,6 @@ public class BMSPushClient: NSObject {
         getRequest.sendWithCompletionHandler ({ (response: Response?, error: NSError?) -> Void in
             
             if let responseError = error {
-                
-                /*
-                Analytics.log([IMFPUSH_CLIENT : "Error while verifying previous registration - Error is: \(responseError.localizedDescription)"])
-                self.loggerObject?.info("Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                Analytics.send()
-                */
                 
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                 
@@ -125,11 +120,6 @@ public class BMSPushClient: NSObject {
                 
                 if (status == 404) {
                     
-                    /*
-                    self.loggerObject?.info("Device is not registered before.  Registering for the first time.")
-                    Analytics.log([IMFPUSH_CLIENT : "Device is not registered before.  Registering for the first time."])
-                    Analytics.send()
-                    */
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device is not registered before.  Registering for the first time.")
                     
@@ -166,15 +156,8 @@ public class BMSPushClient: NSObject {
                         
                         if let responseError = error  {
                             
-                            /*
-                            self.loggerObject?.info("Error during device registration - Error is: \(responseError.localizedDescription)")
-                            Analytics.log([IMFPUSH_CLIENT : "Error during device registration - Error is: \(responseError.localizedDescription)"])
-                            Analytics.send()
-                            */
                             
                             self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
-                            
-                            // let custError = NSError(domain: IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , userInfo: error!.userInfo)
                             
                             completionHandler(response: response!, error: error)
                             
@@ -182,11 +165,6 @@ public class BMSPushClient: NSObject {
                             
                             let responseText = response!.responseText ?? ""
                             
-                            /*
-                            self.loggerObject?.info("Response of device registration - Response is: \(responseText)")
-                            Analytics.log([IMFPUSH_CLIENT : "Response of device registration - Response is: \(responseText)"])
-                            Analytics.send()
-                            */
                             
                             self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Response of device registration - Response is: \(responseText)")
                             
@@ -198,15 +176,9 @@ public class BMSPushClient: NSObject {
                 }
                 else if (status == 406) || (status == 500) {
                     
-                    /*
-                    Analytics.log([IMFPUSH_CLIENT : "Error while verifying previous registration - Error is: \(error!.localizedDescription)"])
-                    self.loggerObject?.info("Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                    Analytics.send()
-                    */
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
                     
-                    //let custError:NSError = NSError(domain:IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , userInfo: error!.userInfo)
                     
                     completionHandler(response: response!, error: error);
                 }
@@ -216,11 +188,6 @@ public class BMSPushClient: NSObject {
                     
                     print("\n \n Device is already registered. Return the device Id - Response is: \(response?.responseText)")
                     
-                    /*
-                    Analytics.log([IMFPUSH_CLIENT : "Device is already registered. Return the device Id - Response is: \(response?.responseText)"])
-                    self.loggerObject?.info("Device is already registered. Return the device Id - Response is: \(response?.responseText)")
-                    Analytics.send()
-                    */
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
                     
@@ -267,10 +234,6 @@ public class BMSPushClient: NSObject {
                         
                         // MARK: Updating the registered device , token or deviceId changed
                         
-                        /*
-                        Analytics.log([IMFPUSH_CLIENT : "Device token or DeviceId has changed. Sending update registration request."])
-                        Analytics.send()
-                        */
                         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device token or DeviceId has changed. Sending update registration request.")
                         
                         
@@ -298,25 +261,15 @@ public class BMSPushClient: NSObject {
                             
                             if let responseError = error {
                                 
-                                /*
-                                Analytics.log([IMFPUSH_CLIENT : "Error during device updatation - Error is : \(responseError.description)"])
-                                Analytics.send()
-                                */
                                 
                                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error during device updatation - Error is : \(responseError.description)")
                                 
-                                //let custError = NSError(domain: IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue , userInfo: error!.userInfo)
                                 
                                 completionHandler(response: response!,error: error);
                                 
                             }
                             else {
                                 
-                                
-                                /*
-                                Analytics.log([IMFPUSH_CLIENT : "Response of device updation - Response is: \(response?.responseText)"])
-                                Analytics.send()
-                                */
                                 
                                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Response of device updation - Response is: \(response?.responseText)")
                                 
@@ -329,13 +282,7 @@ public class BMSPushClient: NSObject {
                     } else {
                         // MARK: device already registered and parameteres not changed.
                         
-                        /*
-                        Analytics.log([IMFPUSH_CLIENT : "Device is already registered and device registration parameters not changed."])
-                        Analytics.send()
-                        */
-                        
                         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device is already registered and device registration parameters not changed.")
-                        
                         
                         completionHandler(response: response!, error: error);
                     }
@@ -346,11 +293,6 @@ public class BMSPushClient: NSObject {
     }
     
     public func retrieveSubscriptionsWithCompletionHandler (completionHandler: (response:Response?, error:NSError?) -> Void){
-        
-        /*
-        Analytics.log([IMFPUSH_CLIENT : "Entering retrieveSubscriptionsWithCompletitionHandler."])
-        Analytics.send()
-        */
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
         
@@ -402,23 +344,13 @@ public class BMSPushClient: NSObject {
             
             if let responseError = error {
                 
-                /*
-                Analytics.log([IMFPUSH_CLIENT : "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)"])
-                Analytics.send()
-                */
-                
+               
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
-                
-                //let custError:NSError = NSError(domain:IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue, userInfo:error!.userInfo)
                 
                 completionHandler(response: response!, error: error)
                 
             } else{
-                
-                /*
-                Analytics.log([IMFPUSH_CLIENT : "Subscription retrieved successfully - Response is: \(response?.responseText)"])
-                Analytics.send()
-                */
+               
                 
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Subscription retrieved successfully - Response is: \(response?.responseText)")
                 
@@ -430,12 +362,7 @@ public class BMSPushClient: NSObject {
     
     public func retrieveAvailableTagsWithCompletionHandler (completionHandler: (response:Response?, error:NSError?) -> Void){
         
-        
-        /*
-        Analytics.log([IMFPUSH_CLIENT : "Entering retrieveAvailableTagsWithCompletitionHandler."])
-        Analytics.send()
-        */
-        
+       
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
         
         
@@ -452,26 +379,15 @@ public class BMSPushClient: NSObject {
             
             if let responseError = error  {
                 
-                /*
-                Analytics.log([IMFPUSH_CLIENT : "Error while retrieving available tags - Error is: \(responseError.description)"])
-                Analytics.send()
-                */
-                
+               
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while retrieving available tags - Error is: \(responseError.description)")
-                
-                
-                //let custError:NSError = NSError(domain:IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue, userInfo:error!.userInfo)
                 
                 completionHandler(response: response!, error: error)
                 
                 
             } else {
                 
-                /*
-                Analytics.log([IMFPUSH_CLIENT : "Successfully retrieved available tags - Response is: \(response?.responseText)"])
-                Analytics.send()
-                */
-                
+               
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Successfully retrieved available tags - Response is: \(response?.responseText)")
                 
                 
@@ -482,11 +398,7 @@ public class BMSPushClient: NSObject {
     
     public func subscribeToTags (tagsArray:NSArray, completionHandler: (response:Response?, error:NSError?) -> Void) {
         
-        /*
-        Analytics.log([IMFPUSH_CLIENT : "Entering: subscribeToTags."])
-        Analytics.send()
-        */
-        
+       
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering: subscribeToTags.")
         
         
@@ -545,26 +457,14 @@ public class BMSPushClient: NSObject {
             getRequest.sendString(jsonString, withCompletionHandler: { (response, error) -> Void in
                 
                 if let responseError = error {
-                    
-                    /*
-                    Analytics.log([IMFPUSH_CLIENT : "Error while subscribing to tags - Error is: \(responseError.description)"])
-                    Analytics.send()
-                    */
+                  
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while subscribing to tags - Error is: \(responseError.description)")
-                    
-                    
-                    
-                    //let custError:NSError = NSError(domain:IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue, userInfo:error!.userInfo)
                     
                     completionHandler(response: response!, error: error)
                     
                 } else {
                     
-                    /*
-                    Analytics.log([IMFPUSH_CLIENT : "Successfully subscribed to tags - Response is: \(response?.responseText)"])
-                    Analytics.send()
-                    */
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Successfully subscribed to tags - Response is: \(response?.responseText)")
                     
@@ -575,10 +475,6 @@ public class BMSPushClient: NSObject {
             
         } else {
             
-            /*
-            Analytics.log([IMFPUSH_CLIENT : "Error.  Tag array cannot be null."])
-            Analytics.send()
-            */
             
             self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error.  Tag array cannot be null.")
             
@@ -594,11 +490,6 @@ public class BMSPushClient: NSObject {
     
     
     public func unsubscribeFromTags (tagsArray:NSArray, completionHandler: (response:Response?, error:NSError?) -> Void) {
-        
-        /*
-        Analytics.log([IMFPUSH_CLIENT : "Entering: unsubscribeFromTags"])
-        Analytics.send()
-        */
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering: unsubscribeFromTags")
         
@@ -658,24 +549,13 @@ public class BMSPushClient: NSObject {
                 
                 if let responseError = error {
                     
-                    /*
-                    Analytics.log([IMFPUSH_CLIENT : "Error while unsubscribing from tags - Error is: \(responseError.description)"])
-                    Analytics.send()
-                    */
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while unsubscribing from tags - Error is: \(responseError.description)")
-                    
-                    
-                    // let custError:NSError = NSError(domain:IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue, userInfo:error!.userInfo)
                     
                     completionHandler(response: response!, error: error)
                     
                 } else {
                     
-                    /*
-                    Analytics.log([IMFPUSH_CLIENT : "Successfully unsubscribed from tags - Response is: \(response?.responseText)"])
-                    Analytics.send()
-                    */
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Successfully unsubscribed from tags - Response is: \(response?.responseText)")
                     
@@ -686,11 +566,6 @@ public class BMSPushClient: NSObject {
             })
             
         } else {
-            
-            /*
-            Analytics.log([IMFPUSH_CLIENT : "Error.  Tag array cannot be null."])
-            Analytics.send()
-            */
             
             self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error.  Tag array cannot be null.")
             
@@ -703,11 +578,7 @@ public class BMSPushClient: NSObject {
     }
     
     public func unregisterDevice (completionHandler: (response:Response?, error:NSError?) -> Void) {
-        
-        /*
-        Analytics.log([IMFPUSH_CLIENT : "Entering unregisterDevice."])
-        Analytics.send()
-        */
+    
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering unregisterDevice.")
         
@@ -752,23 +623,13 @@ public class BMSPushClient: NSObject {
             
             if let responseError = error {
                 
-                /*
-                Analytics.log([IMFPUSH_CLIENT : "Error while unregistering device - Error is: \(responseError.description)"])
-                Analytics.send()
-                */
                 
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while unregistering device - Error is: \(responseError.description)")
-                
-                // let custError:NSError = NSError(domain:IMFPushErrorDomain, code: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue, userInfo:nil)
                 
                 completionHandler(response: response!, error: error)
                 
             } else {
                 
-                /*
-                Analytics.log([IMFPUSH_CLIENT : "Successfully unregistered the device. - Response is: \(response?.responseText)"])
-                Analytics.send()
-                */
                 
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
                 
@@ -781,14 +642,8 @@ public class BMSPushClient: NSObject {
     //Begin Analytics API implementation
     
     func appEnterActive () {
-        
-        /*
-        Analytics.log([IMFPUSH_APP_MANAGER : "Application Enter Active."])
-        Analytics.send()
-        */
-        
+       
         self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Application Enter Active.")
-        
         
         let messageID:String = ""
         
@@ -798,10 +653,6 @@ public class BMSPushClient: NSObject {
     
     func appEnterBackground () {
         
-        /*
-        Analytics.log([IMFPUSH_APP_MANAGER : "Application Enter Background. Sending analytics information to server."])
-        Analytics.send()
-        */
         
         self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Application Enter Background. Sending analytics information to server.")
         
@@ -815,11 +666,7 @@ public class BMSPushClient: NSObject {
         BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
         
         if (application.applicationState == UIApplicationState.Active){
-            
-            /*
-            Analytics.log([IMFPUSH_APP_MANAGER : "Push notification received when application is in active state."])
-            Analytics.send()
-            */
+          
             
             self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification received when application is in active state.")
             
@@ -831,13 +678,7 @@ public class BMSPushClient: NSObject {
         
         if pushStatus {
             
-            /*
-            Analytics.log([IMFPUSH_APP_MANAGER : "Push notification is enabled on device"])
-            Analytics.send()
-            */
-            
             self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification is enabled on device")
-            
             
             BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
         }
@@ -853,13 +694,7 @@ public class BMSPushClient: NSObject {
             
             if pushNotificationPayload.allKeys.count > 0 {
                 
-                /*
-                Analytics.log([IMFPUSH_APP_MANAGER : "App opened by clicking on push notification."])
-                Analytics.send()
-                */
-                
                 self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "App opened by clicking on push notification.")
-                
                 
                 let messageId:NSString = pushNotificationPayload.objectForKey("nid") as! String
                 BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId as String, timeStamp: BMSPushUtils.generateTimeStamp())
@@ -990,13 +825,11 @@ public class BMSPushClient: NSObject {
     // TODO: This should be changed
     internal func sendAnalyticsdata (firstData:String, stringData:AnyObject?){
         
-        //BMSLoggerPush.sendAnalyticsfromPush()
-        
-        
         Analytics.log([firstData : stringData!])
         loggerObject?.info(stringData as! String)
         Analytics.send()
         
+        print("\n \(stringData)")
         
         /*
         Analytics.log([IMFPUSH_CLIENT : "Verifying previous device registration."])
