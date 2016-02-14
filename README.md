@@ -39,7 +39,6 @@ From the Terminal, go to your project folder and install the dependencies with t
 
 ```
 pod install
-
 ```
 
 That command installs your dependencies and creates a new Xcode workspace.
@@ -47,7 +46,6 @@ That command installs your dependencies and creates a new Xcode workspace.
 
 ```
 open App.xcworkspace
-
 ```
 
 ## Enabling iOS applications to receive push notifications
@@ -57,20 +55,18 @@ open App.xcworkspace
 ```
 import BMSPush
 import BMSCore
-
 ```
 #### Initializing the Core SDK
 
 ```
 let myBMSClient = BMSClient.sharedInstance
 
-myBMSClient.initializeWithBluemixAppRoute("`***BluemixAppRoute***`", bluemixAppGUID: "***APPGUID***", bluemixRegionSuffix: "***Location where your app Hosted***")
+myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegionSuffix: "Location where your app Hosted")
 myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
 
 Analytics.initializeWithAppName("BluemixAppRoute", apiKey: "APIKey")
 
 Analytics.startRecordingApplicationLifecycle() 
-
 ```
 ***AppRoute***
 
@@ -89,13 +85,185 @@ Specifies the location where the app hosted. You can use one of three values - `
 
 ```
 let push =  BMSPushClient.sharedInstance
-
 ```
 
 #### Registering iOS applications and devices
 
-    
+Add this code to registering the app for push notification in APNS,
 
+```
+let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+UIApplication.sharedApplication().registerForRemoteNotifications()
+```    
+After the token is received from APNS, pass the token to Push Notifications as part of the
+ ***didRegisterForRemoteNotificationsWithDeviceToken*** method.
+
+```
+ func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+
+    let push =  BMSPushClient.sharedInstance
+    push.registerDeviceToken(deviceToken) { (response, error) -> Void in
+
+        if let responseError = error {
+
+            print( "Error during device registration \(responseError.localizedDescription) ")
+
+            self.sendNotifToDisplayResponse( "Error during device registration \(responseError.localizedDescription) ")
+
+        }
+        else if response != nil {
+            
+            let status = response!.statusCode ?? 0
+            let responseText = response!.responseText ?? ""
+
+            print( "Response during device registration : \(responseText)")
+
+            print( "status code during device registration : \(status)")
+
+        }
+    }
+
+}
+```
+#### Retrieve Available Tags and register for Tags
+
+##### Retrieve Available tags
+
+The ***retrieveAvailableTagsWithCompletionHandler*** API returns the list of available tags to which the device
+can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
+that are sent for that tag.
+
+Call the push service to get subscriptions for a tag.
+
+Copy the following code snippets into your Swift mobile application to get a list of available tags to which the
+device is subscribed and get a list of available tags to which the device can subscribe.
+
+```
+push.retrieveAvailableTagsWithCompletionHandler({ (response, error) -> Void in
+
+    if let responseError = error {
+
+        print( "Error during retrieve tags \(responseError.localizedDescription) ")
+
+        self.sendNotifToDisplayResponse( "Error during retrieve tags \(responseError.localizedDescription) ")
+
+    }
+    else{
+
+        let status = response!.statusCode ?? 0
+        let responseText = response!.responseText ?? ""
+
+        self.sendNotifToDisplayResponse("Response of retrieve tags : \(responseText)")
+
+        print( "Response of retrieve tags : \(responseText)")
+
+        print( "status code of retrieve tags: \(status)")
+
+
+        let tags: NSArray = response!.availableTags()
+    }
+}
+```
+##### Subscribe to Available tags
+
+push.subscribeToTags(tags, completionHandler: { (response, error) -> Void in
+
+    if let responseError = error {
+
+        print( "Error during subscribeing tags \(responseError.localizedDescription) ")
+
+        self.sendNotifToDisplayResponse( "Error during subscribeing tags \(responseError.localizedDescription) ")
+
+    }
+    else{
+
+        let status = response!.statusCode ?? 0
+        let responseText = response!.responseText ?? ""
+
+        print( "Response of subscribe tags : \(responseText)")
+
+        print( "status code of subscribe tags: \(status)")
+    }
+}
+
+##### Retrieve Subscribed tags
+
+push.retrieveSubscriptionsWithCompletionHandler({ (response, error) -> Void in
+
+    if let responseError = error {
+
+        print( "Error during retrieve subscriptions \(responseError.localizedDescription) ")
+
+        self.sendNotifToDisplayResponse( "Error during retrieve subscriptions \(responseError.localizedDescription) ")
+
+    }
+    else{
+
+        let status = response!.statusCode ?? 0
+        let responseText = response!.responseText ?? ""
+
+        print( "Response of retrieve subscriptions : \(responseText)")
+
+        print( "status code of retrieve subscriptions: \(status)")
+        let subscription: NSArray = response!.subscriptions()
+    }
+}
+
+#### Subscribing and unsubscribing tags
+
+Use the following code snippets to allow your devices to get subscriptions, subscribe to a tag, and unsubscribe
+from a tag.
+
+```
+push.unsubscribeFromTags(subscription, completionHandler: { (response, error) -> Void in
+
+    if let responseError = error {
+
+        print( "Error during unsubscribing to tags \(responseError.localizedDescription) ")
+
+        self.sendNotifToDisplayResponse( "Error during unsubscribing to tags \(responseError.localizedDescription) ")
+
+    }
+    else{
+
+        let status = response!.statusCode ?? 0
+        let responseText = response!.responseText ?? ""
+
+        print( "Response of unsubscribe tags : \(responseText)")
+
+        print( "status code of unsubscribe tags: \(status)")
+    }
+}
+```
+#### Unregistering the Device from Bluemix Push Notification
+
+Use the following code snippets to Unregister the device from Bluemix Push Notification
+
+```
+push.unregisterDevice({ (response, error) -> Void in
+
+    if let responseError = error {
+
+        print( "Error during unregistering device \(responseError.localizedDescription) ")
+
+        self.sendNotifToDisplayResponse( "Error during unregistering device \(responseError.localizedDescription)")
+
+    }
+    else{
+
+        let status = response!.statusCode ?? 0
+        let responseText = response!.responseText ?? ""
+
+        print( "Response of unregister device : \(responseText)")
+
+        print( "status code of unregister device : \(status)")
+
+        UIApplication.sharedApplication().unregisterForRemoteNotifications()
+
+    }
+}
+```
 
 ###Learning More
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
