@@ -167,6 +167,7 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, error) -> Void in
 ```
 ##### Subscribe to Available tags
 
+```
 push.subscribeToTags(tags, completionHandler: { (response, error) -> Void in
 
     if let responseError = error {
@@ -186,9 +187,11 @@ push.subscribeToTags(tags, completionHandler: { (response, error) -> Void in
         print( "status code of subscribe tags: \(status)")
     }
 }
+```
 
 ##### Retrieve Subscribed tags
 
+```
 push.retrieveSubscriptionsWithCompletionHandler({ (response, error) -> Void in
 
     if let responseError = error {
@@ -209,7 +212,7 @@ push.retrieveSubscriptionsWithCompletionHandler({ (response, error) -> Void in
         let subscription: NSArray = response!.subscriptions()
     }
 }
-
+```
 #### Subscribing and unsubscribing tags
 
 Use the following code snippets to allow your devices to get subscriptions, subscribe to a tag, and unsubscribe
