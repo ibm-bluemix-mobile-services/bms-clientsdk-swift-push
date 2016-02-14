@@ -213,9 +213,9 @@ push.retrieveSubscriptionsWithCompletionHandler({ (response, error) -> Void in
     }
 }
 ```
-#### Subscribing and unsubscribing tags
+#### unsubscribing tags
 
-Use the following code snippets to allow your devices to get subscriptions, subscribe to a tag, and unsubscribe
+Use the following code snippets to allow your devices to get unsubscribe
 from a tag.
 
 ```
