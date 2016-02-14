@@ -59,12 +59,12 @@ import BMSPush
 import BMSCore
 
 ```
-##### Initializing the Core SDK
+#### Initializing the Core SDK
 
 ```
 let myBMSClient = BMSClient.sharedInstance
 
-myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegionSuffix: "Location wher app Hosted")
+myBMSClient.initializeWithBluemixAppRoute("***BluemixAppRoute***", bluemixAppGUID: "***APPGUID***", bluemixRegionSuffix: "***Location where your app Hosted***")
 myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
 
 Analytics.initializeWithAppName("BluemixAppRoute", apiKey: "APIKey")
@@ -85,14 +85,14 @@ case-sensitive.
 
 Specifies the location where the app hosted. You can use one of three values - `REGION_US_SOUTH`, `REGION_UK` and `REGION_SYDNEY`.
 
-##### Initializing the Push SDK
+#### Initializing the Push SDK
 
 ```
 let push =  BMSPushClient.sharedInstance
 
 ```
 
-##### Registering iOS applications and devices
+#### Registering iOS applications and devices
 
     
 
