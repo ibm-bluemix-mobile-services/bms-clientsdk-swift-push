@@ -52,14 +52,14 @@ open App.xcworkspace
 
 ## Enabling iOS applications to receive push notifications
 
-    ##### Reference the SDK in your code.
+##### Reference the SDK in your code.
 
 ```
 import BMSPush
 import BMSCore
 
 ```
-    ##### Initializing the Core SDK
+##### Initializing the Core SDK
 
 ```
 let myBMSClient = BMSClient.sharedInstance
@@ -74,25 +74,25 @@ Analytics.startRecordingApplicationLifecycle()
 ```
 ***AppRoute***
 
-    Specifies the route that is assigned to the server application that you created on Bluemix.
+Specifies the route that is assigned to the server application that you created on Bluemix.
 
 ***AppGUID***
 
-    Specifies the unique key that is assigned to the application that you created on Bluemix. This value is 
-    case-sensitive.
+Specifies the unique key that is assigned to the application that you created on Bluemix. This value is 
+case-sensitive.
 
 ***bluemixRegionSuffix***
 
-    Specifies the location where the app hosted. You can use one of three values - `REGION_US_SOUTH`, `REGION_UK` and `REGION_SYDNEY`.
+Specifies the location where the app hosted. You can use one of three values - `REGION_US_SOUTH`, `REGION_UK` and `REGION_SYDNEY`.
 
-    ##### Initializing the Push SDK
+##### Initializing the Push SDK
 
 ```
 let push =  BMSPushClient.sharedInstance
 
 ```
 
-    ##### Registering iOS applications and devices
+##### Registering iOS applications and devices
 
     
 
