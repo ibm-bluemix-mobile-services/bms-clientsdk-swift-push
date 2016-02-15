@@ -137,7 +137,7 @@ that are sent for that tag.
 Call the push service to get subscriptions for a tag.
 
 Copy the following code snippets into your Swift mobile application to get a list of available tags to which the
-device is subscribed and get a list of available tags to which the device can subscribe.
+device can subscribe.
 
 ```
 push.retrieveAvailableTagsWithCompletionHandler({ (response, error) -> Void in
