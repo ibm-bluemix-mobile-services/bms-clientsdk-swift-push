@@ -285,8 +285,8 @@ public extension Response {
         var tagResponseDic:NSDictionary?
         
         // FIXME: additinal unknown tags
-        tags.addObject("HiTag")
-        tags.addObject("errorTag")
+       // tags.addObject("HiTag")
+       // tags.addObject("errorTag")
         
         for  i in 0..<tag.count {
             
