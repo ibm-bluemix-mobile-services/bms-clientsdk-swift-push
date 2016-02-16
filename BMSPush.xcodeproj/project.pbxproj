@@ -12,7 +12,46 @@
 		561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */; };
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
 		561BFE451C6C856900CDB375 /* BMSResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE411C6C856900CDB375 /* BMSResponse.swift */; };
+		56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431A91C72EAA800AE421C /* AppDelegate.swift */; };
+		56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431AB1C72EAA800AE421C /* ViewController.swift */; };
+		56B431AF1C72EAA800AE421C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431AD1C72EAA800AE421C /* Main.storyboard */; };
+		56B431B11C72EAA800AE421C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56B431B01C72EAA800AE421C /* Assets.xcassets */; };
+		56B431B41C72EAA800AE421C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431B21C72EAA800AE421C /* LaunchScreen.storyboard */; };
+		56B431BF1C72EAA800AE421C /* BMSPushHostAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */; };
+		56B431C71C72EAFA00AE421C /* BMSPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 561BFE331C6C855300CDB375 /* BMSPush.framework */; };
+		56B431C81C72EAFA00AE421C /* BMSPush.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 561BFE331C6C855300CDB375 /* BMSPush.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		56B431BB1C72EAA800AE421C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 561BFE2A1C6C855300CDB375 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56B431A61C72EAA800AE421C;
+			remoteInfo = BMSPushHostApp;
+		};
+		56B431C91C72EAFA00AE421C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 561BFE2A1C6C855300CDB375 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 561BFE321C6C855300CDB375;
+			remoteInfo = BMSPush;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		56B431CB1C72EAFA00AE421C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				56B431C81C72EAFA00AE421C /* BMSPush.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		561BFE331C6C855300CDB375 /* BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,10 +61,35 @@
 		561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClient.swift; sourceTree = "<group>"; };
 		561BFE401C6C856900CDB375 /* BMSPushUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUtils.swift; sourceTree = "<group>"; };
 		561BFE411C6C856900CDB375 /* BMSResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSResponse.swift; sourceTree = "<group>"; };
+		56B431A71C72EAA800AE421C /* BMSPushHostApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BMSPushHostApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56B431A91C72EAA800AE421C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		56B431AB1C72EAA800AE421C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		56B431AE1C72EAA800AE421C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		56B431B01C72EAA800AE421C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		56B431B31C72EAA800AE421C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		56B431B51C72EAA800AE421C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BMSPushHostAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMSPushHostAppTests.swift; sourceTree = "<group>"; };
+		56B431C01C72EAA800AE421C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		561BFE2F1C6C855300CDB375 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56B431A41C72EAA800AE421C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56B431C71C72EAFA00AE421C /* BMSPush.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56B431B71C72EAA800AE421C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,6 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				561BFE351C6C855300CDB375 /* Source */,
+				56B431A81C72EAA800AE421C /* BMSPushHostApp */,
+				56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */,
 				561BFE341C6C855300CDB375 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +113,8 @@
 			isa = PBXGroup;
 			children = (
 				561BFE331C6C855300CDB375 /* BMSPush.framework */,
+				56B431A71C72EAA800AE421C /* BMSPushHostApp.app */,
+				56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -62,6 +130,28 @@
 				561BFE381C6C855300CDB375 /* Info.plist */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		56B431A81C72EAA800AE421C /* BMSPushHostApp */ = {
+			isa = PBXGroup;
+			children = (
+				56B431A91C72EAA800AE421C /* AppDelegate.swift */,
+				56B431AB1C72EAA800AE421C /* ViewController.swift */,
+				56B431AD1C72EAA800AE421C /* Main.storyboard */,
+				56B431B01C72EAA800AE421C /* Assets.xcassets */,
+				56B431B21C72EAA800AE421C /* LaunchScreen.storyboard */,
+				56B431B51C72EAA800AE421C /* Info.plist */,
+			);
+			path = BMSPushHostApp;
+			sourceTree = "<group>";
+		};
+		56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */,
+				56B431C01C72EAA800AE421C /* Info.plist */,
+			);
+			path = BMSPushHostAppTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,17 +186,62 @@
 			productReference = 561BFE331C6C855300CDB375 /* BMSPush.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		56B431A61C72EAA800AE421C /* BMSPushHostApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56B431C51C72EAA800AE421C /* Build configuration list for PBXNativeTarget "BMSPushHostApp" */;
+			buildPhases = (
+				56B431A31C72EAA800AE421C /* Sources */,
+				56B431A41C72EAA800AE421C /* Frameworks */,
+				56B431A51C72EAA800AE421C /* Resources */,
+				56B431CB1C72EAFA00AE421C /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				56B431CA1C72EAFA00AE421C /* PBXTargetDependency */,
+			);
+			name = BMSPushHostApp;
+			productName = BMSPushHostApp;
+			productReference = 56B431A71C72EAA800AE421C /* BMSPushHostApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		56B431B91C72EAA800AE421C /* BMSPushHostAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56B431C61C72EAA800AE421C /* Build configuration list for PBXNativeTarget "BMSPushHostAppTests" */;
+			buildPhases = (
+				56B431B61C72EAA800AE421C /* Sources */,
+				56B431B71C72EAA800AE421C /* Frameworks */,
+				56B431B81C72EAA800AE421C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				56B431BC1C72EAA800AE421C /* PBXTargetDependency */,
+			);
+			name = BMSPushHostAppTests;
+			productName = BMSPushHostAppTests;
+			productReference = 56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		561BFE2A1C6C855300CDB375 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "IBM Corp";
 				TargetAttributes = {
 					561BFE321C6C855300CDB375 = {
 						CreatedOnToolsVersion = 7.2;
+					};
+					56B431A61C72EAA800AE421C = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					56B431B91C72EAA800AE421C = {
+						CreatedOnToolsVersion = 7.2;
+						TestTargetID = 56B431A61C72EAA800AE421C;
 					};
 				};
 			};
@@ -116,6 +251,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 561BFE291C6C855300CDB375;
 			productRefGroup = 561BFE341C6C855300CDB375 /* Products */;
@@ -123,12 +259,31 @@
 			projectRoot = "";
 			targets = (
 				561BFE321C6C855300CDB375 /* BMSPush */,
+				56B431A61C72EAA800AE421C /* BMSPushHostApp */,
+				56B431B91C72EAA800AE421C /* BMSPushHostAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		561BFE311C6C855300CDB375 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56B431A51C72EAA800AE421C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56B431B41C72EAA800AE421C /* LaunchScreen.storyboard in Resources */,
+				56B431B11C72EAA800AE421C /* Assets.xcassets in Resources */,
+				56B431AF1C72EAA800AE421C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56B431B81C72EAA800AE421C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -149,7 +304,56 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		56B431A31C72EAA800AE421C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */,
+				56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56B431B61C72EAA800AE421C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56B431BF1C72EAA800AE421C /* BMSPushHostAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		56B431BC1C72EAA800AE421C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 56B431A61C72EAA800AE421C /* BMSPushHostApp */;
+			targetProxy = 56B431BB1C72EAA800AE421C /* PBXContainerItemProxy */;
+		};
+		56B431CA1C72EAFA00AE421C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 561BFE321C6C855300CDB375 /* BMSPush */;
+			targetProxy = 56B431C91C72EAFA00AE421C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		56B431AD1C72EAA800AE421C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				56B431AE1C72EAA800AE421C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		56B431B21C72EAA800AE421C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				56B431B31C72EAA800AE421C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		561BFE391C6C855300CDB375 /* Debug */ = {
@@ -276,6 +480,58 @@
 			};
 			name = Release;
 		};
+		56B431C11C72EAA800AE421C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				INFOPLIST_FILE = BMSPushHostApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push.BMSPushHostApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		56B431C21C72EAA800AE421C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				INFOPLIST_FILE = BMSPushHostApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push.BMSPushHostApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		56B431C31C72EAA800AE421C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = BMSPushHostAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push.BMSPushHostAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BMSPushHostApp.app/BMSPushHostApp";
+			};
+			name = Debug;
+		};
+		56B431C41C72EAA800AE421C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = BMSPushHostAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push.BMSPushHostAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BMSPushHostApp.app/BMSPushHostApp";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -296,6 +552,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		56B431C51C72EAA800AE421C /* Build configuration list for PBXNativeTarget "BMSPushHostApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56B431C11C72EAA800AE421C /* Debug */,
+				56B431C21C72EAA800AE421C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		56B431C61C72EAA800AE421C /* Build configuration list for PBXNativeTarget "BMSPushHostAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56B431C31C72EAA800AE421C /* Debug */,
+				56B431C41C72EAA800AE421C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
