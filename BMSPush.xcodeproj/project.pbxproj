@@ -103,8 +103,6 @@
 			isa = PBXGroup;
 			children = (
 				561BFE351C6C855300CDB375 /* Source */,
-				56B431A81C72EAA800AE421C /* BMSPushHostApp */,
-				56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */,
 				561BFE341C6C855300CDB375 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -128,6 +126,8 @@
 				561BFE401C6C856900CDB375 /* BMSPushUtils.swift */,
 				561BFE411C6C856900CDB375 /* BMSResponse.swift */,
 				561BFE381C6C855300CDB375 /* Info.plist */,
+				56B431A81C72EAA800AE421C /* BMSPushHostApp */,
+				56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -142,7 +142,8 @@
 				56B431B21C72EAA800AE421C /* LaunchScreen.storyboard */,
 				56B431B51C72EAA800AE421C /* Info.plist */,
 			);
-			path = BMSPushHostApp;
+			name = BMSPushHostApp;
+			path = ../BMSPushHostApp;
 			sourceTree = "<group>";
 		};
 		56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */ = {
@@ -151,7 +152,8 @@
 				56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */,
 				56B431C01C72EAA800AE421C /* Info.plist */,
 			);
-			path = BMSPushHostAppTests;
+			name = BMSPushHostAppTests;
+			path = ../BMSPushHostAppTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -560,6 +562,7 @@
 				56B431C21C72EAA800AE421C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		56B431C61C72EAA800AE421C /* Build configuration list for PBXNativeTarget "BMSPushHostAppTests" */ = {
 			isa = XCConfigurationList;
@@ -568,6 +571,7 @@
 				56B431C41C72EAA800AE421C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
