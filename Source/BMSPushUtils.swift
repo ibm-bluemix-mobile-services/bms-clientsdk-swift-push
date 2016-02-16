@@ -22,8 +22,8 @@ public class BMSPushUtils: NSObject {
         let loggerObject = Logger?()
         loggerObject?.info("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
         
-        Analytics.log([ IMFPUSH_UTILS: "Saving value to NSUserDefaults with Key: \(key) and Value: \(value)"])
-        Analytics.send()
+//        Analytics.log([ IMFPUSH_UTILS: "Saving value to NSUserDefaults with Key: \(key) and Value: \(value)"])
+//        Analytics.send()
 
         let standardUserDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if standardUserDefaults.objectForKey(key) != nil  {
@@ -95,8 +95,8 @@ public class BMSPushUtils: NSObject {
         let loggerObject = Logger?()
         loggerObject?.info("Current timestamp is: \(isoDate)")
         
-        Analytics.log([ IMFPUSH_UTILS: "Current timestamp is: \(isoDate)"])
-        Analytics.send()
+//        Analytics.log([ IMFPUSH_UTILS: "Current timestamp is: \(isoDate)"])
+//        Analytics.send()
         
         return isoDate;
     }
@@ -117,11 +117,11 @@ public class BMSPushUtils: NSObject {
         
         loggerObject?.info("Currently logging analytics with NotificationMetaData: \(notificationMetaData)")
         
-        Analytics.log([IMFPUSH_CLIENT : "Currently logging analytics with NotificationMetaData: \(notificationMetaData)"])
-        Analytics.send()
+//        Analytics.log([IMFPUSH_CLIENT : "Currently logging analytics with NotificationMetaData: \(notificationMetaData)"])
+//        Analytics.send()
         
         
-        Analytics.log(["$imf_push":notificationMetaData])
-        Analytics.send()
+//        Analytics.log(["$imf_push":notificationMetaData])
+//        Analytics.send()
     }
 }

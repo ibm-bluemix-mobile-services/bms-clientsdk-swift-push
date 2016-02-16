@@ -52,8 +52,8 @@ public extension Response {
     
         if self.statusCode == 201 {
           
-            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "All tags successfully subscribed."])
-            Analytics.send()
+//            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "All tags successfully subscribed."])
+//            Analytics.send()
 
             let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as! NSArray
 
@@ -72,8 +72,8 @@ public extension Response {
         }
         else if self.statusCode == 207 {
             
-            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "Multi-part response returned for tag subscriptions."])
-            Analytics.send()
+//            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "Multi-part response returned for tag subscriptions."])
+//            Analytics.send()
             
             if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
                 
@@ -168,8 +168,8 @@ public extension Response {
         
         if self.statusCode == 201 {
             
-            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "All tags successfully unsubscribed."])
-            Analytics.send()
+//            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "All tags successfully unsubscribed."])
+//            Analytics.send()
             
             let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_UNSUBSCRIBED) as! NSArray
             
@@ -189,8 +189,8 @@ public extension Response {
         }
         else if self.statusCode == 207 {
             
-            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "Multi-part response returned for tag unsubscriptions."])
-            Analytics.send()
+//            Analytics.log([IMFRESPONSE_IMFPUSHCATEGORY: "Multi-part response returned for tag unsubscriptions."])
+//            Analytics.send()
             
             if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONNOTEXISTS) as? NSArray {
                 

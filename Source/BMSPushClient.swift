@@ -825,9 +825,9 @@ public class BMSPushClient: NSObject {
     // TODO: This should be changed
     internal func sendAnalyticsdata (firstData:String, stringData:AnyObject?){
         
-        Analytics.log([firstData : stringData!])
+        //Analytics.log([firstData : stringData!])
         loggerObject?.info(stringData as! String)
-        Analytics.send()
+        //Analytics.send()
         
         print("\n \(stringData)")
         
