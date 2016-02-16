@@ -26,22 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
         
         
-        /*
-        - parameter appName:  The application name.  Should be consistent across platforms (e.g. Android and iOS).
-        - parameter apiKey:   A unique ID used to authenticate with the MFP analytics server
-        
-        */
-        Analytics.initializeWithAppName("pushtestappananth", apiKey: "1234")
-        
-        /**
-        Records the duration of the app's lifecycle from when it enters the foreground to when it goes to the background.
-        This data will be sent to the Analytics server, provided that the `Analytics.enabled` property is set to `true`.
-        
-        This method should be called in the `AppDelegate didFinishLaunchingWithOptions` method.
-        */
-        
-        Analytics.startRecordingApplicationLifecycle()
-        
         return true
     }
     

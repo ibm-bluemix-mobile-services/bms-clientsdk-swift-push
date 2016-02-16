@@ -64,9 +64,6 @@ let myBMSClient = BMSClient.sharedInstance
 myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegionSuffix: "Location where your app Hosted")
 myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
 
-Analytics.initializeWithAppName("BluemixAppName", apiKey: "APIKey")
-
-Analytics.startRecordingApplicationLifecycle() 
 ```
 ***AppRoute***
 

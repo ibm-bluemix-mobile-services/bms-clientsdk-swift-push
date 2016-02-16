@@ -142,8 +142,7 @@
 				56B431B21C72EAA800AE421C /* LaunchScreen.storyboard */,
 				56B431B51C72EAA800AE421C /* Info.plist */,
 			);
-			name = BMSPushHostApp;
-			path = ../BMSPushHostApp;
+			path = BMSPushHostApp;
 			sourceTree = "<group>";
 		};
 		56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */ = {
@@ -152,8 +151,7 @@
 				56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */,
 				56B431C01C72EAA800AE421C /* Info.plist */,
 			);
-			name = BMSPushHostAppTests;
-			path = ../BMSPushHostAppTests;
+			path = BMSPushHostAppTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
