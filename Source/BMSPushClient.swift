@@ -825,18 +825,9 @@ public class BMSPushClient: NSObject {
     // TODO: This should be changed
     internal func sendAnalyticsdata (firstData:String, stringData:AnyObject?){
         
-        //Analytics.log([firstData : stringData!])
         loggerObject?.info(stringData as! String)
-        //Analytics.send()
         
         print("\n \(stringData)")
-        
-        /*
-        Analytics.log([IMFPUSH_CLIENT : "Verifying previous device registration."])
-        loggerObject?.info("Verifying previous device registration.")
-        Analytics.send()
-        */
-        
         
     }
     
