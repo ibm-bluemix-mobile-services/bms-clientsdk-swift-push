@@ -76,7 +76,7 @@ case-sensitive.
 
 ***bluemixRegionSuffix***
 
-Specifies the location where the app hosted. You can use one of three values - `REGION_US_SOUTH`, `REGION_UK` and `REGION_SYDNEY`.
+Specifies the location where the app hosted. You can use one of three values - `BMSClient.US_SOUTH`, `BMSClient.UK` and `BMSClient.SYDNEY`.
 
 #### Initializing the Push SDK
 
