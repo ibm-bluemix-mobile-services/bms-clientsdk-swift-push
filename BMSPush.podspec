@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
 
-  s.dependency 'BMSCore', '~> 0.0.13'
+  s.dependency 'BMSCore'
 
   s.ios.deployment_target = '8.0'
   
