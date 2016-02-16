@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let myBMSClient = BMSClient.sharedInstance
         
-        myBMSClient.initializeWithBluemixAppRoute("https://pushtestappananth.stage1.mybluemix.net", bluemixAppGUID: "05854d41-b1a8-449c-8949-ea59a85aaee7", bluemixRegionSuffix: BMSClient.US_SOUTH)
+        myBMSClient.initializeWithBluemixAppRoute("https://pushtestappananth.stage1.mybluemix.net", bluemixAppGUID: "05854d41-b1a8-449c-8949-ea59a85aaee7", bluemixRegion: BMSClient.US_SOUTH)
         
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
         
