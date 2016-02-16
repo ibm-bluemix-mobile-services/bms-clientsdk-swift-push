@@ -38,7 +38,7 @@ end
 From the Terminal, go to your project folder and install the dependencies with the following command:
 
 ```
-pod install
+pod update
 ```
 
 That command installs your dependencies and creates a new Xcode workspace.
@@ -61,7 +61,7 @@ import BMSCore
 ```
 let myBMSClient = BMSClient.sharedInstance
 
-myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegionSuffix: "Location where your app Hosted")
+myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegion:"Location where your app Hosted")
 myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
 
 ```
