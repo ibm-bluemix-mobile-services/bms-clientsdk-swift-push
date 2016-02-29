@@ -11,7 +11,6 @@
 *     limitations under the License.
 */
 
-
 import UIKit
 import BMSCore
 
@@ -29,22 +28,6 @@ public class BMSPushUtils: NSObject {
             NSUserDefaults.standardUserDefaults().synchronize()
             
         }
-    }
-    
-    class func isSandbox (environment:String) -> Bool{
-        
-        var isSandBox = true
-        
-        if (environment.isEmpty || environment.caseInsensitiveCompare("sandbox") == NSComparisonResult.OrderedSame){
-            
-            isSandBox = true
-        }
-        else if (environment.caseInsensitiveCompare("production") == NSComparisonResult.OrderedSame){
-            
-            isSandBox = false
-        }
-        
-        return isSandBox
     }
     
     class func getPushSettingValue() -> Bool {

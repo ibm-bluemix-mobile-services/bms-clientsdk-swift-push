@@ -18,14 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
         let myBMSClient = BMSClient.sharedInstance
         
-        myBMSClient.initializeWithBluemixAppRoute("https://pushtestappananth.stage1.mybluemix.net", bluemixAppGUID: "05854d41-b1a8-449c-8949-ea59a85aaee7", bluemixRegion: BMSClient.US_SOUTH)
+        myBMSClient.initializeWithBluemixAppRoute("https://hhhhh.stage1.mybluemix.net", bluemixAppGUID: "ba3fa3e6-a202-415d-be26-c586f8695ebf", bluemixRegion: BMSClient.US_SOUTH)
         
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
-        
-        
         return true
     }
     
@@ -36,6 +33,71 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().registerForRemoteNotifications()
         
     }
+    func unRegisterPush () {
+        
+        // MARK:  RETRIEVING AVAILABLE SUBSCRIPTIONS
+        
+        let push =  BMSPushClient.sharedInstance
+        
+        push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
+            
+            if error.isEmpty {
+                
+                print( "Response during retrieving subscribed tags : \(response.description)")
+                
+                print( "status code during retrieving subscribed tags : \(statusCode)")
+                
+                self.sendNotifToDisplayResponse("Response during retrieving subscribed tags: \(response.description)")
+                
+                // MARK:  UNSUBSCRIBING TO TAGS
+                
+                push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -> Void in
+                    
+                    if error.isEmpty {
+                        
+                        print( "Response during unsubscribed tags : \(response.description)")
+                        
+                        print( "status code during unsubscribed tags : \(statusCode)")
+                        
+                        self.sendNotifToDisplayResponse("Response during unsubscribed tags: \(response.description)")
+                        
+                        // MARK:  UNSREGISTER DEVICE
+                        push.unregisterDevice({ (response, statusCode) -> Void in
+                            
+                            if error.isEmpty {
+                                
+                                print( "Response during unregistering device : \(response)")
+                                
+                                print( "status code during unregistering device : \(statusCode)")
+                                
+                                self.sendNotifToDisplayResponse("Response during unregistering device: \(response)")
+                                
+                                UIApplication.sharedApplication().unregisterForRemoteNotifications()
+                            }
+                            else{
+                                print( "Error during unregistering device \(error) ")
+                                
+                                self.sendNotifToDisplayResponse( "Error during unregistering device \n  - status code: \(statusCode) \n Error :\(error) \n")
+                            }
+                        })
+                    }
+                    else {
+                        print( "Error during  unsubscribed tags \(error) ")
+                        
+                        self.sendNotifToDisplayResponse( "Error during unsubscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+                    }
+                })
+            }
+            else {
+                
+                print( "Error during retrieving subscribed tags \(error) ")
+                
+                self.sendNotifToDisplayResponse( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+            }
+            
+        }
+        
+    }
     
     func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
         
@@ -43,139 +105,83 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK:    REGISTERING DEVICE
         
-        push.registerDeviceToken(deviceToken) { (response, error) -> Void in
+        push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             
-            if let responseError = error {
+            if error.isEmpty {
                 
-                print( "Error during device registration \(responseError.localizedDescription) ")
+                print( "Response during device registration : \(response)")
                 
-                self.sendNotifToDisplayResponse( "Error during device registration \(responseError.localizedDescription) ")
+                print( "status code during device registration : \(statusCode)")
                 
-            }
-            else if response != nil {
-                
-                let status = response!.statusCode ?? 0
-                let responseText = response!.responseText ?? ""
-                
-                print( "Response during device registration : \(responseText)")
-                
-                print( "status code during device registration : \(status)")
-                
-                self.sendNotifToDisplayResponse("Response during device registration json: \(responseText)")
+                self.sendNotifToDisplayResponse("Response during device registration json: \(response)")
                 
                 // MARK:    RETRIEVING AVAILABLE TAGS
                 
-                push.retrieveAvailableTagsWithCompletionHandler({ (response, error) -> Void in
+                push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) -> Void in
                     
-                    if let responseError = error {
+                    if error.isEmpty {
                         
-                        print( "Error during retrieve tags \(responseError.localizedDescription) ")
+                        print( "Response during retrive tags : \(response)")
                         
-                        self.sendNotifToDisplayResponse( "Error during retrieve tags \(responseError.localizedDescription) ")
+                        print( "status code during retrieve tags : \(statusCode)")
                         
-                    }
-                    else{
+                        self.sendNotifToDisplayResponse("Response during retrive tags: \(response.description)")
                         
-                        let status = response!.statusCode ?? 0
-                        let responseText = response!.responseText ?? ""
-                        
-                        self.sendNotifToDisplayResponse("Response of retrieve tags : \(responseText)")
-                        
-                        print( "Response of retrieve tags : \(responseText)")
-                        
-                        print( "status code of retrieve tags: \(status)")
-                        
-                        
-                        let tags: NSArray = response!.availableTags()
-                        
-                        
-                        let tagsSize:Int = tags.count
-                        
-                        print("\n \n \n \n Available List of Tags : \(tags)")
-                        
-                        print("\n \n \n \n \n Number of Tags : \(tagsSize)")
-                        
-                        let myTags:NSArray = tags.subarrayWithRange(NSMakeRange(0, tagsSize/2))
-                        
-                        print("\n \n \n \n \n Now subscribe for half of the available tags :\n \(myTags)")
-                        
-                        self.sendNotifToDisplayResponse("Now subscribe for half of the available tags :\n \(myTags)")
-                        
-                        
-                        // MARK:    SUBSCRIBING TO HALF OF AVAILABLE TAGS
-                        
-                        push.subscribeToTags(myTags, completionHandler: { (response, error) -> Void in
+                        // MARK:    SUBSCRIBING TO AVAILABLE TAGS
+                        push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -> Void in
                             
-                            if let responseError = error {
+                            if error.isEmpty {
                                 
-                                print( "Error during subscribeing tags \(responseError.localizedDescription) ")
+                                print( "Response during Subscribing to tags : \(response.description)")
                                 
-                                self.sendNotifToDisplayResponse( "Error during subscribeing tags \(responseError.localizedDescription) ")
+                                print( "status code during Subscribing tags : \(statusCode)")
                                 
-                            }
-                            else{
-                                
-                                let status = response!.statusCode ?? 0
-                                //let headers = response!.headers ?? [:]
-                                let responseText = response!.responseText ?? ""
-                                
-                                print( "Response of subscribe tags : \(responseText)")
-                                
-                                print( "status code of subscribe tags: \(status)")
-                                
-                                self.sendNotifToDisplayResponse("Response of subscribe tags: \(responseText)")
-                                
-                                let subStatus:NSDictionary = response!.subscribeStatus()
-                                
-                                print("\n \n \n \n subStatus is, \(subStatus.description)")
-                                
-                                self.sendNotifToDisplayResponse("subStatus is, \(subStatus.description)")
-                                
+                                self.sendNotifToDisplayResponse("Response during Subscribing tags: \(response.description)")
                                 
                                 // MARK:  RETRIEVING AVAILABLE SUBSCRIPTIONS
-                                
-                                push.retrieveSubscriptionsWithCompletionHandler({ (response, error) -> Void in
+                                push.retrieveSubscriptionsWithCompletionHandler({ (response, statusCode, error) -> Void in
                                     
-                                    if let responseError = error {
+                                    if error.isEmpty {
                                         
-                                        print( "Error during retrieve subscriptions \(responseError.localizedDescription) ")
+                                        print( "Response during retrieving subscribed tags : \(response.description)")
                                         
-                                        self.sendNotifToDisplayResponse( "Error during retrieve subscriptions \(responseError.localizedDescription) ")
+                                        print( "status code during retrieving subscribed tags : \(statusCode)")
                                         
+                                        self.sendNotifToDisplayResponse("Response during retrieving subscribed tags: \(response.description)")
                                     }
-                                    else{
+                                    else {
                                         
-                                        let status = response!.statusCode ?? 0
-                                        let responseText = response!.responseText ?? ""
+                                        print( "Error during retrieving subscribed tags \(error) ")
                                         
-                                        print( "Response of retrieve subscriptions : \(responseText)")
-                                        
-                                        print( "status code of retrieve subscriptions: \(status)")
-                                        
-                                        self.sendNotifToDisplayResponse("Response of retrieve subscriptions:  \(responseText)")
-                                        
-                                        
-                                        let subscription: NSArray = response!.subscriptions()
-                                        
-                                        
-                                        print("\n \n \n \n Subscribed tags are: \(subscription)")
-                                        
-                                        let subscriptionSize:Int = subscription.count
-                                        
-                                        print("\n \n \n \n \n Number of subscribed Tags : \(subscriptionSize)")
-                                        
-                                        self.sendNotifToDisplayResponse("subscribed tags details : \(subscription.description)")
-                                        
+                                        self.sendNotifToDisplayResponse( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
                                     }
                                     
                                 })
                                 
+                                
                             }
+                            else {
+                                
+                                print( "Error during subscribing tags \(error) ")
+                                
+                                self.sendNotifToDisplayResponse( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+                            }
+                            
                         })
-                        
                     }
+                    else {
+                        print( "Error during retrieve tags \(error) ")
+                        
+                        self.sendNotifToDisplayResponse( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+                    }
+                    
+                    
                 })
+            }
+            else{
+                print( "Error during device registration \(error) ")
                 
+                self.sendNotifToDisplayResponse( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
             }
         }
     }
@@ -191,106 +197,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    func unRegisterPush () {
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         
-        // MARK:  RETRIEVING AVAILABLE SUBSCRIPTIONS
+        let payLoad = ((((userInfo as NSDictionary).valueForKey("aps") as! NSDictionary).valueForKey("alert") as! NSDictionary).valueForKey("body") as! NSString)
         
-        let push =  BMSPushClient.sharedInstance
+        self.showAlert("Recieved Push notifications", message: payLoad)
         
-        push.retrieveSubscriptionsWithCompletionHandler({ (response, error) -> Void in
-            
-            if let responseError = error {
-                
-                print( "Error during retrieve subscriptions \(responseError.localizedDescription) ")
-                
-                self.sendNotifToDisplayResponse( "Error during retrieve subscriptions \(responseError.localizedDescription) ")
-                
-            }
-            else{
-                
-                let status = response!.statusCode ?? 0
-                let responseText = response!.responseText ?? ""
-                
-                print( "Response of retrieve subscriptions : \(responseText)")
-                
-                print( "status code of retrieve subscriptions: \(status)")
-                
-                self.sendNotifToDisplayResponse("Response of retrieve subscriptions:  \(responseText)")
-                
-                
-                let subscription: NSArray = response!.subscriptions()
-                
-                
-                print("\n \n \n \n Subscribed tags are: \(subscription)")
-                
-                let subscriptionSize:Int = subscription.count
-                
-                print("\n \n \n \n \n Number of subscribed Tags : \(subscriptionSize)")
-                
-                self.sendNotifToDisplayResponse("subscribed tags details : \(subscription.description)")
-                
-                
-                // MARK:  UNSUBSCRIBING TO TAGS
-                
-                push.unsubscribeFromTags(subscription, completionHandler: { (response, error) -> Void in
-                    
-                    
-                    if let responseError = error {
-                        
-                        print( "Error during unsubscribing to tags \(responseError.localizedDescription) ")
-                        
-                        self.sendNotifToDisplayResponse( "Error during unsubscribing to tags \(responseError.localizedDescription) ")
-                        
-                    }
-                    else{
-                        
-                        let status = response!.statusCode ?? 0
-                        let responseText = response!.responseText ?? ""
-                        
-                        print( "Response of unsubscribe tags : \(responseText)")
-                        
-                        print( "status code of unsubscribe tags: \(status)")
-                        
-                        self.sendNotifToDisplayResponse( "Response of unsubscribe tags : \(responseText)")
-                        
-                        let unSubStatus:NSDictionary = response!.unsubscribeStatus()
-                        
-                        print("\n \n \n \n unSubscription is, \(unSubStatus.description)")
-                        
-                        self.sendNotifToDisplayResponse("unSubscription is, \(unSubStatus.description)")
-                        
-                        
-                        // MARK:  UNSREGISTER DEVICE
-                        
-                        push.unregisterDevice({ (response, error) -> Void in
-                            
-                            if let responseError = error {
-                                
-                                print( "Error during unregistering device \(responseError.localizedDescription) ")
-                                
-                                self.sendNotifToDisplayResponse( "Error during unregistering device \(responseError.localizedDescription)")
-                                
-                            }
-                            else{
-                                
-                                let status = response!.statusCode ?? 0
-                                let responseText = response!.responseText ?? ""
-                                
-                                print( "Response of unregister device : \(responseText)")
-                                
-                                print( "status code of unregister device : \(status)")
-                                
-                                self.sendNotifToDisplayResponse( "Response of unregister device : \(responseText) \(status)")
-                                
-                                UIApplication.sharedApplication().unregisterForRemoteNotifications()
-                            }
-                        })
-                    }
-                })
-                
-            }
-            
-        })
+    }
+    
+    func sendNotifToDisplayResponse (responseValue:String){
+        
+        responseText = responseValue
+        NSNotificationCenter.defaultCenter().postNotificationName("action", object: self)
+    }
+    
+    
+    func showAlert (title:NSString , message:NSString){
+        
+        // create the alert
+        let alert = UIAlertController.init(title: title as String, message: message as String, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        // add an action (button)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        
+        // show the alert
+        self.window!.rootViewController!.presentViewController(alert, animated: true, completion: nil)
     }
     
     
@@ -316,29 +247,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    
-    
-    
-    
-    
-    func sendNotifToDisplayResponse (responseValue:String){
-        
-        responseText = responseValue
-        NSNotificationCenter.defaultCenter().postNotificationName("action", object: self)
-    }
-    
-    
-    func showAlert (title:NSString , message:NSString){
-        
-        // create the alert
-        let alert = UIAlertController.init(title: title as String, message: message as String, preferredStyle: UIAlertControllerStyle.Alert)
-        
-        // add an action (button)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-        
-        // show the alert
-        self.window!.rootViewController!.presentViewController(alert, animated: true, completion: nil)
-    }
-    
 }
-

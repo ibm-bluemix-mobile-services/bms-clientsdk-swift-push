@@ -71,18 +71,18 @@
                         </subviews>
                         <color key="backgroundColor" white="0.63332280360000004" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="vBl-wV-HMU" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="595-bj-Wca"/>
                             <constraint firstAttribute="trailing" secondItem="hKA-hK-XaW" secondAttribute="trailing" constant="10" id="8V7-Yy-lIb"/>
                             <constraint firstAttribute="trailing" secondItem="Atc-fc-r9I" secondAttribute="trailing" constant="20" id="C23-Gc-1fW"/>
                             <constraint firstItem="vBl-wV-HMU" firstAttribute="leading" secondItem="HC9-Tt-ZFc" secondAttribute="leading" constant="20" id="Gvm-JU-Fbj"/>
                             <constraint firstItem="huN-Rv-AaM" firstAttribute="leading" secondItem="HC9-Tt-ZFc" secondAttribute="leading" constant="20" id="Mml-pv-AoW"/>
                             <constraint firstItem="hKA-hK-XaW" firstAttribute="top" secondItem="huN-Rv-AaM" secondAttribute="bottom" constant="10" id="Sfy-Qo-M0z"/>
+                            <constraint firstItem="vBl-wV-HMU" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="bXV-8J-4B8"/>
                             <constraint firstItem="Atc-fc-r9I" firstAttribute="leading" secondItem="44r-bg-UNK" secondAttribute="trailing" constant="21" id="fV9-OX-abt"/>
+                            <constraint firstItem="Atc-fc-r9I" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="43" id="iYA-7V-TZK"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hKA-hK-XaW" secondAttribute="bottom" constant="20" id="pWn-9j-7N4"/>
                             <constraint firstItem="44r-bg-UNK" firstAttribute="centerY" secondItem="Atc-fc-r9I" secondAttribute="centerY" id="rpy-vq-q5i"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hKA-hK-XaW" secondAttribute="bottom" constant="20" id="vtS-c8-wWj"/>
                             <constraint firstItem="huN-Rv-AaM" firstAttribute="top" secondItem="vBl-wV-HMU" secondAttribute="bottom" constant="8" id="wle-HD-Fna"/>
                             <constraint firstItem="hKA-hK-XaW" firstAttribute="leading" secondItem="HC9-Tt-ZFc" secondAttribute="leading" constant="20" id="xUp-zV-fm3"/>
-                            <constraint firstItem="Atc-fc-r9I" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="43" id="yds-Od-aNq"/>
                         </constraints>
                     </view>
                     <connections>

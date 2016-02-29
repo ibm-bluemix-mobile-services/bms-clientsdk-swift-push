@@ -16,11 +16,11 @@ import BMSCore
 
 public extension Response {
     
-    public func subscriptions() -> NSArray {
+    public func subscriptions() -> NSMutableArray {
         
         
-       // let finalSubscription = NSMutableDictionary()
-
+        // let finalSubscription = NSMutableDictionary()
+        
         let subscription = NSMutableArray()
         
         let  subscriptionDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary
@@ -32,7 +32,7 @@ public extension Response {
         for  i in 0..<subscriptionArray.count {
             
             subscriptionResponsDic = subscriptionArray.objectAtIndex(i) as? NSDictionary
-               
+            
             subscription.addObject((subscriptionResponsDic?.objectForKey(IMFPUSH_TAGNAME))!)
         }
         
@@ -43,19 +43,19 @@ public extension Response {
     }
     
     
-   public func subscribeStatus() -> NSDictionary {
-    
+    public func subscribeStatus() -> NSMutableDictionary {
+        
         let finalDict = NSMutableDictionary()
         
         
         let  subscriptions = convertStringToDictionary(self.responseText!)! as NSDictionary
-    
+        
         if self.statusCode == 201 {
-          
+            
             let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as! NSArray
-
+            
             var responseText:NSDictionary?
-
+            
             let arry = NSMutableArray()
             
             for  i in 0..<arraySub.count {
@@ -86,20 +86,20 @@ public extension Response {
                 finalDict.setObject(arry, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
                 /*
                 if arraySub.count != 0 {
-                    
-                    
-                    if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                      
-                        var str:String = dictTags.description
-                        str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                        str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                        
-                        let items:NSArray = str.componentsSeparatedByString(",")
-                        finalDict.setObject(items, forKey: IMFPUSH_SUBSCRIPTIONEXISTS)
-
-                    }
+                
+                
+                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
+                
+                var str:String = dictTags.description
+                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
+                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
+                
+                let items:NSArray = str.componentsSeparatedByString(",")
+                finalDict.setObject(items, forKey: IMFPUSH_SUBSCRIPTIONEXISTS)
+                
                 }
-*/
+                }
+                */
                 
             }
             
@@ -118,17 +118,17 @@ public extension Response {
                 
                 finalDict.setObject(arry, forKey:IMFPUSH_TAGSNOTFOUND)
                 /*if arraySub.count != 0 {
-                    
-                    if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                        
-                        var str:String = dictTags.description
-                        str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                        str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                        
-                        let items:NSArray = str.componentsSeparatedByString(",")
-                        finalDict.setObject(items, forKey: IMFPUSH_TAGSNOTFOUND)
-                        
-                    }
+                
+                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
+                
+                var str:String = dictTags.description
+                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
+                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
+                
+                let items:NSArray = str.componentsSeparatedByString(",")
+                finalDict.setObject(items, forKey: IMFPUSH_TAGSNOTFOUND)
+                
+                }
                 }
                 */
             }
@@ -153,7 +153,7 @@ public extension Response {
         return finalDict;
     }
     
-    public func unsubscribeStatus() -> NSDictionary {
+    public func unsubscribeStatus() -> NSMutableDictionary {
         
         
         let finalDict = NSMutableDictionary()
@@ -177,7 +177,7 @@ public extension Response {
             }
             
             finalDict.setObject(arry, forKey:IMFPUSH_UNSUBSCRIPTIONS)
-
+            
         }
         else if self.statusCode == 207 {
             
@@ -197,18 +197,18 @@ public extension Response {
                 }
                 
                 finalDict.setObject(arry, forKey:IMFPUSH_SUBSCRIPTIONNOTEXISTS)
-               /* if arraySub.count != 0 {
-                    
-                    if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                        
-                        var str:String = dictTags.description
-                        str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                        str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                        
-                        let items:NSArray = str.componentsSeparatedByString(",")
-                        finalDict.setObject(items, forKey: IMFPUSH_SUBSCRIPTIONNOTEXISTS)
-                        
-                    }
+                /* if arraySub.count != 0 {
+                
+                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
+                
+                var str:String = dictTags.description
+                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
+                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
+                
+                let items:NSArray = str.componentsSeparatedByString(",")
+                finalDict.setObject(items, forKey: IMFPUSH_SUBSCRIPTIONNOTEXISTS)
+                
+                }
                 }
                 */
                 
@@ -229,17 +229,17 @@ public extension Response {
                 finalDict.setObject(arry, forKey:IMFPUSH_TAGSNOTFOUND)
                 /*
                 if arraySub.count != 0 {
-                    
-                    if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                        
-                        var str:String = dictTags.description
-                        str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                        str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                        
-                        let items:NSArray = str.componentsSeparatedByString(",")
-                        finalDict.setObject(items, forKey: IMFPUSH_TAGSNOTFOUND)
-                        
-                    }
+                
+                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
+                
+                var str:String = dictTags.description
+                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
+                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
+                
+                let items:NSArray = str.componentsSeparatedByString(",")
+                finalDict.setObject(items, forKey: IMFPUSH_TAGSNOTFOUND)
+                
+                }
                 }
                 */
                 
@@ -260,22 +260,22 @@ public extension Response {
                 finalDict.setObject(arry, forKey:IMFPUSH_UNSUBSCRIPTIONS)
             }
         }
-     return finalDict;
+        return finalDict;
     }
     
     public func availableTags() -> NSMutableArray {
-    
+        
         let tags = NSMutableArray()
         
         let  tagsDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary
-            
+        
         let tag:NSArray = tagsDictionary.objectForKey(IMFPUSH_TAGS) as! NSArray
         
         var tagResponseDic:NSDictionary?
         
         // FIXME: additinal unknown tags
-       // tags.addObject("HiTag")
-       // tags.addObject("errorTag")
+        // tags.addObject("HiTag")
+        // tags.addObject("errorTag")
         
         for  i in 0..<tag.count {
             
@@ -292,7 +292,7 @@ public extension Response {
     
     func convertStringToDictionary(text: String) -> [String:AnyObject]? {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
-           
+            
             return try! NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
         }
         return nil
