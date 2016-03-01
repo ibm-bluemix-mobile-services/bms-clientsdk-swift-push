@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         self.sendNotifToDisplayResponse("Response during unsubscribed tags: \(response.description)")
                         
                         // MARK:  UNSREGISTER DEVICE
-                        push.unregisterDevice({ (response, statusCode) -> Void in
+                        push.unregisterDevice({ (response, statusCode, error) -> Void in
                             
                             if error.isEmpty {
                                 

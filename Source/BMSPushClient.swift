@@ -570,7 +570,7 @@ public class BMSPushClient: NSObject {
         }
     }
     
-    public func unregisterDevice (completionHandler: (response:String, statusCode:Int) -> Void) {
+    public func unregisterDevice (completionHandler: (response:String, statusCode:Int, error:String) -> Void) {
         
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering unregisterDevice.")
@@ -617,7 +617,7 @@ public class BMSPushClient: NSObject {
                 
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while unregistering device - Error is: \(responseError.description)")
                 
-                completionHandler(response:"Error while unregistering device - Error is: \(responseError.description)", statusCode: IMFPushErrorvalues.BMSPushUnregitrationError.rawValue)
+                completionHandler(response:"", statusCode: IMFPushErrorvalues.BMSPushUnregitrationError.rawValue,error: "Error while unregistering device - Error is: \(responseError.description)")
                 
                 
             } else {
@@ -626,7 +626,7 @@ public class BMSPushClient: NSObject {
                 let responseText = response!.responseText ?? ""
                 
                 self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
-                completionHandler(response: responseText, statusCode: status)
+                completionHandler(response: responseText, statusCode: status, error: "")
                 
             }
         })
