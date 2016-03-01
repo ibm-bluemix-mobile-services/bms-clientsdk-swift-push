@@ -211,7 +211,7 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
 Use the following code snippets to Unregister the device from Bluemix Push Notification
 
 ```
-push.unregisterDevice({ (response, statusCode) -> Void in
+push.unregisterDevice({ (response, statusCode, error) -> Void in
                             
     if error.isEmpty {
         
