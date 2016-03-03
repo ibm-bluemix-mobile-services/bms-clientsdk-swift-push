@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BMSPush  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="BMSPush  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">BMSPush Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">BMSPush Reference</a>
+        <img id="carat" src="img/carat.png" />
+        BMSPush  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/BMSPushClient.html">BMSPushClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes.html#/s:C7BMSPush12BMSPushUtils">BMSPushUtils</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/IMFPushErrorvalues.html">IMFPushErrorvalues</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Response.html">Response</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <a href='#ibm_bluemix_mobile_services_client_sdk_swift_push' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='ibm_bluemix_mobile_services_client_sdk_swift_push'>IBM Bluemix Mobile Services - Client SDK Swift Push</h1>
+
+<p>This is the Push component of the Swift SDK for IBM Bluemix Mobile Services. </p>
+
+<p><a href="https://console.ng.bluemix.net/solutions/mobilefirst">https://console.ng.bluemix.net/solutions/mobilefirst</a></p>
+<a href='#contents' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='contents'>Contents</h2>
+
+<p>This package contains the Push components of the Swift SDK.
+* Push Registration
+* Subscribing and Unsubcribing for Tags</p>
+<a href='#requirements' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='requirements'>Requirements</h2>
+
+<ul>
+<li>iOS 8.0+</li>
+<li>Xcode 7</li>
+</ul>
+<a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='installation'>Installation</h2>
+
+<p>The Bluemix Mobile Services Swift SDK is available via <a href="http://cocoapods.org/">Cocoapods</a>. 
+To install, add the <code>BMSPush</code> pod to your <code>Podfile</code>. You have to add <code>BMSCore</code> also in your <code>Podfile</code>.</p>
+<a href='#ios' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='ios'>iOS</h5>
+<pre class="highlight plaintext"><code>use_frameworks!
+
+target 'MyApp' do
+    platform :ios, '8.0'
+    pod 'BMSCore'
+    pod 'BMSPush'
+end
+</code></pre>
+
+<p>From the Terminal, go to your project folder and install the dependencies with the following command:</p>
+<pre class="highlight plaintext"><code>pod update
+</code></pre>
+
+<p>That command installs your dependencies and creates a new Xcode workspace.
+<strong><em>Note:</em></strong> Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:</p>
+<pre class="highlight plaintext"><code>open App.xcworkspace
+</code></pre>
+<a href='#enabling_ios_applications_to_receive_push_notifications' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='enabling_ios_applications_to_receive_push_notifications'>Enabling iOS applications to receive push notifications</h2>
+<a href='#reference_the_sdk_in_your_code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='reference_the_sdk_in_your_code'>Reference the SDK in your code.</h5>
+<pre class="highlight plaintext"><code>import BMSPush
+import BMSCore
+</code></pre>
+<a href='#initializing_the_core_sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='initializing_the_core_sdk'>Initializing the Core SDK</h4>
+<pre class="highlight plaintext"><code>let myBMSClient = BMSClient.sharedInstance
+
+myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegion:"Location where your app Hosted")
+myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
+
+</code></pre>
+
+<p><strong><em>AppRoute</em></strong></p>
+
+<p>Specifies the route that is assigned to the server application that you created on Bluemix.</p>
+
+<p><strong><em>AppGUID</em></strong></p>
+
+<p>Specifies the unique key that is assigned to the application that you created on Bluemix. This value is 
+case-sensitive.</p>
+
+<p><strong><em>bluemixRegionSuffix</em></strong></p>
+
+<p>Specifies the location where the app hosted. You can use one of three values - <code>BMSClient.REGION_US_SOUTH</code>, <code>BMSClient.REGION_UK</code> and <code>BMSClient.REGION_SYDNEY</code>.</p>
+<a href='#initializing_the_push_sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='initializing_the_push_sdk'>Initializing the Push SDK</h4>
+<pre class="highlight plaintext"><code>let push =  BMSPushClient.sharedInstance
+</code></pre>
+<a href='#registering_ios_applications_and_devices' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='registering_ios_applications_and_devices'>Registering iOS applications and devices</h4>
+
+<p>Add this code to registering the app for push notification in APNS,</p>
+<pre class="highlight plaintext"><code>let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+UIApplication.sharedApplication().registerForRemoteNotifications()
+</code></pre>
+
+<p>After the token is received from APNS, pass the token to Push Notifications as part of the
+ <strong><em>didRegisterForRemoteNotificationsWithDeviceToken</em></strong> method.</p>
+<pre class="highlight plaintext"><code> func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+
+    let push =  BMSPushClient.sharedInstance
+   push.registerDeviceToken(deviceToken) { (response, statusCode, error) -&gt; Void in
+
+        if error.isEmpty {
+
+            print( "Response during device registration : \(response)")
+
+            print( "status code during device registration : \(statusCode)")
+        }
+        else{
+            print( "Error during device registration \(error) ")
+
+            Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+        }
+    }
+
+}
+</code></pre>
+<a href='#retrieve_available_tags_and_register_for_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='retrieve_available_tags_and_register_for_tags'>Retrieve Available Tags and register for Tags</h4>
+<a href='#retrieve_available_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='retrieve_available_tags'>Retrieve Available tags</h5>
+
+<p>The <strong><em>retrieveAvailableTagsWithCompletionHandler</em></strong> API returns the list of available tags to which the device
+can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
+that are sent for that tag.</p>
+
+<p>Call the push service to get subscriptions for a tag.</p>
+
+<p>Copy the following code snippets into your Swift mobile application to get a list of available tags to which the
+device can subscribe.</p>
+<pre class="highlight plaintext"><code>push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) -&gt; Void in
+
+    if error.isEmpty {
+
+        print( "Response during retrive tags : \(response)")
+
+        print( "status code during retrieve tags : \(statusCode)")
+    }
+    else{
+        print( "Error during retrieve tags \(error) ")
+
+        Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+</code></pre>
+<a href='#subscribe_to_available_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='subscribe_to_available_tags'>Subscribe to Available tags</h5>
+<pre class="highlight plaintext"><code>push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -&gt; Void in
+
+    if error.isEmpty {
+
+        print( "Response during Subscribing to tags : \(response.description)")
+
+        print( "status code during Subscribing tags : \(statusCode)")
+    }
+    else {
+
+        print( "Error during subscribing tags \(error) ")
+
+        Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+</code></pre>
+<a href='#retrieve_subscribed_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='retrieve_subscribed_tags'>Retrieve Subscribed tags</h5>
+<pre class="highlight plaintext"><code>push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -&gt; Void in
+
+    if error.isEmpty {
+
+        print( "Response during retrieving subscribed tags : \(response.description)")
+
+        print( "status code during retrieving subscribed tags : \(statusCode)")
+    }
+    else {
+
+        print( "Error during retrieving subscribed tags \(error) ")
+
+        Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+</code></pre>
+<a href='#unsubscribing_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='unsubscribing_tags'>unsubscribing tags</h4>
+
+<p>Use the following code snippets to allow your devices to get unsubscribe
+from a tag.</p>
+<pre class="highlight plaintext"><code>push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -&gt; Void in
+
+    if error.isEmpty {
+
+        print( "Response during unsubscribed tags : \(response.description)")
+
+        print( "status code during unsubscribed tags : \(statusCode)")
+    }
+    else {
+        print( "Error during  unsubscribed tags \(error) ")
+
+        print( "Error during unsubscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+</code></pre>
+<a href='#unregistering_the_device_from_bluemix_push_notification' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='unregistering_the_device_from_bluemix_push_notification'>Unregistering the Device from Bluemix Push Notification</h4>
+
+<p>Use the following code snippets to Unregister the device from Bluemix Push Notification</p>
+<pre class="highlight plaintext"><code>push.unregisterDevice({ (response, statusCode, error) -&gt; Void in
+
+    if error.isEmpty {
+
+        print( "Response during unregistering device : \(response)")
+
+        print( "status code during unregistering device : \(statusCode)")
+    }
+    else{
+        print( "Error during unregistering device \(error) ")
+
+        print( "Error during unregistering device \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+</code></pre>
+<a href='#learning_more' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='learning_more'>Learning More</h3>
+
+<ul>
+<li><p>Visit the <strong><a href="https://developer.ibm.com/bluemix/">Bluemix Developers Community</a></strong>.</p></li>
+<li><p><a href="https://www.ng.bluemix.net/docs/mobile/index.html">Getting started with IBM MobileFirst Platfrom for iOS</a></p></li>
+</ul>
+<a href='#connect_with_bluemix' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='connect_with_bluemix'>Connect with Bluemix</h3>
+
+<p><a href="https://twitter.com/ibmbluemix">Twitter</a> |
+<a href="https://www.youtube.com/playlist?list=PLzpeuWUENMK2d3L5qCITo2GQEt-7r0oqm">YouTube</a> |
+<a href="https://developer.ibm.com/bluemix/blog/">Blog</a> |
+<a href="https://www.facebook.com/ibmbluemix">Facebook</a> |
+<a href="http://www.meetup.com/bluemix/">Meetup</a></p>
+
+<p>=======================
+Copyright 2015 IBM Corp.</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the <q>License</q>);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an <q>AS IS</q> BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-03-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.5.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

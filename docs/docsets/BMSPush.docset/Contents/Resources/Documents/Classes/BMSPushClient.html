@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BMSPushClient Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/BMSPushClient" class="dashAnchor"></a>
+    <a title="BMSPushClient Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">BMSPush Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">BMSPush Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        BMSPushClient Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BMSPushClient.html">BMSPushClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/s:C7BMSPush12BMSPushUtils">BMSPushUtils</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/IMFPushErrorvalues.html">IMFPushErrorvalues</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Response.html">Response</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>BMSPushClient</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">BMSPushClient</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>A singleton that serves as an entry point to Bluemix client- Push service communication.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties%20(Public)"></a>
+                <a name="//apple_ref/swift/Section/Properties (Public)" class="dashAnchor"></a>
+                <a href="#/Properties%20(Public)">
+                  <h3 class="section-name">Properties (Public)</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7BMSPush13BMSPushClient14sharedInstanceS0_"></a>
+                    <a name="//apple_ref/swift/Variable/sharedInstance" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7BMSPush13BMSPushClient14sharedInstanceS0_">sharedInstance</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This singleton should be used for all <code><a href="../Classes/BMSPushClient.html">BMSPushClient</a></code> activity.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">sharedInstance</span> <span class="o">=</span> <span class="kt">BMSPushClient</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Methods%20(Public)"></a>
+                <a name="//apple_ref/swift/Section/Methods (Public)" class="dashAnchor"></a>
+                <a href="#/Methods%20(Public)">
+                  <h3 class="section-name">Methods (Public)</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient19registerDeviceTokenFS0_FTCSo6NSData17completionHandlerFT8responseSS10statusCodeSi5errorSS_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/registerDeviceToken(_:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient19registerDeviceTokenFS0_FTCSo6NSData17completionHandlerFT8responseSS10statusCodeSi5errorSS_T__T_">registerDeviceToken(_:completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Methode used to register the client device to the Bluemix Push service.</p>
+
+<p>Call this methode after successfully registering for remote push notification in the Apple Push
+Notification Service .</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter deviceToken: This is the response we get from the push registartion in APNS.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">registerDeviceToken</span> <span class="p">(</span><span class="nv">deviceToken</span><span class="p">:</span><span class="kt">NSData</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deviceToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>This is the response we get from the push registartion in APNS.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient42retrieveAvailableTagsWithCompletionHandlerFS0_FFT8responseCSo14NSMutableArray10statusCodeSi5errorSS_T_T_"></a>
+                    <a name="//apple_ref/swift/Method/retrieveAvailableTagsWithCompletionHandler(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient42retrieveAvailableTagsWithCompletionHandlerFS0_FFT8responseCSo14NSMutableArray10statusCodeSi5errorSS_T_T_">retrieveAvailableTagsWithCompletionHandler(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Method used to Retrieve all the available Tags in the Bluemix Push Service.</p>
+
+<p>This methode will return the list of available Tags in an Array.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">retrieveAvailableTagsWithCompletionHandler</span> <span class="p">(</span><span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">NSMutableArray</span><span class="p">,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient15subscribeToTagsFS0_FTCSo7NSArray17completionHandlerFT8responseCSo19NSMutableDictionary10statusCodeSi5errorSS_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/subscribeToTags(_:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient15subscribeToTagsFS0_FTCSo7NSArray17completionHandlerFT8responseCSo19NSMutableDictionary10statusCodeSi5errorSS_T__T_">subscribeToTags(_:completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Methode used to Subscribe to the Tags in the Bluemix Push srvice.</p>
+
+<p>This methode will return the list of subscribed tags. If you pass the tags that are not present in the Bluemix App it will be classified under the TAGS NOT FOUND section in the response.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">subscribeToTags</span> <span class="p">(</span><span class="nv">tagsArray</span><span class="p">:</span><span class="kt">NSArray</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">NSMutableDictionary</span><span class="p">,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tagsArray</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the array that contains name tags.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient42retrieveSubscriptionsWithCompletionHandlerFS0_FFT8responseCSo14NSMutableArray10statusCodeSi5errorSS_T_T_"></a>
+                    <a name="//apple_ref/swift/Method/retrieveSubscriptionsWithCompletionHandler(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient42retrieveSubscriptionsWithCompletionHandlerFS0_FFT8responseCSo14NSMutableArray10statusCodeSi5errorSS_T_T_">retrieveSubscriptionsWithCompletionHandler(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Methode used to Retrieve the Subscribed Tags in the Bluemix Push srvice.</p>
+
+<p>This methode will return the list of subscribed tags.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">retrieveSubscriptionsWithCompletionHandler</span> <span class="p">(</span><span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">NSMutableArray</span><span class="p">,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient19unsubscribeFromTagsFS0_FTCSo7NSArray17completionHandlerFT8responseCSo19NSMutableDictionary10statusCodeSi5errorSS_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/unsubscribeFromTags(_:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient19unsubscribeFromTagsFS0_FTCSo7NSArray17completionHandlerFT8responseCSo19NSMutableDictionary10statusCodeSi5errorSS_T__T_">unsubscribeFromTags(_:completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Methode used to Unsubscribe from the Subscribed Tags in the Bluemix Push srvice.</p>
+
+<p>This methode will return the details of Unsubscription status.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter tagsArray: The list of tags that need to be unsubscribed.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unsubscribeFromTags</span> <span class="p">(</span><span class="nv">tagsArray</span><span class="p">:</span><span class="kt">NSArray</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">NSMutableDictionary</span><span class="p">,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tagsArray</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The list of tags that need to be unsubscribed.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient16unregisterDeviceFS0_FFT8responseSS10statusCodeSi5errorSS_T_T_"></a>
+                    <a name="//apple_ref/swift/Method/unregisterDevice(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient16unregisterDeviceFS0_FFT8responseSS10statusCodeSi5errorSS_T_T_">unregisterDevice(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Methode used to UnRegister the client App from the Bluemix Push srvice.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unregisterDevice</span> <span class="p">(</span><span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-03-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.5.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
