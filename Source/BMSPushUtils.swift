@@ -14,6 +14,11 @@
 import UIKit
 import BMSCore
 
+/**
+ Used to Support the `BMSPushClient` and creating exact Logger information.
+ 
+ This class is responsilble for creating time logs, matrics events etc.
+ */
 public class BMSPushUtils: NSObject {
     
     class func saveValueToNSUserDefaults (value:String, key:String){

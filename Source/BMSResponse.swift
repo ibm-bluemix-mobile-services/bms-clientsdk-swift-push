@@ -14,8 +14,20 @@
 import UIKit
 import BMSCore
 
+/**
+ This is the extension of `Response` class in the `BMSCore`.
+ 
+ It is used to handle the responses from the push REST API calls.
+ */
 public extension Response {
     
+    // MARK: Methods (Only for using in BMSPushClient)
+    
+    /**
+    This methode will convert the response that get while calling the `retrieveSubscriptionsWithCompletionHandler` in `BMSPushClient' class into an array of Tags and send to the Client app.
+    
+    This will use the public property `responseText` in the `Response` Class.
+    */
     public func subscriptions() -> NSMutableArray {
         
         
@@ -42,7 +54,11 @@ public extension Response {
         
     }
     
-    
+    /**
+     This methode will convert the response that get while calling the `subscribeToTags` in `BMSPushClient' class into an Dictionary of details and send to the Client app.
+     
+     This will use the public property `responseText` in the `Response` Class.
+     */
     public func subscribeStatus() -> NSMutableDictionary {
         
         let finalDict = NSMutableDictionary()
@@ -153,6 +169,11 @@ public extension Response {
         return finalDict;
     }
     
+    /**
+     This methode will convert the response that get while calling the `unsubscribeFromTags` in `BMSPushClient' class into an Dictionary of details and send to the Client app.
+     
+     This will use the public property `responseText` in the `Response` Class.
+     */
     public func unsubscribeStatus() -> NSMutableDictionary {
         
         
@@ -263,6 +284,11 @@ public extension Response {
         return finalDict;
     }
     
+    /**
+     This methode will convert the response that get while calling the `retrieveAvailableTagsWithCompletionHandler` in `BMSPushClient' class into an array and send to the Client app.
+     
+     This will use the public property `responseText` in the `Response` Class.
+     */
     public func availableTags() -> NSMutableArray {
         
         let tags = NSMutableArray()
@@ -290,7 +316,7 @@ public extension Response {
     }
     
     
-    func convertStringToDictionary(text: String) -> [String:AnyObject]? {
+    private func convertStringToDictionary(text: String) -> [String:AnyObject]? {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             
             return try! NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]

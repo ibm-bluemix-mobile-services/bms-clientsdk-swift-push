@@ -15,31 +15,74 @@
 import UIKit
 import BMSCore
 
-public let IMFPushErrorDomain:String = "com.ibm.mobilefoundation.push"
-
+/**
+ Used in the `BMSPushClient` class, the `IMFPushErrorvalues` denotes error in the requests.
+ */
 public enum IMFPushErrorvalues: Int {
-    case IMFPushErrorInternalError					= 1
-    case IMFPushErrorInvalidToken					= 2
-    case IMFPushErrorRemoteNotificationsNotSupported = 3
-    case IMFPushErrorEmptyTagArray                   = 4
-    case IMFPushRegistrationVerificationError        = 5
-    case IMFPushRegistrationError                    = 6
-    case IMFPushRegistrationUpdateError              = 7
-    case IMFPushRetrieveSubscriptionError            = 8
-    case IMFPushRetrieveTagsError                    = 9
-    case IMFPushTagSubscriptionError                 = 10
-    case IMFPushTagUnsubscriptionError               = 11
-    case BMSPushUnregitrationError                   = 12
+    
+    /// - IMFPushErrorInternalError: Denotes the Internal Server Error occured.
+    case IMFPushErrorInternalError = 1
+    
+    /// - IMFPushErrorEmptyTagArray: Denotes the Empty Tag Array Error.
+    case IMFPushErrorEmptyTagArray = 2
+    
+    /// - IMFPushRegistrationVerificationError: Denotes the Previous Push registration Error.
+    case IMFPushRegistrationVerificationError = 3
+    
+    /// - IMFPushRegistrationError: Denotes the First Time Push registration Error.
+    case IMFPushRegistrationError = 4
+    
+    /// - IMFPushRegistrationUpdateError: Denotes the Device updation Error.
+    case IMFPushRegistrationUpdateError = 5
+    
+    /// - IMFPushRetrieveSubscriptionError: Denotes the Subscribed tags retrieval error.
+    case IMFPushRetrieveSubscriptionError = 6
+    
+    /// - IMFPushRetrieveSubscriptionError: Denotes the Available tags retrieval error.
+    case IMFPushRetrieveTagsError = 7
+    
+    /// - IMFPushTagSubscriptionError: Denotes the Tag Subscription error.
+    case IMFPushTagSubscriptionError = 8
+    
+    /// - IMFPushTagUnsubscriptionError: Denotes the tag Unsubscription error.
+    case IMFPushTagUnsubscriptionError = 9
+    
+    /// - BMSPushUnregitrationError: Denotes the Push Unregistration error.
+    case BMSPushUnregitrationError = 10
 }
 
+
+/**
+ A singleton that serves as an entry point to Bluemix client- Push service communication.
+ */
 public class BMSPushClient: NSObject {
     
+    // MARK: Properties (Public)
+    
+    /// This singleton should be used for all `BMSPushClient` activity.
     public static let sharedInstance = BMSPushClient()
     
-    var client = BMSClient.sharedInstance
+    // MARK: Properties (private)
     
-    var loggerObject = Logger?()
+    /// `BMSClient` object.
+    private var bmsClient = BMSClient.sharedInstance
     
+    /// `Logger` object.
+    private var loggerObject = Logger?()
+    
+    
+    // MARK: Methods (Public)
+    
+    /**
+    
+    This Methode used to register the client device to the Bluemix Push service.
+    
+    Call this methode after successfully registering for remote push notification in the Apple Push
+    Notification Service .
+    
+    - Parameter deviceToken: This is the response we get from the push registartion in APNS.
+    - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+    */
     public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String, statusCode:Int, error:String) -> Void) {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterActive"), name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -78,13 +121,13 @@ public class BMSPushClient: NSObject {
         }
         
         }*/
-                
+        
         var token:String = deviceToken.description
         token = token.stringByReplacingOccurrencesOfString("<", withString: "")
         token = token.stringByReplacingOccurrencesOfString(">", withString: "")
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
         
-        let resourceURL:String = "\(client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(client.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
+        let resourceURL:String = "\(bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
         
         let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
         
@@ -117,7 +160,7 @@ public class BMSPushClient: NSObject {
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device is not registered before.  Registering for the first time.")
                     
-                    let resourceURL:String = "\(self.client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.client.bluemixAppGUID!)/\(IMFPUSH_DEVICES)"
+                    let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)"
                     
                     let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
                     
@@ -227,7 +270,7 @@ public class BMSPushClient: NSObject {
                         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device token or DeviceId has changed. Sending update registration request.")
                         
                         
-                        let resourceURL:String = "\(self.client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.client.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
+                        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
                         
                         let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
                         
@@ -282,87 +325,21 @@ public class BMSPushClient: NSObject {
         })
     }
     
-    public func retrieveSubscriptionsWithCompletionHandler (completionHandler: (response:NSMutableArray, statusCode:Int, error:String) -> Void) {
-        
-        
-        self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
-        
-        
-        var devId = String()
-        
-        if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("deviceId") as? String {
-            
-            devId = returnValue
-        }
-        else{
-            devId = NSUUID().UUIDString
-            NSUserDefaults.standardUserDefaults().setObject(devId, forKey: "deviceId")
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-        
-        // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
-        
-        //let authManager: AuthorizationManager = BMSClient.sharedInstance.sharedAuthorizationManager
-        
-        /* var devId = String()
-        
-        let authManager: AuthorizationManager = BMSClient.sharedInstance.sharedAuthorizationManager
-        
-        if devId.isEmpty {
-        
-        
-        devId = (authManager.getDeviceIdentity() as! NSDictionary).valueForKey("id") as! String
-        
-        if devId.isEmpty {
-        
-        devId = (authManager.getDeviceIdentity() as! NSDictionary).valueForKey("deviceId") as! String
-        }
-        
-        }
-        */
-        
-        let resourceURL:String = "\(self.client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.client.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)?deviceId=\(devId)"
-        
-        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
-        
-        let method =  HttpMethod.GET
-        
-        let getRequest = MFPRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-        
-        
-        getRequest.sendWithCompletionHandler({ (response: Response?, error: NSError?) -> Void in
-            
-            var subscriptionArray = NSMutableArray()
-            
-            if let responseError = error {
-                
-                
-                self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
-                
-                completionHandler(response: subscriptionArray, statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,error: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
-                
-            } else{
-                
-                let status = response!.statusCode ?? 0
-                let responseText = response!.responseText ?? ""
-                
-                self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Subscription retrieved successfully - Response is: \(responseText)")
-                
-                subscriptionArray = response!.subscriptions()
-                
-                completionHandler(response: subscriptionArray, statusCode: status, error: "")
-            }
-        })
-    }
-    
-    
+    /**
+     
+     This Method used to Retrieve all the available Tags in the Bluemix Push Service.
+     
+     This methode will return the list of available Tags in an Array.
+     
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
+     */
     public func retrieveAvailableTagsWithCompletionHandler (completionHandler: (response:NSMutableArray, statusCode:Int, error:String) -> Void){
         
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
         
         
-        let resourceURL:String = "\(self.client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.client.bluemixAppGUID!)/\(IMFPUSH_TAGS)"
+        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_TAGS)"
         
         let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
         
@@ -395,6 +372,16 @@ public class BMSPushClient: NSObject {
         })
     }
     
+    /**
+     
+     This Methode used to Subscribe to the Tags in the Bluemix Push srvice.
+     
+     
+     This methode will return the list of subscribed tags. If you pass the tags that are not present in the Bluemix App it will be classified under the TAGS NOT FOUND section in the response.
+     
+     - parameter tagsArray: the array that contains name tags.
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
+     */
     public func subscribeToTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary, statusCode:Int, error:String) -> Void) {
         
         
@@ -436,7 +423,7 @@ public class BMSPushClient: NSObject {
             }
             */
             
-            let resourceURL:String = "\(self.client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.client.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)"
+            let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)"
             
             let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
             
@@ -483,6 +470,98 @@ public class BMSPushClient: NSObject {
     }
     
     
+    /**
+     
+     This Methode used to Retrieve the Subscribed Tags in the Bluemix Push srvice.
+     
+     
+     This methode will return the list of subscribed tags.
+     
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
+     */
+    public func retrieveSubscriptionsWithCompletionHandler (completionHandler: (response:NSMutableArray, statusCode:Int, error:String) -> Void) {
+        
+        
+        self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
+        
+        
+        var devId = String()
+        
+        if let returnValue = NSUserDefaults.standardUserDefaults().objectForKey("deviceId") as? String {
+            
+            devId = returnValue
+        }
+        else{
+            devId = NSUUID().UUIDString
+            NSUserDefaults.standardUserDefaults().setObject(devId, forKey: "deviceId")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+        
+        // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
+        
+        //let authManager: AuthorizationManager = BMSClient.sharedInstance.sharedAuthorizationManager
+        
+        /* var devId = String()
+        
+        let authManager: AuthorizationManager = BMSClient.sharedInstance.sharedAuthorizationManager
+        
+        if devId.isEmpty {
+        
+        
+        devId = (authManager.getDeviceIdentity() as! NSDictionary).valueForKey("id") as! String
+        
+        if devId.isEmpty {
+        
+        devId = (authManager.getDeviceIdentity() as! NSDictionary).valueForKey("deviceId") as! String
+        }
+        
+        }
+        */
+        
+        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)?deviceId=\(devId)"
+        
+        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+        
+        let method =  HttpMethod.GET
+        
+        let getRequest = MFPRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+        
+        
+        getRequest.sendWithCompletionHandler({ (response: Response?, error: NSError?) -> Void in
+            
+            var subscriptionArray = NSMutableArray()
+            
+            if let responseError = error {
+                
+                
+                self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
+                
+                completionHandler(response: subscriptionArray, statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,error: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
+                
+            } else{
+                
+                let status = response!.statusCode ?? 0
+                let responseText = response!.responseText ?? ""
+                
+                self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Subscription retrieved successfully - Response is: \(responseText)")
+                
+                subscriptionArray = response!.subscriptions()
+                
+                completionHandler(response: subscriptionArray, statusCode: status, error: "")
+            }
+        })
+    }
+    
+    /**
+     
+     This Methode used to Unsubscribe from the Subscribed Tags in the Bluemix Push srvice.
+     
+     
+     This methode will return the details of Unsubscription status.
+     
+     - Parameter tagsArray: The list of tags that need to be unsubscribed.
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
+     */
     public func unsubscribeFromTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary, statusCode:Int, error:String) -> Void) {
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering: unsubscribeFromTags")
@@ -522,7 +601,7 @@ public class BMSPushClient: NSObject {
             */
             
             
-            let resourceURL:String = "\(self.client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.client.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)?\(IMFPUSH_ACTION_DELETE)"
+            let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)?\(IMFPUSH_ACTION_DELETE)"
             
             let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
             
@@ -569,6 +648,13 @@ public class BMSPushClient: NSObject {
         }
     }
     
+    /**
+     
+     This Methode used to UnRegister the client App from the Bluemix Push srvice.
+     
+     
+     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+     */
     public func unregisterDevice (completionHandler: (response:String, statusCode:Int, error:String) -> Void) {
         
         
@@ -601,7 +687,7 @@ public class BMSPushClient: NSObject {
         }
         }
         */
-        let resourceURL:String = "\(self.client.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.client.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
+        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
         
         let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
         
@@ -631,9 +717,15 @@ public class BMSPushClient: NSObject {
         })
     }
     
-    //Begin Analytics API implementation
     
-    func appEnterActive () {
+    // MARK: Methods (Internal)
+    
+    //Begin Logger implementation
+    
+    /**
+    Send the Logger info when the client app come from Background state to Active state.
+    */
+    internal func appEnterActive () {
         
         self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Application Enter Active.")
         
@@ -643,40 +735,77 @@ public class BMSPushClient: NSObject {
         
     }
     
-    func appEnterBackground () {
+    /**
+     Send the Logger info when the client app goes Background state from Active state.
+     */
+    internal func appEnterBackground () {
         
         
         self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Application Enter Background. Sending analytics information to server.")
         
+    }
+    
+    /**
+     Send the Logger info while the app is opened by clicking the notification.
+     */
+    internal func appOpenedFromNotificationClick (notification:NSNotification){
         
+        let launchOptions: NSDictionary = notification.userInfo!
+        if launchOptions.allKeys.count > 0  {
+            
+            let pushNotificationPayload:NSDictionary = launchOptions.valueForKey(UIApplicationLaunchOptionsRemoteNotificationKey) as! NSDictionary
+            
+            if pushNotificationPayload.allKeys.count > 0 {
+                
+                self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "App opened by clicking on push notification.")
+                
+                let messageId:NSString = pushNotificationPayload.objectForKey("nid") as! String
+                BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId as String, timeStamp: BMSPushUtils.generateTimeStamp())
+            }
+        }
+    }
+    
+    /**
+     Assigning Re-Write Domain.
+     */
+    internal func buildRewriteDomain() -> String {
+        return BMSClient.sharedInstance.bluemixRegion!
     }
     
     
-    func applicationRecievedPush (application:UIApplication, userInfo: [NSObject : AnyObject] ){
+    
+    // TODO: This should be changed
+    internal func sendAnalyticsdata (firstData:String, stringData:AnyObject?){
         
-        let messageId = (userInfo as NSDictionary).objectForKey("nid") as! String
-        BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-        
-        if (application.applicationState == UIApplicationState.Active){
-            
-            
-            self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification received when application is in active state.")
-            
-            
-            BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-        }
-        
-        let pushStatus:Bool = BMSPushUtils.getPushSettingValue()
-        
-        if pushStatus {
-            
-            self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification is enabled on device")
-            
-            BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-        }
+        loggerObject?.info(stringData as! String)
     }
     
     /*
+    private func applicationRecievedPush (application:UIApplication, userInfo: [NSObject : AnyObject] ){
+    
+    let messageId = (userInfo as NSDictionary).objectForKey("nid") as! String
+    BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
+    
+    if (application.applicationState == UIApplicationState.Active){
+    
+    
+    self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification received when application is in active state.")
+    
+    
+    BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
+    }
+    
+    let pushStatus:Bool = BMSPushUtils.getPushSettingValue()
+    
+    if pushStatus {
+    
+    self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification is enabled on device")
+    
+    BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
+    }
+    }
+    
+    
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
     
     print("got it")
@@ -705,39 +834,5 @@ public class BMSPushClient: NSObject {
     }
     }
     */
-    
-    
-    func appOpenedFromNotificationClick (notification:NSNotification){
-        
-        let launchOptions: NSDictionary = notification.userInfo!
-        if launchOptions.allKeys.count > 0  {
-            
-            let pushNotificationPayload:NSDictionary = launchOptions.valueForKey(UIApplicationLaunchOptionsRemoteNotificationKey) as! NSDictionary
-            
-            if pushNotificationPayload.allKeys.count > 0 {
-                
-                self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "App opened by clicking on push notification.")
-                
-                let messageId:NSString = pushNotificationPayload.objectForKey("nid") as! String
-                BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId as String, timeStamp: BMSPushUtils.generateTimeStamp())
-            }
-        }
-    }
-    
-    
-    func buildRewriteDomain() -> String {
-        return BMSClient.sharedInstance.bluemixRegion!
-    }
-    
-    
-    
-    // TODO: This should be changed
-    internal func sendAnalyticsdata (firstData:String, stringData:AnyObject?){
-        
-        loggerObject?.info(stringData as! String)
-        
-        print("\n \(stringData)")
-        
-    }
     
 }
