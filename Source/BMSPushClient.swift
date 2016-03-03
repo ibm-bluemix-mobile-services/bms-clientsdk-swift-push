@@ -78,8 +78,7 @@ public class BMSPushClient: NSObject {
         }
         
         }*/
-        
-        
+                
         var token:String = deviceToken.description
         token = token.stringByReplacingOccurrencesOfString("<", withString: "")
         token = token.stringByReplacingOccurrencesOfString(">", withString: "")
@@ -728,8 +727,9 @@ public class BMSPushClient: NSObject {
     
     func buildRewriteDomain() -> String {
         
-        let applicationRoute = client.bluemixAppRoute!
-        var newRewriteDomain = ""
+         let newRewriteDomain = BMSClient.sharedInstance.bluemixRegion!
+      /*  let applicationRoute = client.bluemixAppRoute!
+       
         
         if applicationRoute.isEmpty {
             return newRewriteDomain
@@ -839,7 +839,7 @@ public class BMSPushClient: NSObject {
                 newRewriteDomain = "\(STAGE1)\(regionInDomain).\(BLUEMIX_DOMAIN)"
             }
         }
-        
+        */
         return newRewriteDomain;
     }
     
