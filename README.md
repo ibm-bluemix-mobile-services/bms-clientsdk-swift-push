@@ -135,7 +135,7 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) 
                     
     if error.isEmpty {
         
-        print( "Response during retrive tags : \(response)")
+        print( "Response during retrieve tags : \(response)")
         
         print( "status code during retrieve tags : \(statusCode)")
     }
