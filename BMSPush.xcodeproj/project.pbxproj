@@ -20,6 +20,7 @@
 		56B431BF1C72EAA800AE421C /* BMSPushHostAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */; };
 		56B431C71C72EAFA00AE421C /* BMSPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 561BFE331C6C855300CDB375 /* BMSPush.framework */; };
 		56B431C81C72EAFA00AE421C /* BMSPush.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 561BFE331C6C855300CDB375 /* BMSPush.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		56BCCEC81C9029F50026E58C /* BMSPushUrlBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BMSPushHostAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMSPushHostAppTests.swift; sourceTree = "<group>"; };
 		56B431C01C72EAA800AE421C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUrlBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */,
 				561BFE401C6C856900CDB375 /* BMSPushUtils.swift */,
 				561BFE411C6C856900CDB375 /* BMSResponse.swift */,
+				56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */,
 				561BFE381C6C855300CDB375 /* Info.plist */,
 				56B431A81C72EAA800AE421C /* BMSPushHostApp */,
 				56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */,
@@ -302,6 +305,7 @@
 				561BFE451C6C856900CDB375 /* BMSResponse.swift in Sources */,
 				561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */,
 				561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */,
+				56BCCEC81C9029F50026E58C /* BMSPushUrlBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

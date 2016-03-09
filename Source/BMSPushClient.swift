@@ -62,6 +62,9 @@ public class BMSPushClient: NSObject {
     /// This singleton should be used for all `BMSPushClient` activity.
     public static let sharedInstance = BMSPushClient()
     
+    
+    public static var overrideServerHost = "";
+    
     // MARK: Properties (private)
     
     /// `BMSClient` object.
@@ -127,9 +130,11 @@ public class BMSPushClient: NSObject {
         token = token.stringByReplacingOccurrencesOfString(">", withString: "")
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
         
-        let resourceURL:String = "\(bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
         
-        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        
+        let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
+        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
         
         let method =  HttpMethod.GET
         
@@ -160,9 +165,9 @@ public class BMSPushClient: NSObject {
                     
                     self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device is not registered before.  Registering for the first time.")
                     
-                    let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)"
-                    
-                    let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+                    let resourceURL:String = urlBuilder.getDevicesUrl()
+
+                    let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
                     
                     let method =  HttpMethod.POST
                     
@@ -269,10 +274,9 @@ public class BMSPushClient: NSObject {
                         
                         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Device token or DeviceId has changed. Sending update registration request.")
                         
+                        let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                         
-                        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
-                        
-                        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+                        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
                         
                         let method =  HttpMethod.PUT
                         
@@ -338,10 +342,11 @@ public class BMSPushClient: NSObject {
         
         self.sendAnalyticsdata(IMFPUSH_CLIENT, stringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
         
+        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
         
-        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_TAGS)"
+        let resourceURL:String = urlBuilder.getTagsUrl()
         
-        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
         
         let method =  HttpMethod.GET
         
@@ -423,9 +428,10 @@ public class BMSPushClient: NSObject {
             }
             */
             
-            let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)"
+            let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+            let resourceURL:String = urlBuilder.getSubscriptionsUrl()
             
-            let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+            let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
             
             let method =  HttpMethod.POST
             
@@ -518,9 +524,10 @@ public class BMSPushClient: NSObject {
         }
         */
         
-        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)?deviceId=\(devId)"
+        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
         
-        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
         
         let method =  HttpMethod.GET
         
@@ -600,10 +607,10 @@ public class BMSPushClient: NSObject {
             }
             */
             
+            let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+            let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
             
-            let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_SUBSCRIPTIONS)?\(IMFPUSH_ACTION_DELETE)"
-            
-            let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+            let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
             
             let method =  HttpMethod.POST
             
@@ -687,9 +694,11 @@ public class BMSPushClient: NSObject {
         }
         }
         */
-        let resourceURL:String = "\(self.bmsClient.bluemixAppRoute!)/\(IMFPUSH_PUSH_WORKS_SERVER_CONTEXT)/\(self.bmsClient.bluemixAppGUID!)/\(IMFPUSH_DEVICES)/\(devId)"
         
-        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN: self.buildRewriteDomain()]
+        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let resourceURL:String = urlBuilder.getUnregisterUrl(devId)
+        
+        let headers = [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
         
         let method =  HttpMethod.DELETE
         
@@ -772,67 +781,10 @@ public class BMSPushClient: NSObject {
         return BMSClient.sharedInstance.bluemixRegion!
     }
     
-    
-    
     // TODO: This should be changed
     internal func sendAnalyticsdata (firstData:String, stringData:AnyObject?){
         
         loggerObject?.info(stringData as! String)
     }
-    
-    /*
-    private func applicationRecievedPush (application:UIApplication, userInfo: [NSObject : AnyObject] ){
-    
-    let messageId = (userInfo as NSDictionary).objectForKey("nid") as! String
-    BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-    
-    if (application.applicationState == UIApplicationState.Active){
-    
-    
-    self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification received when application is in active state.")
-    
-    
-    BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-    }
-    
-    let pushStatus:Bool = BMSPushUtils.getPushSettingValue()
-    
-    if pushStatus {
-    
-    self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification is enabled on device")
-    
-    BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-    }
-    }
-    
-    
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-    
-    print("got it")
-    }
-    func application (application:UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject] ){
-    
-    let messageId = (userInfo as NSDictionary).objectForKey("nid") as! String
-    BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-    
-    if (application.applicationState == UIApplicationState.Active){
-    
-    
-    self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification received when application is in active state.")
-    
-    
-    BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-    }
-    
-    let pushStatus:Bool = BMSPushUtils.getPushSettingValue()
-    
-    if pushStatus {
-    
-    self.sendAnalyticsdata(IMFPUSH_APP_MANAGER, stringData: "Push notification is enabled on device")
-    
-    BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-    }
-    }
-    */
     
 }
