@@ -21,10 +21,10 @@ import BMSCore
  */
 public class BMSPushUtils: NSObject {
     
+    static var loggerMessage:String = ""
+    
     class func saveValueToNSUserDefaults (value:String, key:String){
         
-        let loggerObject = Logger?()
-        loggerObject?.info("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
         
         let standardUserDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if standardUserDefaults.objectForKey(key) != nil  {
@@ -33,6 +33,8 @@ public class BMSPushUtils: NSObject {
             NSUserDefaults.standardUserDefaults().synchronize()
             
         }
+        loggerMessage = ("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
+        self.sendLoggerData()
     }
     
     class func getPushSettingValue() -> Bool {
@@ -77,9 +79,9 @@ public class BMSPushUtils: NSObject {
         let isoDate:String = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: timeInMilliSec))
         
         
-        let loggerObject = Logger?()
-        loggerObject?.info("Current timestamp is: \(isoDate)")
+        loggerMessage = ("Current timestamp is: \(isoDate)")
         
+        self.sendLoggerData()
         
         return isoDate;
     }
@@ -96,9 +98,23 @@ public class BMSPushUtils: NSObject {
             notificationMetaData = ["$notificationId" : messageId,"$notificationAction" : action, "$timeStamp" : timeStamp]
         }
         
-        let loggerObject = Logger?()
         
-        loggerObject?.info("Currently logging analytics with NotificationMetaData: \(notificationMetaData)")
+        
+        loggerMessage = ("Currently logging analytics with NotificationMetaData: \(notificationMetaData)")
+        self.sendLoggerData()
         
     }
+    
+    class func sendLoggerData () {
+        
+        let bundleInfoDict: NSDictionary = NSBundle.mainBundle().infoDictionary!
+        let appName = bundleInfoDict["CFBundleName"] as! String
+        let testLogger = Logger.loggerForName(appName)
+        Logger.logLevelFilter = LogLevel.Debug
+        testLogger.debug(loggerMessage)
+        Logger.logLevelFilter = LogLevel.Info
+        testLogger.info(loggerMessage)
+    }
+    
+    
 }

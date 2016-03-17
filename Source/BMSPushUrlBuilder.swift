@@ -17,6 +17,7 @@ internal class BMSPushUrlBuilder: NSObject {
     internal  let APPS = "apps";
     internal  let AMPERSAND = "&";
     internal  let QUESTIONMARK = "?";
+    internal  let SUBZONE = "subzone";
     internal  let EQUALTO = "=";
     internal  let SUBSCRIPTIONS = "subscriptions";
     internal  let TAGS = "tags";
@@ -35,8 +36,14 @@ internal class BMSPushUrlBuilder: NSObject {
         else {
             pwUrl_ += defaultProtocol
             pwUrl_ += "://"
-            pwUrl_ += IMFPUSH
-            pwUrl_ += "."
+            
+            if BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-test") == true || BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-dev") == true {
+                pwUrl_ += "mobile"
+            }
+            else{
+                pwUrl_ += IMFPUSH
+            }
+            //pwUrl_ += "."
             pwUrl_ += BMSClient.sharedInstance.bluemixRegion!
         }
         
@@ -51,6 +58,10 @@ internal class BMSPushUrlBuilder: NSObject {
         pwUrl_ += FORWARDSLASH
     }
     
+    func addHeader() -> [String: String] {
+        
+        return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
+    }
     
     func getSubscribedDevicesUrl(devID:String) -> String {
         
