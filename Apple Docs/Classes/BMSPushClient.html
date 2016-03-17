@@ -106,6 +106,33 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC7BMSPush13BMSPushClient18overrideServerHostSS"></a>
+                    <a name="//apple_ref/swift/Variable/overrideServerHost" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC7BMSPush13BMSPushClient18overrideServerHostSS">overrideServerHost</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Set this parameter to the localhost address. This is meant to work in the local builds.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">overrideServerHost</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -130,23 +157,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This Methode used to register the client device to the Bluemix Push service.</p>
-
-<p>Call this methode after successfully registering for remote push notification in the Apple Push
-Notification Service .</p>
-
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter deviceToken: This is the response we get from the push registartion in APNS.
-
-</div>
-
-<div class="aside aside-parameter">
-    <p class="aside-title">Parameter</p>
-    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
-
-</div>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -207,7 +218,7 @@ Notification Service .</p>
                       <div class="abstract">
                         <p>This Method used to Retrieve all the available Tags in the Bluemix Push Service.</p>
 
-<p>This methode will return the list of available Tags in an Array.</p>
+<p>This method will return the list of available Tags in an Array.</p>
 
 <div class="aside aside-parameter">
     <p class="aside-title">Parameter</p>
@@ -260,9 +271,9 @@ Notification Service .</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This Methode used to Subscribe to the Tags in the Bluemix Push srvice.</p>
+                        <p>This method used to Subscribe to the Tags in the Bluemix Push srvice.</p>
 
-<p>This methode will return the list of subscribed tags. If you pass the tags that are not present in the Bluemix App it will be classified under the TAGS NOT FOUND section in the response.</p>
+<p>This method will return the list of subscribed tags. If you pass the tags that are not present in the Bluemix App it will be classified under the TAGS NOT FOUND section in the response.</p>
 
 <div class="aside aside-parameter">
     <p class="aside-title">Parameter</p>
@@ -328,9 +339,9 @@ Notification Service .</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This Methode used to Retrieve the Subscribed Tags in the Bluemix Push srvice.</p>
+                        <p>This method used to Retrieve the Subscribed Tags in the Bluemix Push srvice.</p>
 
-<p>This methode will return the list of subscribed tags.</p>
+<p>This method will return the list of subscribed tags.</p>
 
 <div class="aside aside-parameter">
     <p class="aside-title">Parameter</p>
@@ -383,9 +394,9 @@ Notification Service .</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This Methode used to Unsubscribe from the Subscribed Tags in the Bluemix Push srvice.</p>
+                        <p>This method used to Unsubscribe from the Subscribed Tags in the Bluemix Push srvice.</p>
 
-<p>This methode will return the details of Unsubscription status.</p>
+<p>This method will return the details of Unsubscription status.</p>
 
 <div class="aside aside-parameter">
     <p class="aside-title">Parameter</p>
@@ -457,7 +468,7 @@ Notification Service .</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This Methode used to UnRegister the client App from the Bluemix Push srvice.</p>
+                        <p>This method used to UnRegister the client App from the Bluemix Push srvice.</p>
 
 <div class="aside aside-parameter">
     <p class="aside-title">Parameter</p>
@@ -497,12 +508,84 @@ Notification Service .</p>
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient11applicationFS0_FTCSo13UIApplication28didReceiveRemoteNotificationGVSs10DictionaryCSo8NSObjectPSs9AnyObject___T_"></a>
+                    <a name="//apple_ref/swift/Method/application(_:didReceiveRemoteNotification:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient11applicationFS0_FTCSo13UIApplication28didReceiveRemoteNotificationGVSs10DictionaryCSo8NSObjectPSs9AnyObject___T_">application(_:didReceiveRemoteNotification:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Method used to get notification payload from the client app and create appropriate logger information..</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter application: this is the current application instance.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter userInfo: The payload getting in the &lsquo;didReceiveRemoteNotification&rsquo; in the appDelegate.swift.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">application</span> <span class="p">(</span><span class="nv">application</span><span class="p">:</span><span class="kt">UIApplication</span><span class="p">,</span> <span class="n">didReceiveRemoteNotification</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">NSObject</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">]</span> <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>application</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>this is the current application instance.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>userInfo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The payload getting in the &lsquo;didReceiveRemoteNotification&rsquo; in the appDelegate.swift.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-03-03)</p>
+          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-03-17)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.5.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

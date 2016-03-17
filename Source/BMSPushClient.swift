@@ -77,9 +77,9 @@ public class BMSPushClient: NSObject {
     
     /**
     
-    This Methode used to register the client device to the Bluemix Push service.
+    This method used to register the client device to the Bluemix Push service.
     
-    Call this methode after successfully registering for remote push notification in the Apple Push
+    Call this method after successfully registering for remote push notification in the Apple Push
     Notification Service .
     
     - Parameter deviceToken: This is the response we get from the push registartion in APNS.
@@ -265,7 +265,7 @@ public class BMSPushClient: NSObject {
      
      This Method used to Retrieve all the available Tags in the Bluemix Push Service.
      
-     This methode will return the list of available Tags in an Array.
+     This method will return the list of available Tags in an Array.
      
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
      */
@@ -308,10 +308,10 @@ public class BMSPushClient: NSObject {
     
     /**
      
-     This Methode used to Subscribe to the Tags in the Bluemix Push srvice.
+     This method used to Subscribe to the Tags in the Bluemix Push srvice.
      
      
-     This methode will return the list of subscribed tags. If you pass the tags that are not present in the Bluemix App it will be classified under the TAGS NOT FOUND section in the response.
+     This method will return the list of subscribed tags. If you pass the tags that are not present in the Bluemix App it will be classified under the TAGS NOT FOUND section in the response.
      
      - parameter tagsArray: the array that contains name tags.
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
@@ -377,10 +377,10 @@ public class BMSPushClient: NSObject {
     
     /**
      
-     This Methode used to Retrieve the Subscribed Tags in the Bluemix Push srvice.
+     This method used to Retrieve the Subscribed Tags in the Bluemix Push srvice.
      
      
-     This methode will return the list of subscribed tags.
+     This method will return the list of subscribed tags.
      
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
      */
@@ -429,10 +429,10 @@ public class BMSPushClient: NSObject {
     
     /**
      
-     This Methode used to Unsubscribe from the Subscribed Tags in the Bluemix Push srvice.
+     This method used to Unsubscribe from the Subscribed Tags in the Bluemix Push srvice.
      
      
-     This methode will return the details of Unsubscription status.
+     This method will return the details of Unsubscription status.
      
      - Parameter tagsArray: The list of tags that need to be unsubscribed.
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
@@ -495,7 +495,7 @@ public class BMSPushClient: NSObject {
     
     /**
      
-     This Methode used to UnRegister the client App from the Bluemix Push srvice.
+     This method used to UnRegister the client App from the Bluemix Push srvice.
      
      
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
@@ -536,6 +536,52 @@ public class BMSPushClient: NSObject {
         })
     }
     
+    /**
+     
+     This Method used to get notification payload from the client app and create appropriate logger information..
+     
+     
+     - Parameter application: this is the current application instance.
+     - Parameter userInfo: The payload getting in the 'didReceiveRemoteNotification' in the appDelegate.swift.
+     
+     
+     */
+    public func application (application:UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject] ){
+        
+        notificationcount++
+        
+        let text = (userInfo as NSDictionary).valueForKey("payload") as! String
+        
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
+                
+                let messageId = (json! as NSDictionary).valueForKey("nid") as! String
+                BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
+                
+                if (application.applicationState == UIApplicationState.Active){
+                    
+                    
+                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Push notification received when application is in active state.")
+                    
+                    BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
+                }
+                
+                let pushStatus:Bool = BMSPushUtils.getPushSettingValue()
+                
+                if pushStatus {
+                    
+                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Push notification is enabled on device")
+                    BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
+                }
+                
+            } catch {
+                print("Something went wrong")
+            }
+        }
+        
+        
+    }
     
     // MARK: Methods (Internal)
     
@@ -634,41 +680,6 @@ public class BMSPushClient: NSObject {
         
     }
     
-    public func application (application:UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject] ){
-        
-        notificationcount++
-        
-        let text = (userInfo as NSDictionary).valueForKey("payload") as! String
-        
-        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
-            do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:AnyObject]
-                
-                let messageId = (json! as NSDictionary).valueForKey("nid") as! String
-                BMSPushUtils.generateMetricsEvents(IMFPUSH_RECEIVED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-                
-                if (application.applicationState == UIApplicationState.Active){
-                    
-                    
-                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Push notification received when application is in active state.")
-                    
-                    BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-                }
-                
-                let pushStatus:Bool = BMSPushUtils.getPushSettingValue()
-                
-                if pushStatus {
-                    
-                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Push notification is enabled on device")
-                    BMSPushUtils.generateMetricsEvents(IMFPUSH_ACKNOWLEDGED, messageId: messageId, timeStamp: BMSPushUtils.generateTimeStamp())
-                }
-                
-            } catch {
-                print("Something went wrong")
-            }
-        }
-        
-        
-    }
+
     
 }
