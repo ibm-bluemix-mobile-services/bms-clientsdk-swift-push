@@ -61,111 +61,27 @@ public extension Response {
      */
     public func subscribeStatus() -> NSMutableDictionary {
         
-        let finalDict = NSMutableDictionary()
         
+        let finalDict = NSMutableDictionary()
         
         let  subscriptions = convertStringToDictionary(self.responseText!)! as NSDictionary
         
-        if self.statusCode == 201 {
+        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
             
-            let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as! NSArray
-            
-            var responseText:NSDictionary?
-            
-            let arry = NSMutableArray()
-            
-            for  i in 0..<arraySub.count {
-                
-                responseText = arraySub.objectAtIndex(i) as? NSDictionary
-                
-                arry.addObject((responseText?.objectForKey(IMFPUSH_TAGNAME))!)
-            }
-            
-            finalDict.setObject(arry, forKey:IMFPUSH_SUBSCRIPTIONS)
-        }
-        else if self.statusCode == 207 {
-            
-            
-            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
-                
-                var responseText:NSDictionary?
-                
-                let arry = NSMutableArray()
-                
-                for  i in 0..<arraySub.count {
-                    
-                    responseText = arraySub.objectAtIndex(i) as? NSDictionary
-                    
-                    arry.addObject((responseText?.objectForKey(IMFPUSH_TAGNAME))!)
-                }
-                
-                finalDict.setObject(arry, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
-                /*
-                if arraySub.count != 0 {
-                
-                
-                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                
-                var str:String = dictTags.description
-                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                
-                let items:NSArray = str.componentsSeparatedByString(",")
-                finalDict.setObject(items, forKey: IMFPUSH_SUBSCRIPTIONEXISTS)
-                
-                }
-                }
-                */
-                
-            }
-            
-            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSArray {
-                
-                var responseText:NSDictionary?
-                
-                let arry = NSMutableArray()
-                
-                for  i in 0..<arraySub.count {
-                    
-                    responseText = arraySub.objectAtIndex(i) as? NSDictionary
-                    
-                    arry.addObject((responseText?.objectForKey(IMFPUSH_TAGNAME))!)
-                }
-                
-                finalDict.setObject(arry, forKey:IMFPUSH_TAGSNOTFOUND)
-                /*if arraySub.count != 0 {
-                
-                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                
-                var str:String = dictTags.description
-                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                
-                let items:NSArray = str.componentsSeparatedByString(",")
-                finalDict.setObject(items, forKey: IMFPUSH_TAGSNOTFOUND)
-                
-                }
-                }
-                */
-            }
-            
-            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as? NSArray {
-                
-                var responseText:NSDictionary?
-                
-                let arry = NSMutableArray()
-                
-                for  i in 0..<arraySub.count {
-                    
-                    responseText = arraySub.objectAtIndex(i) as? NSDictionary
-                    
-                    arry.addObject((responseText?.objectForKey(IMFPUSH_TAGNAME))!)
-                }
-                
-                finalDict.setObject(arry, forKey:IMFPUSH_SUBSCRIPTIONS)
-            }
+            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
             
         }
+        if let dictionarySub:NSDictionary = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
+            
+            
+            finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
+            
+        }
+        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as? NSArray {
+            
+            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
+        }
+        
         return finalDict;
     }
     
@@ -179,108 +95,26 @@ public extension Response {
         
         let finalDict = NSMutableDictionary()
         
-        
         let  subscriptions = convertStringToDictionary(self.responseText!)! as NSDictionary
         
-        if self.statusCode == 201 {
+        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
             
-            let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_UNSUBSCRIBED) as! NSArray
+            //            let dictionarySub = arraySub.objectAtIndex(0)
             
-            var responseText:NSDictionary?
-            
-            let arry = NSMutableArray()
-            
-            for  i in 0..<arraySub.count {
-                
-                responseText = arraySub.objectAtIndex(i) as? NSDictionary
-                
-                arry.addObject((responseText?.objectForKey(IMFPUSH_TAGNAME))!)
-            }
-            
-            finalDict.setObject(arry, forKey:IMFPUSH_UNSUBSCRIPTIONS)
+            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
             
         }
-        else if self.statusCode == 207 {
+        if let dictionarySub:NSDictionary = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
             
             
-            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONNOTEXISTS) as? NSArray {
-                
-                
-                var responseText:String?
-                
-                let arry = NSMutableArray()
-                
-                for  i in 0..<arraySub.count {
-                    
-                    responseText = arraySub.objectAtIndex(i) as? String
-                    
-                    arry.addObject(responseText!)
-                }
-                
-                finalDict.setObject(arry, forKey:IMFPUSH_SUBSCRIPTIONNOTEXISTS)
-                /* if arraySub.count != 0 {
-                
-                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                
-                var str:String = dictTags.description
-                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                
-                let items:NSArray = str.componentsSeparatedByString(",")
-                finalDict.setObject(items, forKey: IMFPUSH_SUBSCRIPTIONNOTEXISTS)
-                
-                }
-                }
-                */
-                
-            }
-            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_TAGSNOTFOUND) as? NSArray {
-                
-                var responseText:String?
-                
-                let arry = NSMutableArray()
-                
-                for  i in 0..<arraySub.count {
-                    
-                    responseText = arraySub.objectAtIndex(i) as? String
-                    
-                    arry.addObject(responseText!)
-                }
-                
-                finalDict.setObject(arry, forKey:IMFPUSH_TAGSNOTFOUND)
-                /*
-                if arraySub.count != 0 {
-                
-                if let dictTags:NSDictionary = arraySub.objectAtIndex(3) as? NSDictionary{
-                
-                var str:String = dictTags.description
-                str = str.stringByReplacingOccurrencesOfString("[", withString: "")
-                str = str.stringByReplacingOccurrencesOfString("]", withString: "")
-                
-                let items:NSArray = str.componentsSeparatedByString(",")
-                finalDict.setObject(items, forKey: IMFPUSH_TAGSNOTFOUND)
-                
-                }
-                }
-                */
-                
-            }
-            if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_UNSUBSCRIBED) as? NSArray {
-                
-                var responseText:String?
-                
-                let arry = NSMutableArray()
-                
-                for  i in 0..<arraySub.count {
-                    
-                    responseText = arraySub.objectAtIndex(i) as? String
-                    
-                    arry.addObject(responseText!)
-                }
-                
-                finalDict.setObject(arry, forKey:IMFPUSH_UNSUBSCRIPTIONS)
-            }
+            finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND)
+            
         }
+        if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIBED) as? NSArray {
+            
+            finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS)
+        }
+        
         return finalDict;
     }
     

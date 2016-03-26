@@ -88,7 +88,7 @@ public class BMSPushUtils: NSObject {
     
     class func generateMetricsEvents (action:String, messageId:String, timeStamp:String){
         
-        var notificationMetaData = [String : AnyObject]()
+        var notificationMetaData = NSDictionary()
         
         if messageId.isEmpty {
             
@@ -98,8 +98,6 @@ public class BMSPushUtils: NSObject {
             notificationMetaData = ["$notificationId" : messageId,"$notificationAction" : action, "$timeStamp" : timeStamp]
         }
         
-        
-        
         loggerMessage = ("Currently logging analytics with NotificationMetaData: \(notificationMetaData)")
         self.sendLoggerData()
         
@@ -107,13 +105,18 @@ public class BMSPushUtils: NSObject {
     
     class func sendLoggerData () {
         
-        let bundleInfoDict: NSDictionary = NSBundle.mainBundle().infoDictionary!
-        let appName = bundleInfoDict["CFBundleName"] as! String
-        let testLogger = Logger.loggerForName(appName)
+        var devId = String()
+        let authManager  = BMSClient.sharedInstance.authorizationManager
+        devId = authManager.deviceIdentity.id!
+        //        let bundle = NSBundle(forClass: self)
+        //        let bundleInfoDict: NSDictionary = bundle.infoDictionary!
+        //        let appName = bundleInfoDict["CFBundleName"] as! String
+        let testLogger = Logger.loggerForName(devId)
         Logger.logLevelFilter = LogLevel.Debug
         testLogger.debug(loggerMessage)
         Logger.logLevelFilter = LogLevel.Info
         testLogger.info(loggerMessage)
+        
     }
     
     

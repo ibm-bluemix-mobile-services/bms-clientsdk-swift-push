@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		561BFE371C6C855300CDB375 /* BMSPush.h in Headers */ = {isa = PBXBuildFile; fileRef = 561BFE361C6C855300CDB375 /* BMSPush.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		561BFE421C6C856900CDB375 /* BMSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3E1C6C856900CDB375 /* BMSConstants.swift */; };
 		561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */; };
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
 		561BFE451C6C856900CDB375 /* BMSResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE411C6C856900CDB375 /* BMSResponse.swift */; };
+		568867701CA688420049CD8C /* BMSPushTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5688676F1CA688420049CD8C /* BMSPushTests.swift */; };
+		568867721CA688420049CD8C /* BMSPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 561BFE331C6C855300CDB375 /* BMSPush.framework */; };
+		568867791CA6889E0049CD8C /* BMSPushUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568867781CA6889E0049CD8C /* BMSPushUtilsTest.swift */; };
+		5688677B1CA688BC0049CD8C /* BMSResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5688677A1CA688BC0049CD8C /* BMSResponseTests.swift */; };
+		5688677F1CA68B0B0049CD8C /* BMSPush.h in Headers */ = {isa = PBXBuildFile; fileRef = 5688677D1CA68B0B0049CD8C /* BMSPush.h */; };
+		568867801CA68B0B0049CD8C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5688677E1CA68B0B0049CD8C /* Info.plist */; };
 		56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431A91C72EAA800AE421C /* AppDelegate.swift */; };
 		56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431AB1C72EAA800AE421C /* ViewController.swift */; };
 		56B431AF1C72EAA800AE421C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431AD1C72EAA800AE421C /* Main.storyboard */; };
@@ -24,6 +29,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		568867731CA688420049CD8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 561BFE2A1C6C855300CDB375 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 561BFE321C6C855300CDB375;
+			remoteInfo = BMSPush;
+		};
 		56B431BB1C72EAA800AE421C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 561BFE2A1C6C855300CDB375 /* Project object */;
@@ -56,12 +68,17 @@
 
 /* Begin PBXFileReference section */
 		561BFE331C6C855300CDB375 /* BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		561BFE361C6C855300CDB375 /* BMSPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMSPush.h; sourceTree = "<group>"; };
-		561BFE381C6C855300CDB375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "/Users/ananthakrishnankg/Desktop/work/Push_Team/Feb-12-Push/BMSPush/Source/Info.plist"; sourceTree = "<absolute>"; };
 		561BFE3E1C6C856900CDB375 /* BMSConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSConstants.swift; sourceTree = "<group>"; };
 		561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClient.swift; sourceTree = "<group>"; };
 		561BFE401C6C856900CDB375 /* BMSPushUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUtils.swift; sourceTree = "<group>"; };
 		561BFE411C6C856900CDB375 /* BMSResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSResponse.swift; sourceTree = "<group>"; };
+		5688676D1CA688420049CD8C /* BMSPushTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BMSPushTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5688676F1CA688420049CD8C /* BMSPushTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMSPushTests.swift; sourceTree = "<group>"; };
+		568867711CA688420049CD8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		568867781CA6889E0049CD8C /* BMSPushUtilsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUtilsTest.swift; sourceTree = "<group>"; };
+		5688677A1CA688BC0049CD8C /* BMSResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSResponseTests.swift; sourceTree = "<group>"; };
+		5688677D1CA68B0B0049CD8C /* BMSPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMSPush.h; sourceTree = "<group>"; };
+		5688677E1CA68B0B0049CD8C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56B431A71C72EAA800AE421C /* BMSPushHostApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BMSPushHostApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56B431A91C72EAA800AE421C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56B431AB1C72EAA800AE421C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +97,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5688676A1CA688420049CD8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				568867721CA688420049CD8C /* BMSPush.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				561BFE351C6C855300CDB375 /* Source */,
+				568867641CA687AE0049CD8C /* Tests */,
 				561BFE341C6C855300CDB375 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -115,6 +141,7 @@
 				561BFE331C6C855300CDB375 /* BMSPush.framework */,
 				56B431A71C72EAA800AE421C /* BMSPushHostApp.app */,
 				56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */,
+				5688676D1CA688420049CD8C /* BMSPushTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -122,17 +149,60 @@
 		561BFE351C6C855300CDB375 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				561BFE361C6C855300CDB375 /* BMSPush.h */,
 				561BFE3E1C6C856900CDB375 /* BMSConstants.swift */,
 				561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */,
 				561BFE401C6C856900CDB375 /* BMSPushUtils.swift */,
 				561BFE411C6C856900CDB375 /* BMSResponse.swift */,
 				56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */,
-				561BFE381C6C855300CDB375 /* Info.plist */,
+				5688677C1CA68B0B0049CD8C /* Resource */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		568867641CA687AE0049CD8C /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				568867651CA687AE0049CD8C /* Test Apps */,
+				568867661CA687AE0049CD8C /* Unit Tests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		568867651CA687AE0049CD8C /* Test Apps */ = {
+			isa = PBXGroup;
+			children = (
 				56B431A81C72EAA800AE421C /* BMSPushHostApp */,
 				56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */,
 			);
-			path = Source;
+			path = "Test Apps";
+			sourceTree = "<group>";
+		};
+		568867661CA687AE0049CD8C /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				5688676E1CA688420049CD8C /* BMSPushTests */,
+			);
+			path = "Unit Tests";
+			sourceTree = "<group>";
+		};
+		5688676E1CA688420049CD8C /* BMSPushTests */ = {
+			isa = PBXGroup;
+			children = (
+				5688676F1CA688420049CD8C /* BMSPushTests.swift */,
+				568867711CA688420049CD8C /* Info.plist */,
+				568867781CA6889E0049CD8C /* BMSPushUtilsTest.swift */,
+				5688677A1CA688BC0049CD8C /* BMSResponseTests.swift */,
+			);
+			path = BMSPushTests;
+			sourceTree = "<group>";
+		};
+		5688677C1CA68B0B0049CD8C /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				5688677D1CA68B0B0049CD8C /* BMSPush.h */,
+				5688677E1CA68B0B0049CD8C /* Info.plist */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		56B431A81C72EAA800AE421C /* BMSPushHostApp */ = {
@@ -164,7 +234,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				561BFE371C6C855300CDB375 /* BMSPush.h in Headers */,
+				5688677F1CA68B0B0049CD8C /* BMSPush.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,6 +258,24 @@
 			productName = BMSPush;
 			productReference = 561BFE331C6C855300CDB375 /* BMSPush.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		5688676C1CA688420049CD8C /* BMSPushTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 568867751CA688420049CD8C /* Build configuration list for PBXNativeTarget "BMSPushTests" */;
+			buildPhases = (
+				568867691CA688420049CD8C /* Sources */,
+				5688676A1CA688420049CD8C /* Frameworks */,
+				5688676B1CA688420049CD8C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				568867741CA688420049CD8C /* PBXTargetDependency */,
+			);
+			name = BMSPushTests;
+			productName = BMSPushTests;
+			productReference = 5688676D1CA688420049CD8C /* BMSPushTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		56B431A61C72EAA800AE421C /* BMSPushHostApp */ = {
 			isa = PBXNativeTarget;
@@ -239,9 +327,11 @@
 					561BFE321C6C855300CDB375 = {
 						CreatedOnToolsVersion = 7.2;
 					};
+					5688676C1CA688420049CD8C = {
+						CreatedOnToolsVersion = 7.2;
+					};
 					56B431A61C72EAA800AE421C = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = TN6YQNGLXP;
 					};
 					56B431B91C72EAA800AE421C = {
 						CreatedOnToolsVersion = 7.2;
@@ -265,12 +355,21 @@
 				561BFE321C6C855300CDB375 /* BMSPush */,
 				56B431A61C72EAA800AE421C /* BMSPushHostApp */,
 				56B431B91C72EAA800AE421C /* BMSPushHostAppTests */,
+				5688676C1CA688420049CD8C /* BMSPushTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		561BFE311C6C855300CDB375 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				568867801CA68B0B0049CD8C /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5688676B1CA688420049CD8C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -309,6 +408,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		568867691CA688420049CD8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				568867791CA6889E0049CD8C /* BMSPushUtilsTest.swift in Sources */,
+				5688677B1CA688BC0049CD8C /* BMSResponseTests.swift in Sources */,
+				568867701CA688420049CD8C /* BMSPushTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		56B431A31C72EAA800AE421C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -329,6 +438,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		568867741CA688420049CD8C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 561BFE321C6C855300CDB375 /* BMSPush */;
+			targetProxy = 568867731CA688420049CD8C /* PBXContainerItemProxy */;
+		};
 		56B431BC1C72EAA800AE421C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 56B431A61C72EAA800AE421C /* BMSPushHostApp */;
@@ -462,7 +576,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Source/Resource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.worklight.BMSPush;
@@ -484,7 +598,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Source/Resource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.worklight.BMSPush;
@@ -493,22 +607,44 @@
 			};
 			name = Release;
 		};
+		568867761CA688420049CD8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Tests/Unit Tests/BMSPushTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.IBM.BMSPushTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		568867771CA688420049CD8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Tests/Unit Tests/BMSPushTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.IBM.BMSPushTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		56B431C11C72EAA800AE421C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Anantha Krishnan K G (6ADZ6AJGXG)";
+				CODE_SIGN_IDENTITY = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Source/BMSPushHostApp/Info.plist;
+				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.Push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19d1a734-0685-404f-9575-be0a4af4e20c";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -516,18 +652,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Anantha Krishnan K G (6ADZ6AJGXG)";
+				CODE_SIGN_IDENTITY = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Source/BMSPushHostApp/Info.plist;
+				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.Push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19d1a734-0685-404f-9575-be0a4af4e20c";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -535,13 +671,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Anantha Krishnan K G (6ADZ6AJGXG)";
-				INFOPLIST_FILE = Source/BMSPushHostAppTests/Info.plist;
+				CODE_SIGN_IDENTITY = "";
+				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostAppTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push.BMSPushHostAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19d1a734-0685-404f-9575-be0a4af4e20c";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BMSPushHostApp.app/BMSPushHostApp";
 			};
 			name = Debug;
@@ -550,13 +686,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Anantha Krishnan K G (6ADZ6AJGXG)";
-				INFOPLIST_FILE = Source/BMSPushHostAppTests/Info.plist;
+				CODE_SIGN_IDENTITY = "";
+				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostAppTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.SVTIndia.Push.BMSPushHostAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "19d1a734-0685-404f-9575-be0a4af4e20c";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BMSPushHostApp.app/BMSPushHostApp";
 			};
 			name = Release;
@@ -578,6 +714,15 @@
 			buildConfigurations = (
 				561BFE3C1C6C855300CDB375 /* Debug */,
 				561BFE3D1C6C855300CDB375 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		568867751CA688420049CD8C /* Build configuration list for PBXNativeTarget "BMSPushTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				568867761CA688420049CD8C /* Debug */,
+				568867771CA688420049CD8C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
