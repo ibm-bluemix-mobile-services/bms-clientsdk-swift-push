@@ -571,7 +571,7 @@ public class BMSPushClient: NSObject {
         }
         
         print("Application Enter Background. Sending analytics information to server.")
-        Analytics.send(completionHandler: completionHandler("Analytics"))
+        //Analytics.send(completionHandler: completionHandler("Analytics"))
     }
     
     /**
