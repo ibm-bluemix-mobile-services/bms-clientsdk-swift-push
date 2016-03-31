@@ -76,3 +76,11 @@ internal let IMFPUSH_X_REWRITE_DOMAIN  = "X-REWRITE-DOMAIN"
 
 internal let IMFPUSH_PUSH_WORKS_SERVER_CONTEXT  = "imfpush/v1/apps"
 
+internal let KEY_METADATA_TYPE = "$type";
+
+internal let TAG_CATEGORY_EVENT = "event";
+
+internal let KEY_METADATA_CATEGORY = "$category";
+
+internal let KEY_METADATA_USER_METADATA = "$userMetadata";
+

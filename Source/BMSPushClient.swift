@@ -14,6 +14,7 @@
 
 import UIKit
 import BMSCore
+import BMSAnalyticsSpec
 
 /**
  Used in the `BMSPushClient` class, the `IMFPushErrorvalues` denotes error in the requests.
@@ -555,7 +556,22 @@ public class BMSPushClient: NSObject {
      */
     internal func appEnterBackground () {
         
-        self.sendAnalyticsData(LogLevel.Info, logStringData: "Application Enter Background. Sending analytics information to server.")
+        func completionHandler(sendType: String) -> BmsCompletionHandler {
+            return {
+                (response: Response?, error: NSError?) -> Void in
+                if let response = response {
+                    print("\n\(sendType) sent successfully: " + String(response.isSuccessful))
+                    print("Status code: " + String(response.statusCode))
+                    if let responseText = response.responseText {
+                        print("Response text: " + responseText)
+                    }
+                    print("\n")
+                }
+            }
+        }
+        
+        print("Application Enter Background. Sending analytics information to server.")
+        Analytics.send(completionHandler: completionHandler("Analytics"))
     }
     
     /**
@@ -594,11 +610,6 @@ public class BMSPushClient: NSObject {
         var devId = String()
         let authManager  = BMSClient.sharedInstance.authorizationManager
         devId = authManager.deviceIdentity.id!
-        
-        //        let bundle = NSBundle(forClass: self)
-        //        let bundleInfoDict: NSDictionary = bundle.infoDictionary!
-        //        //let bundleInfoDict: NSDictionary = NSBundle.mainBundle().infoDictionary!
-        //        let appName = bundleInfoDict["CFBundleName"] as! String
         let testLogger = Logger.loggerForName(devId)
         
         if (logType == LogLevel.Debug){
@@ -675,5 +686,4 @@ public class BMSPushClient: NSObject {
         
         
     }
-    
 }

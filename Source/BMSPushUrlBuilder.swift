@@ -32,6 +32,7 @@ internal class BMSPushUrlBuilder: NSObject {
     internal  let defaultProtocol = "https";
     
     internal final var pwUrl_ = String()
+    internal final var reWritedomain = String()
     
     init(applicationID:String) {
         
@@ -43,13 +44,30 @@ internal class BMSPushUrlBuilder: NSObject {
             pwUrl_ += "://"
             
             if BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-test") == true || BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-dev") == true {
-                pwUrl_ += "mobile"
+                //pwUrl_ += "mobile"
+                
+                let url = NSURL(string: BMSClient.sharedInstance.bluemixAppRoute!)
+                
+                print(url?.host);
+                
+                let appName = url?.host?.componentsSeparatedByString(".").first
+                
+                pwUrl_ += appName!
+                pwUrl_ += ".stage1.mybluemix.net"
+                if BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-test") == true {
+                    
+                    reWritedomain = "stage1-test.ng.bluemix.net"
+                }
+                else{
+                    reWritedomain = "stage1-dev.ng.bluemix.net"
+                }
             }
             else{
                 pwUrl_ += IMFPUSH
+                pwUrl_ += BMSClient.sharedInstance.bluemixRegion!
+                reWritedomain = ""
+                
             }
-            //pwUrl_ += "."
-            pwUrl_ += BMSClient.sharedInstance.bluemixRegion!
         }
         
         pwUrl_ += FORWARDSLASH
@@ -65,7 +83,14 @@ internal class BMSPushUrlBuilder: NSObject {
     
     func addHeader() -> [String: String] {
         
-        return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
+        if reWritedomain.isEmpty {
+            return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
+        }
+        else{
+            
+            return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain]
+        }
+        
     }
     
     func getSubscribedDevicesUrl(devID:String) -> String {
@@ -127,4 +152,26 @@ internal class BMSPushUrlBuilder: NSObject {
         return collectionUrl
     }
     
+    //    internal func retrieveAppName () -> String {
+    //
+    //        let url = NSURL(string: BMSClient.sharedInstance.bluemixAppRoute!)
+    //
+    //        print(url?.host);
+    ////
+    ////        if(!url){
+    ////            [NSException raise:@"InvalidURLException" format:@"Invalid applicationRoute: %@", applicationRoute];
+    ////        }
+    ////
+    ////        NSString *newBaasUrl = nil;
+    ////        NSString *newRewriteDomain = nil;
+    ////        NSString *regionInDomain = @"ng";
+    ////
+    ////        // Determine whether a port should be added.
+    ////        NSNumber * port = url.port;
+    ////        if(port){
+    ////            newBaasUrl = [NSString stringWithFormat:@"%@://%@:%@", url.scheme, url.host, port];
+    ////        }else{
+    ////            newBaasUrl = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
+    ////        }
+    //    }
 }

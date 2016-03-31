@@ -13,6 +13,7 @@
 
 import UIKit
 import BMSCore
+import BMSAnalyticsSpec
 
 /**
  Used to Support the `BMSPushClient` and creating exact Logger information.
@@ -88,7 +89,9 @@ public class BMSPushUtils: NSObject {
     
     class func generateMetricsEvents (action:String, messageId:String, timeStamp:String){
         
+        
         var notificationMetaData = NSDictionary()
+        var eventContext = [String:AnyObject]()
         
         if messageId.isEmpty {
             
@@ -97,9 +100,16 @@ public class BMSPushUtils: NSObject {
             
             notificationMetaData = ["$notificationId" : messageId,"$notificationAction" : action, "$timeStamp" : timeStamp]
         }
+        eventContext = [KEY_METADATA_CATEGORY:TAG_CATEGORY_EVENT, KEY_METADATA_TYPE : "$imf_push",
+            KEY_METADATA_USER_METADATA: notificationMetaData]
         
-        loggerMessage = ("Currently logging analytics with NotificationMetaData: \(notificationMetaData)")
-        self.sendLoggerData()
+        print("IMFAnalytics event:\(eventContext)");
+        
+        //eventContext = [ "metadata":eventContext,"timestamp":timeStamp,"pkg":"imf.analytics","level":"ANALYTICS","msg":""]
+        
+        print("IMFAnalytics event:\(eventContext )");
+        
+        Analytics.log(eventContext)
         
     }
     
@@ -108,9 +118,6 @@ public class BMSPushUtils: NSObject {
         var devId = String()
         let authManager  = BMSClient.sharedInstance.authorizationManager
         devId = authManager.deviceIdentity.id!
-        //        let bundle = NSBundle(forClass: self)
-        //        let bundleInfoDict: NSDictionary = bundle.infoDictionary!
-        //        let appName = bundleInfoDict["CFBundleName"] as! String
         let testLogger = Logger.loggerForName(devId)
         Logger.logLevelFilter = LogLevel.Debug
         testLogger.debug(loggerMessage)
