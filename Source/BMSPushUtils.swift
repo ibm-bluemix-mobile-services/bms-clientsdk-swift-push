@@ -13,7 +13,7 @@
 
 import UIKit
 import BMSCore
-import BMSAnalyticsSpec
+import BMSAnalyticsAPI
 
 /**
  Used to Support the `BMSPushClient` and creating exact Logger information.

@@ -14,7 +14,7 @@
 
 import UIKit
 import BMSCore
-import BMSAnalyticsSpec
+import BMSAnalyticsAPI
 
 /**
  Used in the `BMSPushClient` class, the `IMFPushErrorvalues` denotes error in the requests.
