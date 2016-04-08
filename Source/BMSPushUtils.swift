@@ -118,7 +118,7 @@ public class BMSPushUtils: NSObject {
         var devId = String()
         let authManager  = BMSClient.sharedInstance.authorizationManager
         devId = authManager.deviceIdentity.id!
-        let testLogger = Logger.loggerForName(devId)
+        let testLogger = Logger.logger(forName: devId)
         Logger.logLevelFilter = LogLevel.Debug
         testLogger.debug(loggerMessage)
         Logger.logLevelFilter = LogLevel.Info

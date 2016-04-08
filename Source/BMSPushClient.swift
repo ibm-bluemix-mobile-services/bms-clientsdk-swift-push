@@ -156,7 +156,7 @@ public class BMSPushClient: NSObject {
                     
                     // MARK: Registering for the First Time
                     
-                    getRequest.sendString(jsonString , withCompletionHandler: { (response: Response?, error: NSError?) -> Void in
+                    getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
                         
                         if response!.statusCode != nil {
                             
@@ -222,7 +222,7 @@ public class BMSPushClient: NSObject {
                         
                         let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
                         
-                        getRequest.sendString(jsonString , withCompletionHandler: { (response: Response?, error: NSError?) -> Void in
+                        getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
                             
                             
                             
@@ -348,7 +348,7 @@ public class BMSPushClient: NSObject {
             
             let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
             
-            getRequest.sendString(jsonString, withCompletionHandler: { (response, error) -> Void in
+            getRequest.sendString(jsonString, completionHandler: { (response, error) -> Void in
                 
                 if response!.statusCode != nil {
                     
@@ -469,7 +469,7 @@ public class BMSPushClient: NSObject {
             
             let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
             
-            getRequest.sendString(jsonString, withCompletionHandler: { (response, error) -> Void in
+            getRequest.sendString(jsonString, completionHandler: { (response, error) -> Void in
                 
                 if response!.statusCode != nil {
                     
@@ -610,7 +610,7 @@ public class BMSPushClient: NSObject {
         var devId = String()
         let authManager  = BMSClient.sharedInstance.authorizationManager
         devId = authManager.deviceIdentity.id!
-        let testLogger = Logger.loggerForName(devId)
+        let testLogger = Logger.logger(forName:devId)
         
         if (logType == LogLevel.Debug){
             

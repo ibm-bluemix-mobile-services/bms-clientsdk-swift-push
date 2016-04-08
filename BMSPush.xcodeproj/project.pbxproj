@@ -16,7 +16,6 @@
 		568867791CA6889E0049CD8C /* BMSPushUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568867781CA6889E0049CD8C /* BMSPushUtilsTest.swift */; };
 		5688677B1CA688BC0049CD8C /* BMSResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5688677A1CA688BC0049CD8C /* BMSResponseTests.swift */; };
 		5688677F1CA68B0B0049CD8C /* BMSPush.h in Headers */ = {isa = PBXBuildFile; fileRef = 5688677D1CA68B0B0049CD8C /* BMSPush.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		568867801CA68B0B0049CD8C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5688677E1CA68B0B0049CD8C /* Info.plist */; };
 		56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431A91C72EAA800AE421C /* AppDelegate.swift */; };
 		56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431AB1C72EAA800AE421C /* ViewController.swift */; };
 		56B431AF1C72EAA800AE421C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431AD1C72EAA800AE421C /* Main.storyboard */; };
@@ -365,7 +364,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				568867801CA68B0B0049CD8C /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
