@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license      = 'Apache License, Version 2.0'
   s.authors      = { 'IBM Bluemix Services Mobile SDK' => 'mobilsdk@us.ibm.com' }
 
-  s.source       = { :git => 'https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.git', :tag => "v#{s.version}" }
+  s.source       = { :git => 'https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.git', :tag => s.version }
   s.source_files = 'Source/*.swift'
 
   s.requires_arc = true
