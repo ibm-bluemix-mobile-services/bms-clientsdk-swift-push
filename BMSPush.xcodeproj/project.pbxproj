@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		145835341CC5279E00788110 /* BMSAnalyticsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */; };
+		145835361CC527A300788110 /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835351CC527A300788110 /* BMSCore.framework */; };
 		561BFE421C6C856900CDB375 /* BMSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3E1C6C856900CDB375 /* BMSConstants.swift */; };
 		561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */; };
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
@@ -66,6 +68,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BMSAnalyticsAPI.framework; path = Carthage/Build/iOS/BMSAnalyticsAPI.framework; sourceTree = "<group>"; };
+		145835351CC527A300788110 /* BMSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BMSCore.framework; path = Carthage/Build/iOS/BMSCore.framework; sourceTree = "<group>"; };
 		561BFE331C6C855300CDB375 /* BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		561BFE3E1C6C856900CDB375 /* BMSConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSConstants.swift; sourceTree = "<group>"; };
 		561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClient.swift; sourceTree = "<group>"; };
@@ -112,6 +116,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				56B431C71C72EAFA00AE421C /* BMSPush.framework in Frameworks */,
+				145835341CC5279E00788110 /* BMSAnalyticsAPI.framework in Frameworks */,
+				145835361CC527A300788110 /* BMSCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,11 +131,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		145835371CC5282D00788110 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				145835381CC5283600788110 /* iOS */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		145835381CC5283600788110 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				145835351CC527A300788110 /* BMSCore.framework */,
+				145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		561BFE291C6C855300CDB375 = {
 			isa = PBXGroup;
 			children = (
 				561BFE351C6C855300CDB375 /* Source */,
 				568867641CA687AE0049CD8C /* Tests */,
+				145835371CC5282D00788110 /* Dependencies */,
 				561BFE341C6C855300CDB375 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -248,6 +272,7 @@
 				561BFE2F1C6C855300CDB375 /* Frameworks */,
 				561BFE301C6C855300CDB375 /* Headers */,
 				561BFE311C6C855300CDB375 /* Resources */,
+				145835311CC526B700788110 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -265,6 +290,7 @@
 				568867691CA688420049CD8C /* Sources */,
 				5688676A1CA688420049CD8C /* Frameworks */,
 				5688676B1CA688420049CD8C /* Resources */,
+				145835321CC526E700788110 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -284,6 +310,7 @@
 				56B431A41C72EAA800AE421C /* Frameworks */,
 				56B431A51C72EAA800AE421C /* Resources */,
 				56B431CB1C72EAFA00AE421C /* Embed Frameworks */,
+				1458352F1CC5267400788110 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -392,6 +419,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1458352F1CC5267400788110 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/BMSAnalyticsAPI.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BMSCore.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		145835311CC526B700788110 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/BMSAnalyticsAPI.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BMSCore.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		145835321CC526E700788110 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/BMSCore.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BMSAnalyticsAPI.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		561BFE2E1C6C855300CDB375 /* Sources */ = {
@@ -570,9 +645,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Source/Resource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -592,9 +668,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Source/Resource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -636,6 +713,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -655,6 +733,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
