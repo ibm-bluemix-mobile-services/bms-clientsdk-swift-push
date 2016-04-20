@@ -13,8 +13,8 @@
 
 import XCTest
 
-@testable import BMSPush
-@testable import BMSCore
+import BMSPush
+import BMSCore
 
 class testBMSPushClient: XCTestCase {
     

@@ -23,7 +23,6 @@
 		56B431AF1C72EAA800AE421C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431AD1C72EAA800AE421C /* Main.storyboard */; };
 		56B431B11C72EAA800AE421C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56B431B01C72EAA800AE421C /* Assets.xcassets */; };
 		56B431B41C72EAA800AE421C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431B21C72EAA800AE421C /* LaunchScreen.storyboard */; };
-		56B431BF1C72EAA800AE421C /* BMSPushHostAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */; };
 		56B431C71C72EAFA00AE421C /* BMSPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 561BFE331C6C855300CDB375 /* BMSPush.framework */; };
 		56B431C81C72EAFA00AE421C /* BMSPush.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 561BFE331C6C855300CDB375 /* BMSPush.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		56BCCEC81C9029F50026E58C /* BMSPushUrlBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */; };
@@ -90,8 +89,6 @@
 		56B431B31C72EAA800AE421C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56B431B51C72EAA800AE421C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BMSPushHostAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMSPushHostAppTests.swift; sourceTree = "<group>"; };
-		56B431C01C72EAA800AE421C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUrlBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -195,7 +192,6 @@
 			isa = PBXGroup;
 			children = (
 				56B431A81C72EAA800AE421C /* BMSPushHostApp */,
-				56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */,
 			);
 			path = "Test Apps";
 			sourceTree = "<group>";
@@ -239,15 +235,6 @@
 				56B431B51C72EAA800AE421C /* Info.plist */,
 			);
 			path = BMSPushHostApp;
-			sourceTree = "<group>";
-		};
-		56B431BD1C72EAA800AE421C /* BMSPushHostAppTests */ = {
-			isa = PBXGroup;
-			children = (
-				56B431BE1C72EAA800AE421C /* BMSPushHostAppTests.swift */,
-				56B431C01C72EAA800AE421C /* Info.plist */,
-			);
-			path = BMSPushHostAppTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -504,7 +491,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56B431BF1C72EAA800AE421C /* BMSPushHostAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
