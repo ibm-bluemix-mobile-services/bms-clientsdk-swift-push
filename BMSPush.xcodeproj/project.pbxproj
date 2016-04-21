@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		145835341CC5279E00788110 /* BMSAnalyticsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */; };
 		145835361CC527A300788110 /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835351CC527A300788110 /* BMSCore.framework */; };
+		14E4D0CB1CC8A07C00D37D5A /* BMSAnalyticsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */; };
+		14E4D0CC1CC8A07C00D37D5A /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835351CC527A300788110 /* BMSCore.framework */; };
+		14E4D0CD1CC8A08500D37D5A /* BMSAnalyticsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */; };
+		14E4D0CE1CC8A08500D37D5A /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835351CC527A300788110 /* BMSCore.framework */; };
 		561BFE421C6C856900CDB375 /* BMSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3E1C6C856900CDB375 /* BMSConstants.swift */; };
 		561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */; };
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
@@ -97,6 +101,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14E4D0CB1CC8A07C00D37D5A /* BMSAnalyticsAPI.framework in Frameworks */,
+				14E4D0CC1CC8A07C00D37D5A /* BMSCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +111,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				568867721CA688420049CD8C /* BMSPush.framework in Frameworks */,
+				14E4D0CD1CC8A08500D37D5A /* BMSAnalyticsAPI.framework in Frameworks */,
+				14E4D0CE1CC8A08500D37D5A /* BMSCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +679,10 @@
 		568867761CA688420049CD8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Tests/Unit Tests/BMSPushTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -682,6 +694,10 @@
 		568867771CA688420049CD8C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Tests/Unit Tests/BMSPushTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

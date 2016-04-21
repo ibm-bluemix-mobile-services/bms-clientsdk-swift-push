@@ -12,7 +12,7 @@
 */
 
 import XCTest
-import BMSPush
+@testable import BMSPush
 
 class BMSPushUtilsTest: XCTestCase {
     

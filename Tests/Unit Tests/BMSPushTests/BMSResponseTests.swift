@@ -12,7 +12,7 @@
 */
 
 import XCTest
-import BMSPush
+@testable import BMSPush
 import BMSCore
 
 class BMSResponseTests: XCTestCase {

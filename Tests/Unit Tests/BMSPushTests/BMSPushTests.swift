@@ -13,7 +13,7 @@
 
 import XCTest
 
-import BMSPush
+@testable import BMSPush
 import BMSCore
 
 class testBMSPushClient: XCTestCase {
@@ -26,7 +26,7 @@ class testBMSPushClient: XCTestCase {
     
     func testRegister () {
         
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("https://ananthaapp2.mybluemix.net", bluemixAppGUID: "08665f30-ab26-4eea-b3e8-c9e4264f678f", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
         let clientInstance = BMSPushClient.sharedInstance
         let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b40b25d267"
@@ -68,7 +68,7 @@ class testBMSPushClient: XCTestCase {
     
     func testSubscribeToTags () {
         
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://ananthaapp2.mybluemix.net", bluemixAppGUID: "08665f30-ab26-4eea-b3e8-c9e4264f678f", bluemixRegion: BMSClient.REGION_US_SOUTH)
+       BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
         let clientInstance = BMSPushClient.sharedInstance
         
         var tagsArray = NSMutableArray()
@@ -146,7 +146,7 @@ class testBMSPushClient: XCTestCase {
         
         // MARK: retrieve subscibed tags
         
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://ananthaapp2.mybluemix.net", bluemixAppGUID: "08665f30-ab26-4eea-b3e8-c9e4264f678f", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
         let clientInstance = BMSPushClient.sharedInstance
         
         var tagsArray = NSMutableArray()

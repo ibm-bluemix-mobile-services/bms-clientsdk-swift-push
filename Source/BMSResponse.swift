@@ -129,22 +129,18 @@ public extension Response {
         
         let  tagsDictionary = convertStringToDictionary(self.responseText!)! as NSDictionary
         
-        let tag:NSArray = tagsDictionary.objectForKey(IMFPUSH_TAGS) as! NSArray
-        
-        var tagResponseDic:NSDictionary?
-        
-        // FIXME: additinal unknown tags
-        // tags.addObject("HiTag")
-        // tags.addObject("errorTag")
-        
-        for  i in 0..<tag.count {
+        if let tag:NSArray = tagsDictionary.objectForKey(IMFPUSH_TAGS) as? NSArray {
             
-            tagResponseDic = tag.objectAtIndex(i) as? NSDictionary
+            var tagResponseDic:NSDictionary?
             
-            tags.addObject((tagResponseDic?.objectForKey(IMFPUSH_NAME))!)
-            
+            for  i in 0..<tag.count {
+                
+                tagResponseDic = tag.objectAtIndex(i) as? NSDictionary
+                
+                tags.addObject((tagResponseDic?.objectForKey(IMFPUSH_NAME))!)
+                
+            }
         }
-        
         
         return tags;
     }
