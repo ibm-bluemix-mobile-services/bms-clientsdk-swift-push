@@ -99,7 +99,6 @@ public extension Response {
         
         if let arraySub:NSArray = subscriptions.objectForKey(IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
             
-            //            let dictionarySub = arraySub.objectAtIndex(0)
             
             finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS)
             

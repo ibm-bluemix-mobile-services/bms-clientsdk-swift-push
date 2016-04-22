@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let myBMSClient = BMSClient.sharedInstance
         
-        myBMSClient.initializeWithBluemixAppRoute("APP ROUTE", bluemixAppGUID: "APP GUID", bluemixRegion: "App region")
+        myBMSClient.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
         return true
@@ -48,23 +48,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             if error.isEmpty {
                 
-                print( "Response during retrieving subscribed tags : \(response.description)")
+                print( "Response during retrieving subscribed tags : \(response?.description)")
                 
                 print( "status code during retrieving subscribed tags : \(statusCode)")
                 
-                self.sendNotifToDisplayResponse("Response during retrieving subscribed tags: \(response.description)")
+                self.sendNotifToDisplayResponse("Response during retrieving subscribed tags: \(response?.description)")
                 
                 // MARK:  UNSUBSCRIBING TO TAGS
                 
-                push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -> Void in
+                push.unsubscribeFromTags(response!, completionHandler: { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
                         
-                        print( "Response during unsubscribed tags : \(response.description)")
+                        print( "Response during unsubscribed tags : \(response?.description)")
                         
                         print( "status code during unsubscribed tags : \(statusCode)")
                         
-                        self.sendNotifToDisplayResponse("Response during unsubscribed tags: \(response.description)")
+                        self.sendNotifToDisplayResponse("Response during unsubscribed tags: \(response?.description)")
                         
                         // MARK:  UNSREGISTER DEVICE
                         push.unregisterDevice({ (response, statusCode, error) -> Void in
@@ -130,29 +130,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         print( "status code during retrieve tags : \(statusCode)")
                         
-                        self.sendNotifToDisplayResponse("Response during retrive tags: \(response.description)")
+                        self.sendNotifToDisplayResponse("Response during retrive tags: \(response?.description)")
                         
                         // MARK:    SUBSCRIBING TO AVAILABLE TAGS
-                        push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -> Void in
+                        push.subscribeToTags(response!, completionHandler: { (response, statusCode, error) -> Void in
                             
                             if error.isEmpty {
                                 
-                                print( "Response during Subscribing to tags : \(response.description)")
+                                print( "Response during Subscribing to tags : \(response?.description)")
                                 
                                 print( "status code during Subscribing tags : \(statusCode)")
                                 
-                                self.sendNotifToDisplayResponse("Response during Subscribing tags: \(response.description)")
+                                self.sendNotifToDisplayResponse("Response during Subscribing tags: \(response?.description)")
                                 
                                 // MARK:  RETRIEVING AVAILABLE SUBSCRIPTIONS
                                 push.retrieveSubscriptionsWithCompletionHandler({ (response, statusCode, error) -> Void in
                                     
                                     if error.isEmpty {
                                         
-                                        print( "Response during retrieving subscribed tags : \(response.description)")
+                                        print( "Response during retrieving subscribed tags : \(response?.description)")
                                         
                                         print( "status code during retrieving subscribed tags : \(statusCode)")
                                         
-                                        self.sendNotifToDisplayResponse("Response during retrieving subscribed tags: \(response.description)")
+                                        self.sendNotifToDisplayResponse("Response during retrieving subscribed tags: \(response?.description)")
                                     }
                                     else {
                                         
@@ -162,7 +162,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     }
                                     
                                 })
-                                
                                 
                             }
                             else {

@@ -68,7 +68,7 @@ class testBMSPushClient: XCTestCase {
     
     func testSubscribeToTags () {
         
-       BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        
         let clientInstance = BMSPushClient.sharedInstance
         
         var tagsArray = NSMutableArray()
@@ -86,9 +86,12 @@ class testBMSPushClient: XCTestCase {
                 print( "status code during retrieve tags : \(statusCode)")
                 
                 
-                tagsArray = response
+                if let tags = response {
+                    
+                    tagsArray = tags
+                    NSLog("\n\n\n\nTgas array \(tagsArray)\n\n\n")
+                }
                 
-                NSLog("\n\n\n\nTgas array \(tagsArray)\n\n\n")
             }
             else {
                 print( "Error during retrieve tags \(error) ")
@@ -102,7 +105,7 @@ class testBMSPushClient: XCTestCase {
         while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
         }
-        if responseHasArrived {
+        if responseHasArrived && (tagsArray.count > 0) {
             
             NSLog("Success Execution")
             
@@ -112,7 +115,7 @@ class testBMSPushClient: XCTestCase {
                 
                 if error.isEmpty {
                     
-                    print( "Response during Subscribing to tags : \(response.description)")
+                    print( "Response during Subscribing to tags : \(response?.description)")
                     
                     print( "status code during Subscribing tags : \(statusCode)")
                 }
@@ -138,7 +141,13 @@ class testBMSPushClient: XCTestCase {
             
         }
         else{
-            XCTFail("Test timed out");
+            if tagsArray.count == 0 {
+                XCTFail("Emty tag array");
+                
+            }
+            else {
+                XCTFail("Test timed out");
+            }
         }
     }
     
@@ -158,7 +167,11 @@ class testBMSPushClient: XCTestCase {
                 print( "Response during retrieving subscribed tags : \(response)")
                 
                 print( "status code during retrieving subscribed tags : \(statusCode)")
-                tagsArray = response
+                
+                if let tags = response {
+                    
+                    tagsArray = tags
+                }
                 
             }
             else {
@@ -185,7 +198,7 @@ class testBMSPushClient: XCTestCase {
                 
                 if error.isEmpty {
                     
-                    print( "Response during unsubscribing tags : \(response.description)")
+                    print( "Response during unsubscribing tags : \(response?.description)")
                     
                     print( "status code during unsubscribing tags : \(statusCode)")
                 }

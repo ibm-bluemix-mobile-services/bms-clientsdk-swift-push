@@ -87,7 +87,7 @@ public class BMSPushClient: NSObject {
     - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
     */
     
-    public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String, statusCode:Int, error:String) -> Void) {
+    public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterActive"), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
@@ -123,10 +123,10 @@ public class BMSPushClient: NSObject {
         
         getRequest.sendWithCompletionHandler ({ (response: Response?, error: NSError?) -> Void in
             
-            if response!.statusCode != nil {
+            if response?.statusCode != nil {
                 
-                let status = response!.statusCode ?? 0
-                let responseText = response!.responseText ?? ""
+                let status = response?.statusCode ?? 0
+                let responseText = response?.responseText ?? ""
                 
                 
                 if (status == 404) {
@@ -158,10 +158,10 @@ public class BMSPushClient: NSObject {
                     
                     getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
                         
-                        if response!.statusCode != nil {
+                        if response?.statusCode != nil {
                             
-                            let status = response!.statusCode ?? 0
-                            let responseText = response!.responseText ?? ""
+                            let status = response?.statusCode ?? 0
+                            let responseText = response?.responseText ?? ""
                             
                             self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
                             completionHandler(response: responseText, statusCode: status, error: "")
@@ -185,7 +185,7 @@ public class BMSPushClient: NSObject {
                     // MARK: device is already Registered
                     
                     self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
-                    let respJson = response!.responseText
+                    let respJson = response?.responseText
                     let data = respJson!.dataUsingEncoding(NSUTF8StringEncoding)
                     let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
                     
@@ -226,10 +226,10 @@ public class BMSPushClient: NSObject {
                             
                             
                             
-                            if response!.statusCode != nil  {
+                            if response?.statusCode != nil  {
                                 
-                                let status = response!.statusCode ?? 0
-                                let responseText = response!.responseText ?? ""
+                                let status = response?.statusCode ?? 0
+                                let responseText = response?.responseText ?? ""
                                 
                                 self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
                                 completionHandler(response: responseText, statusCode: status, error: "")
@@ -270,7 +270,7 @@ public class BMSPushClient: NSObject {
      
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
      */
-    public func retrieveAvailableTagsWithCompletionHandler (completionHandler: (response:NSMutableArray, statusCode:Int, error:String) -> Void){
+    public func retrieveAvailableTagsWithCompletionHandler (completionHandler: (response:NSMutableArray?, statusCode:Int?, error:String) -> Void){
         
         
         self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
@@ -287,21 +287,20 @@ public class BMSPushClient: NSObject {
         
         getRequest.sendWithCompletionHandler ({ (response, error) -> Void in
             
-            var availableTagsArray = NSMutableArray()
             
-            if response!.statusCode != nil {
+            if response?.statusCode != nil {
                 
-                let status = response!.statusCode ?? 0
-                let responseText = response!.responseText ?? ""
+                let status = response?.statusCode ?? 0
+                let responseText = response?.responseText ?? ""
                 
                 self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully retrieved available tags - Response is: \(responseText)")
-                availableTagsArray = response!.availableTags()
+                let availableTagsArray = response?.availableTags()
                 
                 completionHandler(response: availableTagsArray, statusCode: status, error: "")
             } else if let responseError = error {
                 
                 self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while retrieving available tags - Error is: \(responseError.description)")
-                completionHandler(response: availableTagsArray, statusCode: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
+                completionHandler(response: [], statusCode: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
                 
             }
         })
@@ -317,11 +316,10 @@ public class BMSPushClient: NSObject {
      - parameter tagsArray: the array that contains name tags.
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
      */
-    public func subscribeToTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary, statusCode:Int, error:String) -> Void) {
+    public func subscribeToTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary?, statusCode:Int?, error:String) -> Void) {
         
         
         self.sendAnalyticsData(LogLevel.Debug, logStringData:"Entering: subscribeToTags." )
-        var subscriptionResponse = NSMutableDictionary()
         
         if tagsArray.count != 0 {
             
@@ -350,17 +348,19 @@ public class BMSPushClient: NSObject {
             
             getRequest.sendString(jsonString, completionHandler: { (response, error) -> Void in
                 
-                if response!.statusCode != nil {
+                if response?.statusCode != nil {
                     
-                    let status = response!.statusCode ?? 0
-                    let responseText = response!.responseText ?? ""
+                    let status = response?.statusCode ?? 0
+                    let responseText = response?.responseText ?? ""
                     
                     self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully subscribed to tags - Response is: \(responseText)")
-                    subscriptionResponse = response!.subscribeStatus()
+                    let subscriptionResponse = response?.subscribeStatus()
                     
                     completionHandler(response: subscriptionResponse, statusCode: status, error: "")
                     
                 } else if let responseError = error {
+                    
+                    let subscriptionResponse = NSMutableDictionary()
                     
                     self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while subscribing to tags - Error is: \(responseError.description)")
                     completionHandler(response: subscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
@@ -369,6 +369,8 @@ public class BMSPushClient: NSObject {
             })
             
         } else {
+            
+            let subscriptionResponse = NSMutableDictionary()
             
             self.sendAnalyticsData(LogLevel.Error, logStringData: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
             completionHandler(response: subscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
@@ -385,7 +387,7 @@ public class BMSPushClient: NSObject {
      
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
      */
-    public func retrieveSubscriptionsWithCompletionHandler (completionHandler: (response:NSMutableArray, statusCode:Int, error:String) -> Void) {
+    public func retrieveSubscriptionsWithCompletionHandler (completionHandler: (response:NSMutableArray?, statusCode:Int?, error:String) -> Void) {
         
         
         self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
@@ -406,15 +408,15 @@ public class BMSPushClient: NSObject {
         
         getRequest.sendWithCompletionHandler({ (response: Response?, error: NSError?) -> Void in
             
-            var subscriptionArray = NSMutableArray()
             
-            if response!.statusCode != nil {
+            
+            if response?.statusCode != nil {
                 
-                let status = response!.statusCode ?? 0
-                let responseText = response!.responseText ?? ""
+                let status = response?.statusCode ?? 0
+                let responseText = response?.responseText ?? ""
                 
                 self.sendAnalyticsData(LogLevel.Info, logStringData: "Subscription retrieved successfully - Response is: \(responseText)")
-                subscriptionArray = response!.subscriptions()
+                let subscriptionArray = response?.subscriptions()
                 
                 completionHandler(response: subscriptionArray, statusCode: status, error: "")
                 
@@ -422,7 +424,7 @@ public class BMSPushClient: NSObject {
                 
                 self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
                 
-                completionHandler(response: subscriptionArray, statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,error: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
+                completionHandler(response: [], statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,error: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
                 
             }
         })
@@ -438,10 +440,9 @@ public class BMSPushClient: NSObject {
      - Parameter tagsArray: The list of tags that need to be unsubscribed.
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
      */
-    public func unsubscribeFromTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary, statusCode:Int, error:String) -> Void) {
+    public func unsubscribeFromTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary?, statusCode:Int?, error:String) -> Void) {
         
         self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering: unsubscribeFromTags")
-        var unSubscriptionResponse = NSMutableDictionary()
         
         if tagsArray.count != 0 {
             
@@ -471,23 +472,27 @@ public class BMSPushClient: NSObject {
             
             getRequest.sendString(jsonString, completionHandler: { (response, error) -> Void in
                 
-                if response!.statusCode != nil {
+                if response?.statusCode != nil {
                     
-                    let status = response!.statusCode ?? 0
-                    let responseText = response!.responseText ?? ""
+                    let status = response?.statusCode ?? 0
+                    let responseText = response?.responseText ?? ""
                     
                     self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully unsubscribed from tags - Response is: \(responseText)")
-                    unSubscriptionResponse = response!.unsubscribeStatus()
+                    let unSubscriptionResponse = response?.unsubscribeStatus()
                     
                     completionHandler(response: unSubscriptionResponse, statusCode: status, error: "")
                     
                 } else if let responseError = error{
+                    
+                    let unSubscriptionResponse = NSMutableDictionary()
                     
                     self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while unsubscribing from tags - Error is: \(responseError.description)")
                     completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
                 }
             })
         } else {
+            
+            let unSubscriptionResponse = NSMutableDictionary()
             
             self.sendAnalyticsData(LogLevel.Error, logStringData: "Error.  Tag array cannot be null.")
             completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error.  Tag array cannot be null.")
@@ -501,7 +506,7 @@ public class BMSPushClient: NSObject {
      
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
      */
-    public func unregisterDevice (completionHandler: (response:String, statusCode:Int, error:String) -> Void) {
+    public func unregisterDevice (completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
         
         self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering unregisterDevice.")
         let authManager  = BMSClient.sharedInstance.authorizationManager
@@ -520,10 +525,10 @@ public class BMSPushClient: NSObject {
         
         getRequest.sendWithCompletionHandler ({ (response, error) -> Void in
             
-            if response!.statusCode != nil {
+            if response?.statusCode != nil {
                 
-                let status = response!.statusCode ?? 0
-                let responseText = response!.responseText ?? ""
+                let status = response?.statusCode ?? 0
+                let responseText = response?.responseText ?? ""
                 
                 self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
                 
