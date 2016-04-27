@@ -166,8 +166,8 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
                             
     if error.isEmpty {
         
-        print( "Response during Subscribing to tags : \(response.description)")
-        
+        print( "Response during Subscribing to tags : \(response?.description)")
+
         print( "status code during Subscribing tags : \(statusCode)")
     }
     else {
@@ -186,8 +186,8 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
             
     if error.isEmpty {
         
-        print( "Response during retrieving subscribed tags : \(response.description)")
-        
+        print( "Response during retrieving subscribed tags : \(response?.description)")
+
         print( "status code during retrieving subscribed tags : \(statusCode)")
     }
     else {
@@ -208,8 +208,8 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
                     
     if error.isEmpty {
         
-        print( "Response during unsubscribed tags : \(response.description)")
-        
+        print( "Response during unsubscribed tags : \(response?.description)")
+
         print( "status code during unsubscribed tags : \(statusCode)")
     }
     else {
