@@ -190,19 +190,14 @@ public class BMSPushClient: NSObject {
                     let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
                     
                     let rToken = jsonResponse.objectForKey(IMFPUSH_TOKEN) as! String
-                    let devId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
+                    let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
                     
-                    //print(authManager.userIdentity.debugDescription)
-                    //let consumerId:String = (authManager.userIdentity?.displayName)!
-                    let consumerId:String =  ""
-                    let consumerIdFromJson = jsonResponse.objectForKey(IMFPUSH_USER_ID) as! String
-                    
-                    if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) || (!(consumerId.isEmpty) && (consumerId.compare(consumerIdFromJson) != NSComparisonResult.OrderedSame))  {
+                    if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) || (!(devId.isEmpty) && (devId.compare(rDevId) != NSComparisonResult.OrderedSame))  {
                         
                         // MARK: Updating the registered device , token or deviceId changed
                         
                         self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
-                        let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
+                        let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(rDevId)
                         
                         let headers = urlBuilder.addHeader()
                         
@@ -214,7 +209,6 @@ public class BMSPushClient: NSObject {
                         let dict:NSMutableDictionary = NSMutableDictionary()
                         
                         dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                        dict.setValue(consumerId, forKey: IMFPUSH_USER_ID)
                         dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
                         
                         
