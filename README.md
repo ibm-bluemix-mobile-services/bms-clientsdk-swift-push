@@ -239,6 +239,8 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
     }
 }
 ```
+###Known Limitations
+Currently Swift SDK does not submit monitoring data. This is a work in progress and will be delivered in following months. If you’d like to continue receiving monitoring data in the service dashboard you can continue using Objective-C SDK.
 
 ###Learning More
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
