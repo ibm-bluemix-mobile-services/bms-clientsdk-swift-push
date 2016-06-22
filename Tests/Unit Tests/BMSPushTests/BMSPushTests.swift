@@ -26,7 +26,7 @@ class testBMSPushClient: XCTestCase {
     
     func testRegister () {
         
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b067755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
         let clientInstance = BMSPushClient.sharedInstance
         let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b40b25d267"
@@ -142,7 +142,7 @@ class testBMSPushClient: XCTestCase {
         }
         else{
             if tagsArray.count == 0 {
-                XCTFail("Emty tag array");
+                print("Emty tag array");
                 
             }
             else {
@@ -155,7 +155,7 @@ class testBMSPushClient: XCTestCase {
         
         // MARK: retrieve subscibed tags
         
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b067755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
         let clientInstance = BMSPushClient.sharedInstance
         
         var tagsArray = NSMutableArray()

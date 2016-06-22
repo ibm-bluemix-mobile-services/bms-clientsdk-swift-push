@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let myBMSClient = BMSClient.sharedInstance
         
-        myBMSClient.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "e1ddf4f7-63b2-4df3-9e20-39e408f816e6", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        myBMSClient.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b067755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
         return true
