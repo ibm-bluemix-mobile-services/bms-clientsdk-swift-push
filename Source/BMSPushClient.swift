@@ -91,8 +91,6 @@ public class BMSPushClient: NSObject {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterActive"), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterBackground"), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appOpenedFromNotificationClick"), name: UIApplicationDidFinishLaunchingNotification, object: nil)
         
         // Generate new ID
@@ -536,7 +534,6 @@ public class BMSPushClient: NSObject {
         })
     }
     
-    
     // MARK: Methods (Internal)
     
     //Begin Logger implementation
@@ -548,29 +545,6 @@ public class BMSPushClient: NSObject {
         
         self.sendAnalyticsData(LogLevel.Info, logStringData: "Application Enter Active.")
         BMSPushUtils.generateMetricsEvents(IMFPUSH_OPEN, messageId: "Application Enter Active.", timeStamp: BMSPushUtils.generateTimeStamp())
-    }
-    
-    /**
-     Send the Logger info when the client app goes Background state from Active state.
-     */
-    internal func appEnterBackground () {
-        
-        func completionHandler(sendType: String) -> BmsCompletionHandler {
-            return {
-                (response: Response?, error: NSError?) -> Void in
-                if let response = response {
-                    print("\n\(sendType) sent successfully: " + String(response.isSuccessful))
-                    print("Status code: " + String(response.statusCode))
-                    if let responseText = response.responseText {
-                        print("Response text: " + responseText)
-                    }
-                    print("\n")
-                }
-            }
-        }
-        
-        print("Application Enter Background. Sending analytics information to server.")
-        //Analytics.send(completionHandler: completionHandler("Analytics"))
     }
     
     /**

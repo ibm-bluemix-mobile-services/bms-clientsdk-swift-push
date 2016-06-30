@@ -89,25 +89,17 @@ public class BMSPushUtils: NSObject {
     
     class func generateMetricsEvents (action:String, messageId:String, timeStamp:String){
         
-        
-        var notificationMetaData = NSDictionary()
         var eventContext = [String:AnyObject]()
         
         if messageId.isEmpty {
             
-            notificationMetaData = ["$notificationAction" : action, "$timeStamp" : timeStamp]
+           eventContext = ["$category":"push","$notificationAction" : action, "$timeStamp" : timeStamp]
         } else {
             
-            notificationMetaData = ["$notificationId" : messageId,"$notificationAction" : action, "$timeStamp" : timeStamp]
+           eventContext = ["$category":"push", "$notificationId" : messageId,"$notificationAction" : action, "$timeStamp" : timeStamp]
         }
-        eventContext = [KEY_METADATA_CATEGORY:TAG_CATEGORY_EVENT, KEY_METADATA_TYPE : "$imf_push",
-            KEY_METADATA_USER_METADATA: notificationMetaData]
         
-        print("IMFAnalytics event:\(eventContext)");
-        
-        //eventContext = [ "metadata":eventContext,"timestamp":timeStamp,"pkg":"imf.analytics","level":"ANALYTICS","msg":""]
-        
-        print("IMFAnalytics event:\(eventContext )");
+       // print("IMFAnalytics event:\(eventContext )");
         
         Analytics.log(eventContext)
         
