@@ -567,6 +567,8 @@ public class BMSPushClient: NSObject {
                 
                 let messageId:NSString = pushNotificationPayload.objectForKey("nid") as! String
                 BMSPushUtils.generateMetricsEvents(IMFPUSH_SEEN, messageId: messageId as String, timeStamp: BMSPushUtils.generateTimeStamp())
+                BMSPushUtils.generateMetricsEvents(IMFPUSH_OPEN, messageId: "Application Enter Active.", timeStamp: BMSPushUtils.generateTimeStamp())
+
             }
         }
     }
