@@ -44,15 +44,8 @@ internal class BMSPushUrlBuilder: NSObject {
             pwUrl_ += "://"
             
             if BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-test") == true || BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-dev") == true {
-                //pwUrl_ += "mobile"
                 
-                let url = NSURL(string: BMSClient.sharedInstance.bluemixAppRoute!)
-                
-                print(url?.host);
-                
-                let appName = url?.host?.componentsSeparatedByString(".").first
-                
-                pwUrl_ += appName!
+                pwUrl_ += IMFPUSH
                 pwUrl_ += ".stage1.mybluemix.net"
                 if BMSClient.sharedInstance.bluemixRegion?.containsString("stage1-test") == true {
                     
@@ -66,7 +59,6 @@ internal class BMSPushUrlBuilder: NSObject {
                 pwUrl_ += IMFPUSH
                 pwUrl_ += BMSClient.sharedInstance.bluemixRegion!
                 reWritedomain = ""
-                
             }
         }
         
