@@ -1,0 +1,4 @@
+disabled_rules: # rule identifiers to exclude from running
+  - variable_name_min_length # Sonarqube does not recognize this rule
+  - statement_position       # We don't follow this convention
+  - trailing_whitespace      # Trailing whitespace is a natural result of how Xcode handles tabs and returns
