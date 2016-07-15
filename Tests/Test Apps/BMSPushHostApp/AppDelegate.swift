@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let myBMSClient = BMSClient.sharedInstance
         
-        myBMSClient.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b067755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        myBMSClient.initializeWithBluemixAppRoute("", bluemixAppGUID: "", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
         return true
@@ -108,7 +108,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let push =  BMSPushClient.sharedInstance
         
+        //push.initializeBluemixPushWithTenantId("", bluemixPushClientSecret: "")
+        // push.initializeBluemixPushWithTenantId("")
+        
+        
         // MARK:    REGISTERING DEVICE
+        
+        //push.registerDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
+        
+        //        }
+        //push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in{}
         
         push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             

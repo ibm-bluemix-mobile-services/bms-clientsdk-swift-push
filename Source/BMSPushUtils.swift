@@ -67,44 +67,6 @@ public class BMSPushUtils: NSObject {
         return pushEnabled;
     }
     
-    
-    class func generateTimeStamp () -> String {
-        
-        let dateFormatter = NSDateFormatter();
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        
-        dateFormatter.locale = NSLocale.init(localeIdentifier: "en_US_POSIX")
-        
-        let timeInMilliSec  = NSDate().timeIntervalSince1970
-        
-        let isoDate:String = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: timeInMilliSec))
-        
-        
-        loggerMessage = ("Current timestamp is: \(isoDate)")
-        
-        self.sendLoggerData()
-        
-        return isoDate;
-    }
-    
-    class func generateMetricsEvents (action:String, messageId:String, timeStamp:String){
-        
-        var eventContext = [String:AnyObject]()
-        
-        if messageId.isEmpty {
-            
-           eventContext = ["$category":"push","$notificationAction" : action, "$timeStamp" : timeStamp]
-        } else {
-            
-           eventContext = ["$category":"push", "$notificationId" : messageId,"$notificationAction" : action, "$timeStamp" : timeStamp]
-        }
-        
-       // print("IMFAnalytics event:\(eventContext )");
-        
-        Analytics.log(eventContext)
-        
-    }
-    
     class func sendLoggerData () {
         
         var devId = String()

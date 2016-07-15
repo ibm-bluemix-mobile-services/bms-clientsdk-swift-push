@@ -73,6 +73,18 @@ internal class BMSPushUrlBuilder: NSObject {
         pwUrl_ += FORWARDSLASH
     }
     
+    func addHeaderForUserIdRegister() -> [String: String] {
+        
+        if reWritedomain.isEmpty {
+            return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_USER_ID:BMSPushClient.sharedInstance.bluemixPushUserId!, IMFPUSH_CLIENT_SECRET:BMSPushClient.sharedInstance.bluemixPushClientSecret!]
+        }
+        else{
+            
+            return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain,IMFPUSH_USER_ID:BMSPushClient.sharedInstance.bluemixPushUserId!, IMFPUSH_CLIENT_SECRET:BMSPushClient.sharedInstance.bluemixPushClientSecret!]
+        }
+        
+    }
+
     func addHeader() -> [String: String] {
         
         if reWritedomain.isEmpty {
@@ -143,27 +155,4 @@ internal class BMSPushUrlBuilder: NSObject {
         
         return collectionUrl
     }
-    
-    //    internal func retrieveAppName () -> String {
-    //
-    //        let url = NSURL(string: BMSClient.sharedInstance.bluemixAppRoute!)
-    //
-    //        print(url?.host);
-    ////
-    ////        if(!url){
-    ////            [NSException raise:@"InvalidURLException" format:@"Invalid applicationRoute: %@", applicationRoute];
-    ////        }
-    ////
-    ////        NSString *newBaasUrl = nil;
-    ////        NSString *newRewriteDomain = nil;
-    ////        NSString *regionInDomain = @"ng";
-    ////
-    ////        // Determine whether a port should be added.
-    ////        NSNumber * port = url.port;
-    ////        if(port){
-    ////            newBaasUrl = [NSString stringWithFormat:@"%@://%@:%@", url.scheme, url.host, port];
-    ////        }else{
-    ////            newBaasUrl = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
-    ////        }
-    //    }
 }
