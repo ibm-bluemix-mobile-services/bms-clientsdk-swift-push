@@ -38,7 +38,6 @@ internal let IMFPUSH_CLIENT_SECRET  = "clientSecret"
 
 internal let IMFPUSH_TOKEN  = "token"
 
-internal let IMFPUSH_USER_ID  = "userId"
 
 internal let IMFPUSH_PLATFORM  = "platform"
 
