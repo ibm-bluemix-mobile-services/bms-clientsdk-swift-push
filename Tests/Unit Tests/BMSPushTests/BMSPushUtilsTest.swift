@@ -28,16 +28,6 @@ class BMSPushUtilsTest: XCTestCase {
         NSLog("\(pushSettingsValue)")
     }
     
-    func testGenerateTimeStamp () {
-        let timeStamp = BMSPushUtils.generateTimeStamp()
-        NSLog("\(timeStamp)")
-    }
-    
-    func testGenerateMetricsEvents () {
-        BMSPushUtils.generateMetricsEvents("Some Action", messageId: "some id", timeStamp: "some time stamp")
-        
-    }
-    
     func testSendLoggerData () {
         
         BMSPushUtils.sendLoggerData()
