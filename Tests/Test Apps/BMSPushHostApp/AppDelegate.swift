@@ -107,17 +107,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
         
         let push =  BMSPushClient.sharedInstance
-        
-        //push.initializeBluemixPushWithTenantId("", bluemixPushClientSecret: "")
-        // push.initializeBluemixPushWithTenantId("")
-        
-        
-        // MARK:    REGISTERING DEVICE
-        
-        //push.registerDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
-        
-        //        }
-        //push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in{}
+        push.initializeBluemixPush()
+//       push.registerDeviceToken("", WithUserId: "") { (response, statusCode, error) -> Void in
+//        
+//        }
         
         push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             

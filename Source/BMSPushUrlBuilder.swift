@@ -61,7 +61,6 @@ internal class BMSPushUrlBuilder: NSObject {
                 reWritedomain = ""
             }
         }
-        
         pwUrl_ += FORWARDSLASH
         pwUrl_ += IMFPUSH
         pwUrl_ += FORWARDSLASH
@@ -71,18 +70,6 @@ internal class BMSPushUrlBuilder: NSObject {
         pwUrl_ += FORWARDSLASH
         pwUrl_ += applicationID
         pwUrl_ += FORWARDSLASH
-    }
-    
-    func addHeaderForUserIdRegister() -> [String: String] {
-        
-        if reWritedomain.isEmpty {
-            return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_USER_ID:BMSPushClient.sharedInstance.bluemixPushUserId!, IMFPUSH_CLIENT_SECRET:BMSPushClient.sharedInstance.bluemixPushClientSecret!]
-        }
-        else{
-            
-            return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_X_REWRITE_DOMAIN:reWritedomain,IMFPUSH_USER_ID:BMSPushClient.sharedInstance.bluemixPushUserId!, IMFPUSH_CLIENT_SECRET:BMSPushClient.sharedInstance.bluemixPushClientSecret!]
-        }
-        
     }
 
     func addHeader() -> [String: String] {

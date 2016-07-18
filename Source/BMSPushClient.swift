@@ -62,16 +62,12 @@ public class BMSPushClient: NSObject {
     
     /// This singleton should be used for all `BMSPushClient` activity.
     public static let sharedInstance = BMSPushClient()
-    
-    /// Specifies the push UserId
-    public private(set) var bluemixPushUserId: String?
-    
+   
     // Specifies the bluemix push clientSecret value
-    public private(set) var bluemixPushClientSecret: String?
-    
-    // Specifies the bluemix backend application id
-    public private(set) var bluemixTenentId: String?
-    
+    public private(set) var clientSecret: String?
+    public private(set) var applicationId: String?
+
+    // used to test in test zone and dev zone
     public static var overrideServerHost = "";
     
     // MARK: Properties (private)
@@ -83,6 +79,7 @@ public class BMSPushClient: NSObject {
     
     private var notificationcount:Int = 0
     
+    private var isInitialized = false;
     
     // MARK: Initializers
     
@@ -91,12 +88,19 @@ public class BMSPushClient: NSObject {
      
      This method will intialize the BMSPushClient with userId based registration.
      
-     - parameter bluemixTenentId:           The GUID of the Bluemix application
      - parameter bluemixPushClientSecret:    The clientSecret of the Bluemix application
      */
-    public func initializeBluemixPushWithTenantId(bluemixTenentId: String?, bluemixPushClientSecret: String?) {
-        self.bluemixPushClientSecret = bluemixPushClientSecret
-        self.bluemixTenentId = bluemixTenentId
+    public func initializeBluemixPushWithClientSecret(clientSecret: String?) {
+        
+        if validateString(clientSecret!) {
+            self.clientSecret = clientSecret
+            self.applicationId = BMSClient.sharedInstance.bluemixAppGUID;
+            isInitialized = true;
+        }
+        else{
+            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Client secret is not valid")
+            print("Error while registration - Client secret is not valid")
+        }
     }
     
     /**
@@ -104,10 +108,10 @@ public class BMSPushClient: NSObject {
      
      This method will intialize the BMSPushClient without userId based registration or Its the normal push registration method.
      
-     - parameter bluemixTenentId:           The GUID of the Bluemix application
      */
-    public func initializeBluemixPushWithTenantId(bluemixTenentId: String?) {
-        self.bluemixTenentId = bluemixTenentId
+    public func initializeBluemixPush() {
+        self.applicationId = BMSClient.sharedInstance.bluemixAppGUID;
+        isInitialized = true;
     }
 
     
@@ -130,13 +134,9 @@ public class BMSPushClient: NSObject {
     public func registerDeviceToken(deviceToken:NSData , WithUserId:String?, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
         
         
-        if (self.bluemixTenentId?.isEmpty != true && self.bluemixTenentId != "" && self.bluemixTenentId != nil){
-            if (WithUserId?.isEmpty != true && WithUserId != "" && WithUserId != nil){
+        if (isInitialized){
+            if (validateString(WithUserId!)){
                 
-                if(self.bluemixPushClientSecret?.isEmpty != true && self.bluemixPushClientSecret != "" && self.bluemixPushClientSecret != nil ){
-                    
-                    self.bluemixPushUserId = WithUserId;
-                    
                     // Generate new ID
                     // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
                     
@@ -151,11 +151,15 @@ public class BMSPushClient: NSObject {
                     token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
                     
                     
-                    let urlBuilder = BMSPushUrlBuilder(applicationID: self.bluemixTenentId!)
-                    
+                    let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!)
+                
+
                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
-                    let headers = urlBuilder.addHeaderForUserIdRegister()
-                    
+                    var headers = urlBuilder.addHeader()
+                
+                    headers[IMFPUSH_USER_ID] = WithUserId;
+                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+                
                     let method =  HttpMethod.GET
                     
                     self.sendAnalyticsData(LogLevel.Debug, logStringData: "Verifying previous device registration.")
@@ -176,7 +180,9 @@ public class BMSPushClient: NSObject {
                                 self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
                                 let resourceURL:String = urlBuilder.getDevicesUrl()
                                 
-                                let headers = urlBuilder.addHeaderForUserIdRegister()
+                                var headers = urlBuilder.addHeader()
+                                headers[IMFPUSH_USER_ID] = WithUserId;
+                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
                                 
                                 let method =  HttpMethod.POST
                                 
@@ -236,14 +242,16 @@ public class BMSPushClient: NSObject {
                                 let userId = jsonResponse.objectForKey(IMFPUSH_USERID) as! String
                                 
                                 if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) ||
-                                    (!(self.bluemixPushUserId!.isEmpty) && (self.bluemixPushUserId?.compare(userId) != NSComparisonResult.OrderedSame)){
+                                    (!(WithUserId!.isEmpty) && (WithUserId!.compare(userId) != NSComparisonResult.OrderedSame)){
                                     
                                     // MARK: Updating the registered device ,userID, token or deviceId changed
                                     
                                     self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                                     
-                                    let headers = urlBuilder.addHeaderForUserIdRegister()
+                                    var headers = urlBuilder.addHeader()
+                                    headers[IMFPUSH_USER_ID] = WithUserId;
+                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
                                     
                                     let method =  HttpMethod.PUT
                                     
@@ -295,20 +303,14 @@ public class BMSPushClient: NSObject {
                         
                     })
                 }else{
-                    
-                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Error is: 401. Please specify your client secret value")
-                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Error is: 401. Please specify your client secret value")
-                }
                 
-            } else{
-                
-                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Error is: 401. Please specify your UserId value")
-                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Error is: 401. Please specify your UserId value")
+                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Provide a valid userId value")
+                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Provide a valid userId value")
             }
         }else{
             
-            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Error is: 401. Not initialized BMSPush")
-            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Error is: 401. Not initialized BMSPush")
+            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
+            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
         }
         
     }
@@ -330,7 +332,7 @@ public class BMSPushClient: NSObject {
         // Generate new ID
         // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
         
-        if (self.bluemixTenentId?.isEmpty != true && self.bluemixTenentId != "" && self.bluemixTenentId != nil){
+        if (isInitialized){
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
             devId = authManager.deviceIdentity.id!
@@ -342,7 +344,7 @@ public class BMSPushClient: NSObject {
             token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: self.bluemixTenentId!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             
             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
             let headers = urlBuilder.addHeader()
@@ -483,14 +485,12 @@ public class BMSPushClient: NSObject {
                     
                     self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                     completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                    
                 }
-                
             })
         }else{
             
-            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Error is: 401. Not initialized BMSPush")
-            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Error is: 401. Not initialized BMSPush")
+            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
+            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
         }
     }
 
@@ -829,6 +829,13 @@ public class BMSPushClient: NSObject {
             testLogger.debug(logStringData)
         }
         
+    }
+    
+    internal func validateString(object:String) -> Bool{
+        if (object.isEmpty || object == "") {
+            return false;
+        }
+        return true
     }
 
 }
