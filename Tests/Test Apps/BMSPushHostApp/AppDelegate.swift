@@ -25,7 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let myBMSClient = BMSClient.sharedInstance
         
-        myBMSClient.initializeWithBluemixAppRoute("", bluemixAppGUID: "", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        myBMSClient.initializeWithBluemixAppRoute("http://9.109.242.204:1337", bluemixAppGUID: "opennew123", bluemixRegion: "")
+        BMSPushClient.overrideServerHost = "http://9.109.242.204:1337"
         
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
         return true
@@ -106,11 +107,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
         
+        
+        
+        var devId = String()
+        let authManager  = BMSClient.sharedInstance.authorizationManager
+        devId = authManager.deviceIdentity.id!
+        
+        var token:String = deviceToken.description
+        token = token.stringByReplacingOccurrencesOfString("<", withString: "")
+        token = token.stringByReplacingOccurrencesOfString(">", withString: "")
+        token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
+        
+        print(token);
+        print(devId);
+        
         let push =  BMSPushClient.sharedInstance
-        push.initializeBluemixPush()
+        push.initialize()
+        push.initializeWithClientSecret("clientSecret")
 //       push.registerDeviceToken("", WithUserId: "") { (response, statusCode, error) -> Void in
-//        
-//        }
         
         push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             

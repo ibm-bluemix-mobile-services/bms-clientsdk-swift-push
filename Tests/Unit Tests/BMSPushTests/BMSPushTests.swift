@@ -29,7 +29,7 @@ class testBMSPushClient: XCTestCase {
         BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
         let clientInstance = BMSPushClient.sharedInstance
-        clientInstance.initializeBluemixPush()
+        clientInstance.initialize()
         let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
         
         let token = string.dataUsingEncoding(NSUTF8StringEncoding)
@@ -266,7 +266,8 @@ class testBMSPushClient: XCTestCase {
         BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
         let clientInstance = BMSPushClient.sharedInstance
-        clientInstance.initializeBluemixPushWithClientSecret("134234-23432423-32423432")
+    
+        clientInstance.initializeWithClientSecret("134234-23432423-32423432")
         let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310a9c"
         
         let token = string.dataUsingEncoding(NSUTF8StringEncoding)

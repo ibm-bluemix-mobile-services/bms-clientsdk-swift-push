@@ -90,7 +90,7 @@ public class BMSPushClient: NSObject {
      
      - parameter bluemixPushClientSecret:    The clientSecret of the Bluemix application
      */
-    public func initializeBluemixPushWithClientSecret(clientSecret: String?) {
+    public func initializeWithClientSecret(clientSecret: String?) {
         
         if validateString(clientSecret!) {
             self.clientSecret = clientSecret
@@ -109,7 +109,7 @@ public class BMSPushClient: NSObject {
      This method will intialize the BMSPushClient without userId based registration or Its the normal push registration method.
      
      */
-    public func initializeBluemixPush() {
+    public func initialize() {
         self.applicationId = BMSClient.sharedInstance.bluemixAppGUID;
         isInitialized = true;
     }
