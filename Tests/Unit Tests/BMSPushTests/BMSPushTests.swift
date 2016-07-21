@@ -34,7 +34,7 @@ class testBMSPushClient: XCTestCase {
         
         let token = string.dataUsingEncoding(NSUTF8StringEncoding)
         
-        clientInstance.registerDeviceToken(token!,completionHandler:  { (response, statusCode, error) -> Void in
+        clientInstance.registerWithDeviceToken(token!,completionHandler:  { (response, statusCode, error) -> Void in
             
             
             NSLog("the status code for registartion is \(statusCode)");
@@ -156,7 +156,7 @@ class testBMSPushClient: XCTestCase {
         
         // MARK: retrieve subscibed tags
         
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktestdonotdelete.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b067755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e767755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
         let clientInstance = BMSPushClient.sharedInstance
         
         var tagsArray = NSMutableArray()
@@ -267,12 +267,12 @@ class testBMSPushClient: XCTestCase {
         
         let clientInstance = BMSPushClient.sharedInstance
     
-        clientInstance.initializeWithClientSecret("134234-23432423-32423432")
+        clientInstance.initialize("134234-23432423-32423432")
         let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310a9c"
         
         let token = string.dataUsingEncoding(NSUTF8StringEncoding)
         
-        clientInstance.registerDeviceToken(token!, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
+        clientInstance.registerWithDeviceToken(token!, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
             
             
             NSLog("the status code for registartion is \(statusCode)");

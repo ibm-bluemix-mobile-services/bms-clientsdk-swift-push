@@ -123,10 +123,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let push =  BMSPushClient.sharedInstance
         push.initialize()
-        push.initializeWithClientSecret("clientSecret")
-//       push.registerDeviceToken("", WithUserId: "") { (response, statusCode, error) -> Void in
+        //push.initialize("clientSecret")
+      // push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
         
-        push.registerDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
+        push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             
             if error.isEmpty {
                 
