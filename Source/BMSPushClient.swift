@@ -240,11 +240,11 @@ public class BMSPushClient: NSObject {
                                 let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
                                 
                                 let rToken = jsonResponse.objectForKey(IMFPUSH_TOKEN) as! String
-                                // let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
+                                let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
                                 let userId = jsonResponse.objectForKey(IMFPUSH_USERID) as! String
                                 
                                 if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) ||
-                                    (!(WithUserId!.isEmpty) && (WithUserId!.compare(userId) != NSComparisonResult.OrderedSame)){
+                                    (!(WithUserId!.isEmpty) && (WithUserId!.compare(userId) != NSComparisonResult.OrderedSame)) || (devId.compare(rDevId) != NSComparisonResult.OrderedSame){
                                     
                                     // MARK: Updating the registered device ,userID, token or deviceId changed
                                     
@@ -427,11 +427,12 @@ public class BMSPushClient: NSObject {
                         let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
                         
                         let rToken = jsonResponse.objectForKey(IMFPUSH_TOKEN) as! String
-                        //let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
-                        
-                        if ((rToken.compare(token)) != NSComparisonResult.OrderedSame)  {
+                        let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
+                        let userId = jsonResponse.objectForKey(IMFPUSH_USERID) as! String
+
+                        if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) || (devId.compare(rDevId) != NSComparisonResult.OrderedSame) || (userId != "anonymous") {
                             
-                            // MARK: Updating the registered device , token or deviceId changed
+                            // MARK: Updating the registered userID , token or deviceId changed
                             
                             self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
@@ -529,7 +530,7 @@ public class BMSPushClient: NSObject {
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
         
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         
         let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
         let headers = urlBuilder.addHeader()
@@ -688,7 +689,7 @@ public class BMSPushClient: NSObject {
         
         
         self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         
         let resourceURL:String = urlBuilder.getTagsUrl()
         
@@ -741,7 +742,7 @@ public class BMSPushClient: NSObject {
             let devId = authManager.deviceIdentity.id!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getSubscriptionsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -810,7 +811,7 @@ public class BMSPushClient: NSObject {
         let devId = authManager.deviceIdentity.id!
         
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
         
         let headers = urlBuilder.addHeader()
@@ -865,7 +866,7 @@ public class BMSPushClient: NSObject {
             let devId = authManager.deviceIdentity.id!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -927,7 +928,7 @@ public class BMSPushClient: NSObject {
         let devId = authManager.deviceIdentity.id!
         
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: bmsClient.bluemixAppGUID!)
+        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
         let resourceURL:String = urlBuilder.getUnregisterUrl(devId)
         
         let headers = urlBuilder.addHeader()
