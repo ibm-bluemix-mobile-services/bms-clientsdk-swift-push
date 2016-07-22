@@ -25,8 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let myBMSClient = BMSClient.sharedInstance
         
-        myBMSClient.initializeWithBluemixAppRoute("http://9.109.242.204:1337", bluemixAppGUID: "opennew123", bluemixRegion: "")
-        BMSPushClient.overrideServerHost = "http://9.109.242.204:1337"
+        myBMSClient.initializeWithBluemixAppRoute("", bluemixAppGUID: "", bluemixRegion: "")
+       // BMSPushClient.overrideServerHost = "http://9.109.242.204:1337"
         
         myBMSClient.defaultRequestTimeout = 10.0 // seconds
         return true
@@ -122,9 +122,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(devId);
         
         let push =  BMSPushClient.sharedInstance
-        push.initialize()
-        //push.initialize("clientSecret")
-      // push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
+        push.initializeWithPushAppGUID("")
+        //push.initializeWithPushAppGUID("", clientSecret:"")
+       //push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
         
         push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             

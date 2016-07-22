@@ -86,15 +86,16 @@ public class BMSPushClient: NSObject {
     /**
      The required intializer for the `BMSPushClient` class.
      
-     This method will intialize the BMSPushClient with userId based registration.
+     This method will intialize the BMSPushClient with clientSecret based registration.
      
-     - parameter bluemixPushClientSecret:    The clientSecret of the Bluemix application
+     - parameter clientSecret:    The clientSecret of the Push Service
+     - parameter pushAppGUID:    The pushAppGUID of the Push Service
      */
-    public func initialize(clientSecret: String?) {
+    public func initializeWithPushAppGUID (pushAppGUID: String?, clientSecret: String?) {
         
         if validateString(clientSecret!) {
             self.clientSecret = clientSecret
-            self.applicationId = BMSClient.sharedInstance.bluemixAppGUID;
+            self.applicationId = pushAppGUID
             isInitialized = true;
         }
         else{
@@ -106,11 +107,12 @@ public class BMSPushClient: NSObject {
     /**
      The required intializer for the `BMSPushClient` class.
      
-     This method will intialize the BMSPushClient without userId based registration or Its the normal push registration method.
+     This method will intialize the BMSPushClient.
      
+     - parameter pushAppGUID:    The pushAppGUID of the Push Service
      */
-    public func initialize() {
-        self.applicationId = BMSClient.sharedInstance.bluemixAppGUID;
+    public func initializeWithPushAppGUID (pushAppGUID: String?) {
+        self.applicationId = pushAppGUID;
         isInitialized = true;
     }
 
