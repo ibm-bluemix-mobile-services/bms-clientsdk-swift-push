@@ -109,36 +109,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7BMSPush13BMSPushClient17bluemixPushUserIdGSqSS_"></a>
-                    <a name="//apple_ref/swift/Property/bluemixPushUserId" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7BMSPush13BMSPushClient17bluemixPushUserIdGSqSS_">bluemixPushUserId</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Specifies the push UserId</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">bluemixPushUserId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vC7BMSPush13BMSPushClient23bluemixPushClientSecretGSqSS_"></a>
-                    <a name="//apple_ref/swift/Property/bluemixPushClientSecret" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7BMSPush13BMSPushClient23bluemixPushClientSecretGSqSS_">bluemixPushClientSecret</a>
+                    <a name="/s:vC7BMSPush13BMSPushClient12clientSecretGSqSS_"></a>
+                    <a name="//apple_ref/swift/Property/clientSecret" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC7BMSPush13BMSPushClient12clientSecretGSqSS_">clientSecret</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -163,9 +136,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7BMSPush13BMSPushClient15bluemixTenentIdGSqSS_"></a>
-                    <a name="//apple_ref/swift/Property/bluemixTenentId" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7BMSPush13BMSPushClient15bluemixTenentIdGSqSS_">bluemixTenentId</a>
+                    <a name="/s:vC7BMSPush13BMSPushClient13applicationIdGSqSS_"></a>
+                    <a name="//apple_ref/swift/Property/applicationId" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC7BMSPush13BMSPushClient13applicationIdGSqSS_">applicationId</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -228,9 +201,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7BMSPush13BMSPushClient21initializeBluemixPushFTGSqSS_23bluemixPushClientSecretGSqSS__T_"></a>
-                    <a name="//apple_ref/swift/Method/initializeBluemixPush(_:bluemixPushClientSecret:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient21initializeBluemixPushFTGSqSS_23bluemixPushClientSecretGSqSS__T_">initializeBluemixPush(_:bluemixPushClientSecret:)</a>
+                    <a name="/s:FC7BMSPush13BMSPushClient25initializeWithPushAppGUIDFTGSqSS_12clientSecretGSqSS__T_"></a>
+                    <a name="//apple_ref/swift/Method/initializeWithPushAppGUID(_:clientSecret:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient25initializeWithPushAppGUIDFTGSqSS_12clientSecretGSqSS__T_">initializeWithPushAppGUID(_:clientSecret:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -240,14 +213,14 @@
                       <div class="abstract">
                         <p>The required intializer for the <code>BMSPushClient</code> class.</p>
 
-<p>This method will intialize the BMSPushClient with userId based registration.</p>
+<p>This method will intialize the BMSPushClient with clientSecret based registration.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">initializeBluemixPush</span><span class="p">(</span><span class="nv">bluemixTenentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">bluemixPushClientSecret</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">initializeWithPushAppGUID</span> <span class="p">(</span><span class="nv">pushAppGUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">clientSecret</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -258,12 +231,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>bluemixTenentId</em>
+                                <em>clientSecret</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The GUID of the Bluemix application</p>
+                                  <p>The clientSecret of the Push Service</p>
 
                                 </div>
                               </td>
@@ -271,12 +244,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>bluemixPushClientSecret</em>
+                                <em>pushAppGUID</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The clientSecret of the Bluemix application</p>
+                                  <p>The pushAppGUID of the Push Service</p>
 
                                 </div>
                               </td>
@@ -290,9 +263,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7BMSPush13BMSPushClient21initializeBluemixPushFGSqSS_T_"></a>
-                    <a name="//apple_ref/swift/Method/initializeBluemixPush(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient21initializeBluemixPushFGSqSS_T_">initializeBluemixPush(_:)</a>
+                    <a name="/s:FC7BMSPush13BMSPushClient25initializeWithPushAppGUIDFGSqSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/initializeWithPushAppGUID(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient25initializeWithPushAppGUIDFGSqSS_T_">initializeWithPushAppGUID(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -302,14 +275,14 @@
                       <div class="abstract">
                         <p>The required intializer for the <code>BMSPushClient</code> class.</p>
 
-<p>This method will intialize the BMSPushClient without userId based registration or Its the normal push registration method.</p>
+<p>This method will intialize the BMSPushClient.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">initializeBluemixPush</span><span class="p">(</span><span class="nv">bluemixTenentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">initializeWithPushAppGUID</span> <span class="p">(</span><span class="nv">pushAppGUID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -320,12 +293,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>bluemixTenentId</em>
+                                <em>pushAppGUID</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The GUID of the Bluemix application</p>
+                                  <p>The pushAppGUID of the Push Service</p>
 
                                 </div>
                               </td>
@@ -350,9 +323,103 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7BMSPush13BMSPushClient19registerDeviceTokenFTCSo6NSData10WithUserIdGSqSS_17completionHandlerFT8responseGSqSS_10statusCodeGSqSi_5errorSS_T__T_"></a>
-                    <a name="//apple_ref/swift/Method/registerDeviceToken(_:WithUserId:completionHandler:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient19registerDeviceTokenFTCSo6NSData10WithUserIdGSqSS_17completionHandlerFT8responseGSqSS_10statusCodeGSqSi_5errorSS_T__T_">registerDeviceToken(_:WithUserId:completionHandler:)</a>
+                    <a name="/s:FC7BMSPush13BMSPushClient23registerWithDeviceTokenFTCSo6NSData10WithUserIdGSqSS_17completionHandlerFT8responseGSqSS_10statusCodeGSqSi_5errorSS_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/registerWithDeviceToken(_:WithUserId:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient23registerWithDeviceTokenFTCSo6NSData10WithUserIdGSqSS_17completionHandlerFT8responseGSqSS_10statusCodeGSqSi_5errorSS_T__T_">registerWithDeviceToken(_:WithUserId:completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This Methode used to register the client device to the Bluemix Push service. This is the normal registration, without userId.</p>
+
+<p>Call this methode after successfully registering for remote push notification in the Apple Push
+Notification Service .</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter deviceToken: This is the response we get from the push registartion in APNS.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter WithUserId: This is the userId value.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">registerWithDeviceToken</span><span class="p">(</span><span class="nv">deviceToken</span><span class="p">:</span><span class="kt">NSData</span> <span class="p">,</span> <span class="kt">WithUserId</span><span class="p">:</span><span class="kt">String</span><span class="p">?,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">String</span><span class="p">?,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">?,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deviceToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>This is the response we get from the push registartion in APNS.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>WithUserId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>This is the userId value.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completionHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7BMSPush13BMSPushClient23registerWithDeviceTokenFTCSo6NSData17completionHandlerFT8responseGSqSS_10statusCodeGSqSi_5errorSS_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/registerWithDeviceToken(_:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7BMSPush13BMSPushClient23registerWithDeviceTokenFTCSo6NSData17completionHandlerFT8responseGSqSS_10statusCodeGSqSi_5errorSS_T__T_">registerWithDeviceToken(_:completionHandler:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -382,7 +449,7 @@ Notification Service .</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">registerDeviceToken</span><span class="p">(</span><span class="nv">deviceToken</span><span class="p">:</span><span class="kt">NSData</span> <span class="p">,</span> <span class="kt">WithUserId</span><span class="p">:</span><span class="kt">String</span><span class="p">?,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">String</span><span class="p">?,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">?,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">registerWithDeviceToken</span> <span class="p">(</span><span class="nv">deviceToken</span><span class="p">:</span><span class="kt">NSData</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="nv">response</span><span class="p">:</span><span class="kt">String</span><span class="p">?,</span> <span class="nv">statusCode</span><span class="p">:</span><span class="kt">Int</span><span class="p">?,</span> <span class="nv">error</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -435,7 +502,7 @@ Notification Service .</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This Methode used to register the client device to the Bluemix Push service. This is the normal registration, without userId.</p>
+                        <p>This Methode used to register the client device to the Bluemix Push service.</p>
 
 <p>Call this methode after successfully registering for remote push notification in the Apple Push
 Notification Service .</p>
@@ -807,7 +874,7 @@ Notification Service .</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-07-13)</p>
+          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-07-25)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -61,6 +61,9 @@
             
             <a href='#ibm-bluemix-mobile-services-client-sdk-swift-push' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='ibm-bluemix-mobile-services-client-sdk-swift-push'>IBM Bluemix Mobile Services - Client SDK Swift Push</h1>
 
+<p><a href="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push"><img src="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master" alt="Build Status"></a>
+<a href="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push"><img src="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=development" alt="Build Status"></a></p>
+
 <p>This is the Push component of the Swift SDK for IBM Bluemix Mobile Services. </p>
 
 <p><a href="https://console.ng.bluemix.net/solutions/mobilefirst">https://console.ng.bluemix.net/solutions/mobilefirst</a></p>
@@ -134,7 +137,25 @@ case-sensitive.</p>
 <p>Specifies the location where the app hosted. You can use one of three values - <code>BMSClient.REGION_US_SOUTH</code>, <code>BMSClient.REGION_UK</code> and <code>BMSClient.REGION_SYDNEY</code>.</p>
 <a href='#initializing-the-push-sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='initializing-the-push-sdk'>Initializing the Push SDK</h4>
 <pre class="highlight plaintext"><code>let push =  BMSPushClient.sharedInstance
+push.initializeWithPushAppGUID("pushAppGUID")
 </code></pre>
+
+<p><strong><em>pushAppGUID</em></strong></p>
+
+<p>The Push app GUID value. </p>
+
+<p>For <em>userId</em> based notifiction initialize the <code>BMSPush</code> with <code>clientSecret</code> . </p>
+<pre class="highlight plaintext"><code>let push =  BMSPushClient.sharedInstance
+push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+</code></pre>
+
+<p><strong><em>pushAppGUID</em></strong></p>
+
+<p>The Push app GUID value. </p>
+
+<p><strong><em>clientSecret</em></strong></p>
+
+<p>The Push client secret value. </p>
 <a href='#registering-ios-applications-and-devices' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='registering-ios-applications-and-devices'>Registering iOS applications and devices</h4>
 
 <p>Add this code to registering the app for push notification in APNS,</p>
@@ -147,8 +168,9 @@ UIApplication.sharedApplication().registerForRemoteNotifications()
  <strong><em>didRegisterForRemoteNotificationsWithDeviceToken</em></strong> method.</p>
 <pre class="highlight plaintext"><code> func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
-    let push =  BMSPushClient.sharedInstance
-   push.registerDeviceToken(deviceToken) { (response, statusCode, error) -&gt; Void in
+   let push =  BMSPushClient.sharedInstance
+   push.initializeWithPushAppGUID("pushAppGUID")
+   push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -&gt; Void in
 
         if error.isEmpty {
 
@@ -165,7 +187,38 @@ UIApplication.sharedApplication().registerForRemoteNotifications()
 
 }
 </code></pre>
+
+<p>For <em>user Id</em> based notification, the register method will accept one more parameter - <em>userId</em></p>
+<pre class="highlight plaintext"><code>func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+
+    let push =  BMSPushClient.sharedInstance
+    push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+    push.registerWithDeviceToken(deviceToken, WithUserId: "your user id") { (response, statusCode, error) -&gt; Void in
+
+        if error.isEmpty {
+
+            print( "Response during device registration : \(response)")
+
+            print( "status code during device registration : \(statusCode)")
+        }
+        else{
+            print( "Error during device registration \(error) ")
+
+            Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+        }
+    }
+
+}
+</code></pre>
+
+<p><strong>WithUserId</strong></p>
+
+<p>the User Id value you want to register in the push service</p>
+
+<blockquote>
+<p><strong>Note</strong>: If userId is provided the client secret value must be provided.</p>
 <a href='#retrieve-available-tags-and-register-for-tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='retrieve-available-tags-and-register-for-tags'>Retrieve Available Tags and register for Tags</h4>
+</blockquote>
 <a href='#retrieve-available-tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='retrieve-available-tags'>Retrieve Available tags</h5>
 
 <p>The <strong><em>retrieveAvailableTagsWithCompletionHandler</em></strong> API returns the list of available tags to which the device
@@ -294,7 +347,7 @@ limitations under the License.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-07-13)</p>
+          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-07-25)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
