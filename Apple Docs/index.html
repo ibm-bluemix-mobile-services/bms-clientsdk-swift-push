@@ -13,7 +13,7 @@
     <a title="BMSPush  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">BMSPush Docs</a> (100% documented)</p>
+        <p><a href="index.html">BMSPush Docs</a> (90% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -59,7 +59,10 @@
         <section>
           <section class="section">
             
-            <a href='#ibm_bluemix_mobile_services_client_sdk_swift_push' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='ibm_bluemix_mobile_services_client_sdk_swift_push'>IBM Bluemix Mobile Services - Client SDK Swift Push</h1>
+            <a href='#ibm-bluemix-mobile-services-client-sdk-swift-push' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='ibm-bluemix-mobile-services-client-sdk-swift-push'>IBM Bluemix Mobile Services - Client SDK Swift Push</h1>
+
+<p><a href="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push"><img src="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master" alt="Build Status"></a>
+<a href="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push"><img src="https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=development" alt="Build Status"></a></p>
 
 <p>This is the Push component of the Swift SDK for IBM Bluemix Mobile Services. </p>
 
@@ -77,32 +80,42 @@
 </ul>
 <a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='installation'>Installation</h2>
 
-<p>The Bluemix Mobile Services Swift SDK is available via <a href="http://cocoapods.org/">Cocoapods</a>. 
-To install, add the <code>BMSPush</code> pod to your <code>Podfile</code>. You have to add <code>BMSCore</code> also in your <code>Podfile</code>.</p>
-<a href='#ios' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='ios'>iOS</h5>
-<pre class="highlight plaintext"><code>use_frameworks!
+<p>The Bluemix Mobile Services Swift SDKs are available via <a href="http://cocoapods.org/">Cocoapods</a> and <a href="https://github.com/Carthage/Carthage">Carthage</a>.</p>
+<a href='#cocoapods' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='cocoapods'>Cocoapods</h4>
 
-target 'MyApp' do
-    platform :ios, '8.0'
-    pod 'BMSCore'
-    pod 'BMSPush'
-end
+<p>To install BMSCore using Cocoapods, add it to your Podfile:</p>
+<pre class="highlight ruby"><code><span class="n">use_frameworks!</span>
+
+<span class="n">target</span> <span class="s1">'MyApp'</span> <span class="k">do</span>
+    <span class="n">platform</span> <span class="ss">:ios</span><span class="p">,</span> <span class="s1">'8.0'</span>
+    <span class="n">pod</span> <span class="s1">'BMSCore'</span>
+    <span class="n">pod</span> <span class="s1">'BMSPush'</span>
+<span class="k">end</span>
 </code></pre>
 
 <p>From the Terminal, go to your project folder and install the dependencies with the following command:</p>
-<pre class="highlight plaintext"><code>pod update
+<pre class="highlight plaintext"><code>pod install
 </code></pre>
 
 <p>That command installs your dependencies and creates a new Xcode workspace.
 <strong><em>Note:</em></strong> Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:</p>
 <pre class="highlight plaintext"><code>open App.xcworkspace
 </code></pre>
-<a href='#enabling_ios_applications_to_receive_push_notifications' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='enabling_ios_applications_to_receive_push_notifications'>Enabling iOS applications to receive push notifications</h2>
-<a href='#reference_the_sdk_in_your_code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='reference_the_sdk_in_your_code'>Reference the SDK in your code.</h5>
+<a href='#carthage' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='carthage'>Carthage</h4>
+
+<p>To install BMSPush using Carthage, add it to your Cartfile: </p>
+<pre class="highlight plaintext"><code>github "ibm-bluemix-mobile-services/bms-clientsdk-swift-push"
+</code></pre>
+
+<p>Then run the <code>carthage update</code> command. Once the build is finished, drag <code>BMSPush.framework</code>,<code>BMSCore.framework</code> and <code>BMSAnalyticsAPI.framework</code> into your Xcode project. </p>
+
+<p>To complete the integration, follow the instructions <a href="https://github.com/Carthage/Carthage#getting-started">here</a>.</p>
+<a href='#enabling-ios-applications-to-receive-push-notifications' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='enabling-ios-applications-to-receive-push-notifications'>Enabling iOS applications to receive push notifications</h2>
+<a href='#reference-the-sdk-in-your-code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='reference-the-sdk-in-your-code'>Reference the SDK in your code.</h5>
 <pre class="highlight plaintext"><code>import BMSPush
 import BMSCore
 </code></pre>
-<a href='#initializing_the_core_sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='initializing_the_core_sdk'>Initializing the Core SDK</h4>
+<a href='#initializing-the-core-sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='initializing-the-core-sdk'>Initializing the Core SDK</h4>
 <pre class="highlight plaintext"><code>let myBMSClient = BMSClient.sharedInstance
 
 myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegion:"Location where your app Hosted")
@@ -122,10 +135,28 @@ case-sensitive.</p>
 <p><strong><em>bluemixRegionSuffix</em></strong></p>
 
 <p>Specifies the location where the app hosted. You can use one of three values - <code>BMSClient.REGION_US_SOUTH</code>, <code>BMSClient.REGION_UK</code> and <code>BMSClient.REGION_SYDNEY</code>.</p>
-<a href='#initializing_the_push_sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='initializing_the_push_sdk'>Initializing the Push SDK</h4>
+<a href='#initializing-the-push-sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='initializing-the-push-sdk'>Initializing the Push SDK</h4>
 <pre class="highlight plaintext"><code>let push =  BMSPushClient.sharedInstance
+push.initializeWithPushAppGUID("pushAppGUID")
 </code></pre>
-<a href='#registering_ios_applications_and_devices' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='registering_ios_applications_and_devices'>Registering iOS applications and devices</h4>
+
+<p><strong><em>pushAppGUID</em></strong></p>
+
+<p>The Push app GUID value. </p>
+
+<p>For <em>userId</em> based notifiction initialize the <code>BMSPush</code> with <code>clientSecret</code> . </p>
+<pre class="highlight plaintext"><code>let push =  BMSPushClient.sharedInstance
+push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+</code></pre>
+
+<p><strong><em>pushAppGUID</em></strong></p>
+
+<p>The Push app GUID value. </p>
+
+<p><strong><em>clientSecret</em></strong></p>
+
+<p>The Push client secret value. </p>
+<a href='#registering-ios-applications-and-devices' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='registering-ios-applications-and-devices'>Registering iOS applications and devices</h4>
 
 <p>Add this code to registering the app for push notification in APNS,</p>
 <pre class="highlight plaintext"><code>let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
@@ -137,8 +168,9 @@ UIApplication.sharedApplication().registerForRemoteNotifications()
  <strong><em>didRegisterForRemoteNotificationsWithDeviceToken</em></strong> method.</p>
 <pre class="highlight plaintext"><code> func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
-    let push =  BMSPushClient.sharedInstance
-   push.registerDeviceToken(deviceToken) { (response, statusCode, error) -&gt; Void in
+   let push =  BMSPushClient.sharedInstance
+   push.initializeWithPushAppGUID("pushAppGUID")
+   push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -&gt; Void in
 
         if error.isEmpty {
 
@@ -155,8 +187,39 @@ UIApplication.sharedApplication().registerForRemoteNotifications()
 
 }
 </code></pre>
-<a href='#retrieve_available_tags_and_register_for_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='retrieve_available_tags_and_register_for_tags'>Retrieve Available Tags and register for Tags</h4>
-<a href='#retrieve_available_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='retrieve_available_tags'>Retrieve Available tags</h5>
+
+<p>For <em>user Id</em> based notification, the register method will accept one more parameter - <em>userId</em></p>
+<pre class="highlight plaintext"><code>func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+
+    let push =  BMSPushClient.sharedInstance
+    push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+    push.registerWithDeviceToken(deviceToken, WithUserId: "your user id") { (response, statusCode, error) -&gt; Void in
+
+        if error.isEmpty {
+
+            print( "Response during device registration : \(response)")
+
+            print( "status code during device registration : \(statusCode)")
+        }
+        else{
+            print( "Error during device registration \(error) ")
+
+            Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+        }
+    }
+
+}
+</code></pre>
+
+<p><strong>WithUserId</strong></p>
+
+<p>the User Id value you want to register in the push service</p>
+
+<blockquote>
+<p><strong>Note</strong>: If userId is provided the client secret value must be provided.</p>
+<a href='#retrieve-available-tags-and-register-for-tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='retrieve-available-tags-and-register-for-tags'>Retrieve Available Tags and register for Tags</h4>
+</blockquote>
+<a href='#retrieve-available-tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='retrieve-available-tags'>Retrieve Available tags</h5>
 
 <p>The <strong><em>retrieveAvailableTagsWithCompletionHandler</em></strong> API returns the list of available tags to which the device
 can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
@@ -181,12 +244,12 @@ device can subscribe.</p>
     }
 }
 </code></pre>
-<a href='#subscribe_to_available_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='subscribe_to_available_tags'>Subscribe to Available tags</h5>
+<a href='#subscribe-to-available-tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='subscribe-to-available-tags'>Subscribe to Available tags</h5>
 <pre class="highlight plaintext"><code>push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -&gt; Void in
 
     if error.isEmpty {
 
-        print( "Response during Subscribing to tags : \(response.description)")
+        print( "Response during Subscribing to tags : \(response?.description)")
 
         print( "status code during Subscribing tags : \(statusCode)")
     }
@@ -198,12 +261,12 @@ device can subscribe.</p>
     }
 }
 </code></pre>
-<a href='#retrieve_subscribed_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='retrieve_subscribed_tags'>Retrieve Subscribed tags</h5>
+<a href='#retrieve-subscribed-tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h5 id='retrieve-subscribed-tags'>Retrieve Subscribed tags</h5>
 <pre class="highlight plaintext"><code>push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -&gt; Void in
 
     if error.isEmpty {
 
-        print( "Response during retrieving subscribed tags : \(response.description)")
+        print( "Response during retrieving subscribed tags : \(response?.description)")
 
         print( "status code during retrieving subscribed tags : \(statusCode)")
     }
@@ -215,7 +278,7 @@ device can subscribe.</p>
     }
 }
 </code></pre>
-<a href='#unsubscribing_tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='unsubscribing_tags'>unsubscribing tags</h4>
+<a href='#unsubscribing-tags' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='unsubscribing-tags'>unsubscribing tags</h4>
 
 <p>Use the following code snippets to allow your devices to get unsubscribe
 from a tag.</p>
@@ -223,7 +286,7 @@ from a tag.</p>
 
     if error.isEmpty {
 
-        print( "Response during unsubscribed tags : \(response.description)")
+        print( "Response during unsubscribed tags : \(response?.description)")
 
         print( "status code during unsubscribed tags : \(statusCode)")
     }
@@ -234,7 +297,7 @@ from a tag.</p>
     }
 }
 </code></pre>
-<a href='#unregistering_the_device_from_bluemix_push_notification' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='unregistering_the_device_from_bluemix_push_notification'>Unregistering the Device from Bluemix Push Notification</h4>
+<a href='#unregistering-the-device-from-bluemix-push-notification' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h4 id='unregistering-the-device-from-bluemix-push-notification'>Unregistering the Device from Bluemix Push Notification</h4>
 
 <p>Use the following code snippets to Unregister the device from Bluemix Push Notification</p>
 <pre class="highlight plaintext"><code>push.unregisterDevice({ (response, statusCode, error) -&gt; Void in
@@ -252,13 +315,13 @@ from a tag.</p>
     }
 }
 </code></pre>
-<a href='#learning_more' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='learning_more'>Learning More</h3>
+<a href='#learning-more' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='learning-more'>Learning More</h3>
 
 <ul>
 <li><p>Visit the <strong><a href="https://developer.ibm.com/bluemix/">Bluemix Developers Community</a></strong>.</p></li>
 <li><p><a href="https://www.ng.bluemix.net/docs/mobile/index.html">Getting started with IBM MobileFirst Platfrom for iOS</a></p></li>
 </ul>
-<a href='#connect_with_bluemix' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='connect_with_bluemix'>Connect with Bluemix</h3>
+<a href='#connect-with-bluemix' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='connect-with-bluemix'>Connect with Bluemix</h3>
 
 <p><a href="https://twitter.com/ibmbluemix">Twitter</a> |
 <a href="https://www.youtube.com/playlist?list=PLzpeuWUENMK2d3L5qCITo2GQEt-7r0oqm">YouTube</a> |
@@ -284,8 +347,8 @@ limitations under the License.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-03-17)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.5.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2016 <a class="link" href="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push" target="_blank" rel="external">IBM Bluemix Services Mobile SDK</a>. All rights reserved. (Last updated: 2016-07-25)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
