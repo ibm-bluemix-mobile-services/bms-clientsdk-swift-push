@@ -89,13 +89,13 @@ public class BMSPushClient: NSObject {
      This method will intialize the BMSPushClient with clientSecret based registration.
      
      - parameter clientSecret:    The clientSecret of the Push Service
-     - parameter pushAppGUID:    The pushAppGUID of the Push Service
+     - parameter appGUID:    The pushAppGUID of the Push Service
      */
-    public func initializeWithPushAppGUID (pushAppGUID: String?, clientSecret: String?) {
+    public func initializeWithAppGUID (appGUID: String?, clientSecret: String?) {
         
         if validateString(clientSecret!) {
             self.clientSecret = clientSecret
-            self.applicationId = pushAppGUID
+            self.applicationId = appGUID
             isInitialized = true;
         }
         else{
@@ -109,10 +109,10 @@ public class BMSPushClient: NSObject {
      
      This method will intialize the BMSPushClient.
      
-     - parameter pushAppGUID:    The pushAppGUID of the Push Service
+     - parameter appGUID:    The pushAppGUID of the Push Service
      */
-    public func initializeWithPushAppGUID (pushAppGUID: String?) {
-        self.applicationId = pushAppGUID;
+    public func initializeWithAppGUID (appGUID: String?) {
+        self.applicationId = appGUID;
         isInitialized = true;
     }
 

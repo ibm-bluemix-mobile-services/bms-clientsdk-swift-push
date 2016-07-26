@@ -122,8 +122,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(devId);
         
         let push =  BMSPushClient.sharedInstance
-        push.initializeWithPushAppGUID("")
-        //push.initializeWithPushAppGUID("", clientSecret:"")
+        push.initializeWithAppGUID("")
+        //push.initializeWithAppGUID("", clientSecret:"")
        //push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
         
         push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
