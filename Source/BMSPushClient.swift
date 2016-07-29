@@ -159,7 +159,7 @@ public class BMSPushClient: NSObject {
                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                     var headers = urlBuilder.addHeader()
                 
-                    headers[IMFPUSH_USER_ID] = WithUserId;
+                    //headers[IMFPUSH_USER_ID] = WithUserId;
                     headers[IMFPUSH_CLIENT_SECRET] = clientSecret
                 
                     let method =  HttpMethod.GET
@@ -183,7 +183,6 @@ public class BMSPushClient: NSObject {
                                 let resourceURL:String = urlBuilder.getDevicesUrl()
                                 
                                 var headers = urlBuilder.addHeader()
-                                headers[IMFPUSH_USER_ID] = WithUserId;
                                 headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
                                 
                                 let method =  HttpMethod.POST
@@ -196,6 +195,7 @@ public class BMSPushClient: NSObject {
                                 dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
                                 dict.setValue(token, forKey: IMFPUSH_TOKEN)
                                 dict.setValue("A", forKey: IMFPUSH_PLATFORM)
+                                dict.setValue(WithUserId, forKey: IMFPUSH_USERID)
                                 
                                 // here "jsonData" is the dictionary encoded in JSON data
                                 let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
@@ -252,7 +252,6 @@ public class BMSPushClient: NSObject {
                                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                                     
                                     var headers = urlBuilder.addHeader()
-                                    headers[IMFPUSH_USER_ID] = WithUserId;
                                     headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
                                     
                                     let method =  HttpMethod.PUT
@@ -264,7 +263,8 @@ public class BMSPushClient: NSObject {
                                     
                                     dict.setValue(token, forKey: IMFPUSH_TOKEN)
                                     dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                                    
+                                    dict.setValue(WithUserId, forKey: IMFPUSH_USERID)
+
                                     
                                     let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
                                     
@@ -508,7 +508,7 @@ public class BMSPushClient: NSObject {
      - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
      */
     
-    @available(*, deprecated, message="use registerWithDeviceToken")
+    @available(*, deprecated, message="Please use registerWithDeviceToken")
     public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
         
         

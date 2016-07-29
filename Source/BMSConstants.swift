@@ -30,7 +30,7 @@ internal let IMFPUSH_DEVICE_ID  = "deviceId"
 
 internal let IMFPUSH_DEVICES  = "devices"
 
-internal let IMFPUSH_USER_ID  = "pushUser"
+//internal let IMFPUSH_USER_ID  = "pushUser"
 
 internal let IMFPUSH_USERID  = "userId"
 
