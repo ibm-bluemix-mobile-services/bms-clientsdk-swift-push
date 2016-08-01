@@ -99,7 +99,7 @@ Specifies the location where the app hosted. You can use one of three values - `
 
 ```
 let push =  BMSPushClient.sharedInstance
-push.initializeWithPushAppGUID("pushAppGUID")
+push.initializeWithAppGUID("pushAppGUID")
 ```
 ***pushAppGUID***
 
@@ -109,7 +109,7 @@ For *userId* based notifiction initialize the `BMSPush` with `clientSecret` .
 
 ```
 let push =  BMSPushClient.sharedInstance
-push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+push.initializeWithAppGUID("pushAppGUID", clientSecret:"clientSecret")
 ```
 
 ***pushAppGUID***
@@ -136,7 +136,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
  func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithPushAppGUID("pushAppGUID")
+   push.initializeWithAppGUID("pushAppGUID")
    push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
             
         if error.isEmpty {
@@ -162,7 +162,7 @@ For *user Id* based notification, the register method will accept one more param
 func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
     let push =  BMSPushClient.sharedInstance
-    push.initializeWithPushAppGUID("pushAppGUID", clientSecret:"clientSecret")
+    push.initializeWithAppGUID("pushAppGUID", clientSecret:"clientSecret")
     push.registerWithDeviceToken(deviceToken, WithUserId: "your user id") { (response, statusCode, error) -> Void in
 
         if error.isEmpty {
@@ -186,6 +186,8 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 the User Id value you want to register in the push service
 
 >**Note**: If userId is provided the client secret value must be provided.
+
+
 #### Retrieve Available Tags and register for Tags
 
 ##### Retrieve Available tags
