@@ -186,6 +186,8 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 the User Id value you want to register in the push service
 
 >**Note**: If userId is provided the client secret value must be provided.
+
+
 #### Retrieve Available Tags and register for Tags
 
 ##### Retrieve Available tags
