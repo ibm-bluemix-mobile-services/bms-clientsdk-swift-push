@@ -120,7 +120,6 @@ internal class BMSPushUrlBuilder: NSObject {
         
         var unSubscriptionURL = getCollectionUrl(SUBSCRIPTIONS)
         unSubscriptionURL += QUESTIONMARK
-        unSubscriptionURL += FORWARDSLASH
         unSubscriptionURL += IMFPUSH_ACTION_DELETE
         
         return unSubscriptionURL
