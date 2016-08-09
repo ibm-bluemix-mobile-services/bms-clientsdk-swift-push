@@ -5,9 +5,7 @@ IBM Bluemix Mobile Services - Client SDK Swift Push
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=development)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
 
 
-This is the Push component of the Swift SDK for IBM Bluemix Mobile Services. 
-
-https://console.ng.bluemix.net/solutions/mobilefirst
+This is the Push component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/mobile/index.html).
 
 
 ## Contents
