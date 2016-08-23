@@ -19,7 +19,13 @@ class BMSPushUtilsTest: XCTestCase {
     
     func testSaveValueToNSUserDefaults () {
         
-        BMSPushUtils.saveValueToNSUserDefaults("some string", key: "somestring")
+        #if swift(>=3.0)
+            BMSPushUtils.saveValueToNSUserDefaults(value: "some string", key: "somestring")
+            
+        #else
+            BMSPushUtils.saveValueToNSUserDefaults("some string", key: "somestring")
+            
+        #endif
     }
     
     func testgetPushSettingValue () {
