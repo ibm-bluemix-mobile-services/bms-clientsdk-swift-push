@@ -18,7 +18,8 @@ This package contains the Push components of the Swift SDK.
 ## Requirements
 
 * iOS 8.0+
-* Xcode 7
+* Xcode 7.3, 8.0 beta 4, 8.0 beta 5
+* Swift 2.2 - 3.0
 
 
 ## Installation
@@ -40,14 +41,17 @@ end
 ```
 From the Terminal, go to your project folder and install the dependencies with the following command:
 
+```
+pod install
+```
 
 ####Swift 2.3
 
-Before running the `pod install` command, make sure to use Cocoapods version 1.1.0.beta.1.
+Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
 ####Swift 3.0
 
-Before running the `pod install` command, make sure to use Cocoapods version 1.1.0.beta.1.
+Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
 For apps built with Swift 3.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore). Always choose the Later option.
 
