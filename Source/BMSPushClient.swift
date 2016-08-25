@@ -1517,11 +1517,6 @@ import BMSAnalyticsAPI
         @available(*, deprecated, message="Please use registerWithDeviceToken")
         public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
             
-            
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appEnterActive"), name: UIApplicationDidBecomeActiveNotification, object: nil)
-            
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appOpenedFromNotificationClick"), name: UIApplicationDidFinishLaunchingNotification, object: nil)
-            
             // Generate new ID
             // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
             

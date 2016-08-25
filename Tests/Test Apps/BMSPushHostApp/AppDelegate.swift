@@ -15,6 +15,9 @@ import UIKit
 import BMSCore
 import BMSPush
 
+import UserNotifications
+import UserNotificationsUI
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -36,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         func registerForPush () {
+            
             
             let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(settings)

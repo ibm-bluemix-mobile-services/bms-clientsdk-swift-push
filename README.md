@@ -17,7 +17,7 @@ This package contains the Push components of the Swift SDK.
 
 ## Requirements
 
-* iOS 8.0+ 
+* iOS 8.0+
 * Xcode 7
 
 
@@ -26,7 +26,7 @@ This package contains the Push components of the Swift SDK.
 The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
 
 
-#### Cocoapods
+### Cocoapods
 To install BMSCore using Cocoapods, add it to your Podfile:
 
 ```ruby
@@ -40,28 +40,38 @@ end
 ```
 From the Terminal, go to your project folder and install the dependencies with the following command:
 
-```
-pod install
-```
 
-That command installs your dependencies and creates a new Xcode workspace.
+####Swift 2.3
+
+Before running the `pod install` command, make sure to use Cocoapods version 1.1.0.beta.1.
+
+####Swift 3.0
+
+Before running the `pod install` command, make sure to use Cocoapods version 1.1.0.beta.1.
+
+For apps built with Swift 3.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore). Always choose the Later option.
+
+This will installs your dependencies and creates a new Xcode workspace.
 ***Note:*** Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
 
 ```
-open App.xcworkspace
+   MyApp.xcworkspace
 ```
 
+### Carthage
+To install BMSPush using Carthage, add it to your Cartfile:
 
-#### Carthage
-To install BMSPush using Carthage, add it to your Cartfile: 
-
-```ogdl
+```
 github "ibm-bluemix-mobile-services/bms-clientsdk-swift-push"
 ```
 
-Then run the `carthage update` command. Once the build is finished, drag `BMSPush.framework`,`BMSCore.framework` and `BMSAnalyticsAPI.framework` into your Xcode project. 
+Then run the `carthage update` command. Once the build is finished, drag `BMSPush.framework`,`BMSCore.framework` and `BMSAnalyticsAPI.framework` into your Xcode project.
 
 To complete the integration, follow the instructions [here](https://github.com/Carthage/Carthage#getting-started).
+
+####Xcode 8
+
+Carthage currently is not supported for BMSCore in Xcode 8 beta. Please use Cocoapods instead.
 
 ## Enabling iOS applications to receive push notifications
 
@@ -76,20 +86,27 @@ import BMSCore
 ```
 let myBMSClient = BMSClient.sharedInstance
 
-myBMSClient.initializeWithBluemixAppRoute("BluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegion:"Location where your app Hosted")
+//Swift3
+
+myBMSClient.initializeWithBluemixAppRoute(bluemixAppRoute: "https://example.mybluemix.net", bluemixAppGUID: "1234", bluemixRegion: "Location where your app Hosted")
+
+// Swift 2.3 or Older
+
+myBMSClient.initializeWithBluemixAppRoute("bluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegion:"Location where your app Hosted")
+
 myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
 
 ```
-***AppRoute***
+***bluemixAppRoute***
 
 Specifies the route that is assigned to the server application that you created on Bluemix.
 
-***AppGUID***
+***bluemixAppGUID***
 
-Specifies the unique key that is assigned to the application that you created on Bluemix. This value is 
+Specifies the unique key that is assigned to the application that you created on Bluemix. This value is
 case-sensitive.
 
-***bluemixRegionSuffix***
+***bluemixRegion***
 
 Specifies the location where the app hosted. You can use one of three values - `BMSClient.REGION_US_SOUTH`, `BMSClient.REGION_UK` and `BMSClient.REGION_SYDNEY`.
 
@@ -97,35 +114,49 @@ Specifies the location where the app hosted. You can use one of three values - `
 
 ```
 let push =  BMSPushClient.sharedInstance
-push.initializeWithAppGUID("pushAppGUID")
+
+//Swift 3
+ push.initializeWithAppGUID(appGUID: "")
+
+ //Swift 2.3 or Older
+push.initializeWithAppGUID("appGUID")
 ```
-***pushAppGUID***
+***appGUID***
 
-The Push app GUID value. 
+The Push app GUID value.
 
-For *userId* based notifiction initialize the `BMSPush` with `clientSecret` . 
+For *userId* based notifiction initialize the `BMSPush` with `clientSecret` .
 
 ```
 let push =  BMSPushClient.sharedInstance
-push.initializeWithAppGUID("pushAppGUID", clientSecret:"clientSecret")
+
+//Swift 3
+
+push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
+
+//Swift2.3 or Older
+push.initializeWithAppGUID("appGUID", clientSecret:"clientSecret")
 ```
 
-***pushAppGUID***
+***appGUID***
 
-The Push app GUID value. 
+The Push app GUID value.
 
 ***clientSecret***
 
-The Push client secret value. 
+The Push client secret value.
 
 #### Registering iOS applications and devices
 
 Add this code to registering the app for push notification in APNS,
 
 ```
+
+//swift3 
 let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
 UIApplication.sharedApplication().registerUserNotificationSettings(settings)
 UIApplication.sharedApplication().registerForRemoteNotifications()
+
 ```    
 After the token is received from APNS, pass the token to Push Notifications as part of the
  ***didRegisterForRemoteNotificationsWithDeviceToken*** method.
@@ -136,16 +167,16 @@ After the token is received from APNS, pass the token to Push Notifications as p
    let push =  BMSPushClient.sharedInstance
    push.initializeWithAppGUID("pushAppGUID")
    push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
-            
+
         if error.isEmpty {
 
             print( "Response during device registration : \(response)")
-                
+
             print( "status code during device registration : \(statusCode)")
         }
         else{
             print( "Error during device registration \(error) ")
-                
+
             Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
         }
     }
@@ -180,7 +211,7 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 ```
 
 **WithUserId**
- 
+
 the User Id value you want to register in the push service
 
 >**Note**: If userId is provided the client secret value must be provided.
@@ -201,16 +232,16 @@ device can subscribe.
 
 ```
 push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) -> Void in
-                    
+
     if error.isEmpty {
-        
+
         print( "Response during retrieve tags : \(response)")
-        
+
         print( "status code during retrieve tags : \(statusCode)")
     }
     else{
         print( "Error during retrieve tags \(error) ")
-        
+
         Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -219,17 +250,17 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) 
 
 ```
 push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -> Void in
-                            
+
     if error.isEmpty {
-        
+
         print( "Response during Subscribing to tags : \(response?.description)")
 
         print( "status code during Subscribing tags : \(statusCode)")
     }
     else {
-                                
+
         print( "Error during subscribing tags \(error) ")
-        
+
         Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -239,17 +270,17 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
 
 ```
 push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
-            
+
     if error.isEmpty {
-        
+
         print( "Response during retrieving subscribed tags : \(response?.description)")
 
         print( "status code during retrieving subscribed tags : \(statusCode)")
     }
     else {
-        
+
         print( "Error during retrieving subscribed tags \(error) ")
-        
+
         Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -261,16 +292,16 @@ from a tag.
 
 ```
 push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -> Void in
-                    
+
     if error.isEmpty {
-        
+
         print( "Response during unsubscribed tags : \(response?.description)")
 
         print( "status code during unsubscribed tags : \(statusCode)")
     }
     else {
         print( "Error during  unsubscribed tags \(error) ")
-        
+
         print( "Error during unsubscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -281,16 +312,16 @@ Use the following code snippets to Unregister the device from Bluemix Push Notif
 
 ```
 push.unregisterDevice({ (response, statusCode, error) -> Void in
-                            
+
     if error.isEmpty {
-        
+
         print( "Response during unregistering device : \(response)")
-        
+
         print( "status code during unregistering device : \(statusCode)")
     }
     else{
         print( "Error during unregistering device \(error) ")
-        
+
         print( "Error during unregistering device \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -311,7 +342,7 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
 
 
 =======================
-Copyright 2015 IBM Corp.
+Copyright 2016 IBM Corp.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
