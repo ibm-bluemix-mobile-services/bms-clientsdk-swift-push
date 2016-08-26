@@ -13,5 +13,6 @@ before_install:
 script:
   - pod spec lint --allow-warnings
   - carthage update
-  - xcodebuild -scheme 'BMSPush' clean build CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
-  - xcodebuild test -scheme 'BMSPushTests' -destination 'platform=iOS Simulator,name=iPhone 6s'
+  - pod install
+  - xcodebuild -scheme 'BMSPush' -workspace BMSPush.xcworkspace clean build CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
+  - xcodebuild test -scheme 'BMSPushTests' -workspace BMSPush.xcworkspace -destination 'platform=iOS Simulator,name=iPhone 6s'
