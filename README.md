@@ -265,9 +265,7 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 
 The `retrieveAvailableTagsWithCompletionHandler` API returns the list of available tags to which the device
 can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
-that are sent for that tag.
-
-Call the push service to get subscriptions for a tag.
+that are sent for that tag.Call the push service to get subscriptions for a tag.
 
 Copy the following code snippets into your Swift mobile application to get a list of available tags to which the
 device can subscribe.
