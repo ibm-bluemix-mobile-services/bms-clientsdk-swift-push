@@ -356,7 +356,7 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
     }
 }
 ```
-###unsubscribing from tags based notifications
+###Unsubscribing from tags based notifications
 
 Use the following code snippets to allow your devices to get unsubscribe
 from a tag.
