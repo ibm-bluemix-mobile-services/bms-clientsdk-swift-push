@@ -59,7 +59,7 @@ This will installs your dependencies and creates a new Xcode workspace.
 ***Note:*** Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
 
 ```
-   MyApp.xcworkspace
+MyApp.xcworkspace
 ```
 
 ### Carthage
@@ -94,7 +94,7 @@ let myBMSClient = BMSClient.sharedInstance
 
 myBMSClient.initializeWithBluemixAppRoute(bluemixAppRoute: "https://example.mybluemix.net", bluemixAppGUID: "1234", bluemixRegion: "Location where your app Hosted")
 
-// Swift 2.3 or Older
+//Swift 2.3 or Older
 
 myBMSClient.initializeWithBluemixAppRoute("bluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegion:"Location where your app Hosted")
 
@@ -120,16 +120,16 @@ Specifies the location where the app hosted. You can use one of three values - `
 let push =  BMSPushClient.sharedInstance
 
 //Swift 3
- push.initializeWithAppGUID(appGUID: "")
+push.initializeWithAppGUID(appGUID: "")
 
- //Swift 2.3 or Older
+//Swift 2.3 or Older
 push.initializeWithAppGUID("appGUID")
 ```
 ***appGUID***
 
 The Push app GUID value.
 
-For `*userId*` based notifiction initialize the `BMSPush` with `clientSecret` .
+For **userId** based notifiction initialize the `BMSPush` with `clientSecret` .
 
 ```
 let push =  BMSPushClient.sharedInstance
@@ -139,7 +139,9 @@ let push =  BMSPushClient.sharedInstance
 push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
 
 //Swift2.3 or Older
+
 push.initializeWithAppGUID("appGUID", clientSecret:"clientSecret")
+
 ```
 
 ***appGUID***
@@ -212,7 +214,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
 }
 ```
 
-For *user Id* based notification, the register method will accept one more parameter - *userId*
+For **userId** based notification, the register method will accept one more parameter - *userId*
 
 
 ```
