@@ -8,26 +8,23 @@ IBM Bluemix Mobile Services - Client SDK Swift Push
 This is the Push component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/mobile/index.html).
 
 
-## Contents
+##Contents
 
 This package contains the Push components of the Swift SDK.
-* Push Registration
+* Push Registration and Unregister
 * Subscribing and Unsubcribing for Tags
 
-
-## Requirements
+##Requirements
 
 * iOS 8.0+
 * Xcode 7.3, 8.0 beta 4, 8.0 beta 5
 * Swift 2.2 - 3.0
 
-
-## Installation
+##Installation
 
 The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
 
-
-### Cocoapods
+###Cocoapods
 To install BMSPush using Cocoapods, add it to your Podfile:
 
 ```ruby
@@ -62,7 +59,7 @@ This will installs your dependencies and creates a new Xcode workspace.
 MyApp.xcworkspace
 ```
 
-### Carthage
+###Carthage
 To install BMSPush using Carthage, add it to your Cartfile:
 
 ```
@@ -77,15 +74,15 @@ To complete the integration, follow the instructions [here](https://github.com/C
 
 Carthage currently is not supported for BMSPush in Xcode 8 beta. Please use Cocoapods instead.
 
-## Enabling iOS applications to receive push notifications
+##Enabling iOS applications to receive push notifications
 
-##### Reference the SDK in your code.
+####Reference the SDK in your code.
 
 ```
 import BMSPush
 import BMSCore
 ```
-#### Initializing the Core SDK
+####Initializing the Core SDK
 
 ```
 let myBMSClient = BMSClient.sharedInstance
@@ -101,20 +98,20 @@ myBMSClient.initializeWithBluemixAppRoute("bluemixAppRoute", bluemixAppGUID: "AP
 myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
 
 ```
-***bluemixAppRoute***
+#####bluemixAppRoute
 
-Specifies the route that is assigned to the server application that you created on Bluemix.
+- Specifies the route that is assigned to the server application that you created on Bluemix.
 
-***bluemixAppGUID***
+#####bluemixAppGUID
 
-Specifies the unique key that is assigned to the application that you created on Bluemix. This value is
+- Specifies the unique key that is assigned to the application that you created on Bluemix. This value is
 case-sensitive.
 
-***bluemixRegion***
+#####bluemixRegion
 
-Specifies the location where the app hosted. You can use one of three values - `BMSClient.REGION_US_SOUTH`, `BMSClient.REGION_UK` and `BMSClient.REGION_SYDNEY`.
+- Specifies the location where the app hosted. You can use one of three values - `BMSClient.REGION_US_SOUTH`, `BMSClient.REGION_UK` and `BMSClient.REGION_SYDNEY`.
 
-#### Initializing the Push SDK
+####Initializing the Push SDK
 
 ```
 let push =  BMSPushClient.sharedInstance
@@ -125,11 +122,13 @@ push.initializeWithAppGUID(appGUID: "")
 //Swift 2.3 or Older
 push.initializeWithAppGUID("appGUID")
 ```
-***appGUID***
+#####appGUID
 
-The Push app GUID value.
+- The Push app GUID value.
 
-For **userId** based notifiction initialize the `BMSPush` with `clientSecret` .
+####Initializing the Push SDK with UserId
+
+For `userId` based notifications initialize the `BMSPush` with `clientSecret` .
 
 ```
 let push =  BMSPushClient.sharedInstance
@@ -144,15 +143,15 @@ push.initializeWithAppGUID("appGUID", clientSecret:"clientSecret")
 
 ```
 
-***appGUID***
+#####appGUID
 
-The Push app GUID value.
+- The Push app GUID value.
 
-***clientSecret***
+#####clientSecret
 
-The Push client secret value.
+- The Push client secret value.
 
-#### Registering iOS applications and devices
+####Registering iOS applications and devices
 
 Add this code to registering the app for push notification in APNS,
 
@@ -174,8 +173,7 @@ UIApplication.sharedApplication().registerForRemoteNotifications()
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
 
-After the token is received from APNS, pass the token to Push Notifications as part of the
- ***didRegisterForRemoteNotificationsWithDeviceToken*** method.
+After the token is received from APNS, pass the token to Push Notifications as part of the `didRegisterForRemoteNotificationsWithDeviceToken` method.
 
 ```
 
@@ -214,7 +212,9 @@ After the token is received from APNS, pass the token to Push Notifications as p
 }
 ```
 
-For **userId** based notification, the register method will accept one more parameter - *userId*
+####Registering iOS applications and devices with userId
+
+For `userId` based notification, the register method will accept one more parameter - `userId`
 
 
 ```
@@ -252,18 +252,18 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 }
 ```
 
-**WithUserId**
+#####WithUserId
 
-the User Id value you want to register in the push service
+- The User Id value you want to register in the push service
 
 >**Note**: If userId is provided the client secret value must be provided.
 
 
-#### Retrieve Available Tags and register for Tags
+####Retrieve Available Tags and register for Tags
 
-##### Retrieve Available tags
+#####Retrieve Available tags
 
-The ***retrieveAvailableTagsWithCompletionHandler*** API returns the list of available tags to which the device
+The `retrieveAvailableTagsWithCompletionHandler` API returns the list of available tags to which the device
 can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
 that are sent for that tag.
 
@@ -300,7 +300,7 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) 
     }
 }
 ```
-##### Subscribe to Available tags
+#####Subscribe to Available tags
 
 ```
 
@@ -331,7 +331,7 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
 }
 ```
 
-##### Retrieve Subscribed tags
+#####Retrieve Subscribed tags
 
 ```
 
@@ -359,7 +359,7 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
     }
 }
 ```
-#### unsubscribing tags
+####unsubscribing tags
 
 Use the following code snippets to allow your devices to get unsubscribe
 from a tag.
@@ -394,7 +394,7 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
     }
 }
 ```
-#### Unregistering the Device from Bluemix Push Notification
+####Unregistering the Device from Bluemix Push Notification
 
 Use the following code snippets to Unregister the device from Bluemix Push Notification
 
