@@ -12,7 +12,7 @@ This is the Push component of the Swift SDK for [IBM Bluemix Mobile Services](ht
 
 This package contains the Push components of the Swift SDK.
 * Push Registration and Unregister
-* Subscribing and Unsubcribing for Tags
+* Subscribing and Unsubscribing for Tags
 
 ##Requirements
 
@@ -93,9 +93,9 @@ myBMSClient.initializeWithBluemixAppRoute(bluemixAppRoute: "https://example.mybl
 
 //Swift 2.3 or Older
 
-myBMSClient.initializeWithBluemixAppRoute("bluemixAppRoute", bluemixAppGUID: "APPGUID", bluemixRegion:"Location where your app Hosted")
+myBMSClient.initializeWithBluemixAppRoute("https://example.mybluemix.net", bluemixAppGUID: "1234", bluemixRegion:"Location where your app Hosted")
 
-myBMSClient.defaultRequestTimeout = 10.0 // Timput in seconds
+myBMSClient.defaultRequestTimeout = 10.0 // Timeout in seconds
 
 ```
 #####bluemixAppRoute
@@ -427,7 +427,7 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
 ###Learning More
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
 
-* [Getting started with IBM MobileFirst Platfrom for iOS](https://www.ng.bluemix.net/docs/mobile/index.html)
+* [Getting started with IBM MobileFirst Platform for iOS](https://www.ng.bluemix.net/docs/mobile/index.html)
 
 ###Connect with Bluemix
 
