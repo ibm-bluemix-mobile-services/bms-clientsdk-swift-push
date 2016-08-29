@@ -28,7 +28,7 @@ The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://coco
 
 
 ### Cocoapods
-To install BMSCore using Cocoapods, add it to your Podfile:
+To install BMSPush using Cocoapods, add it to your Podfile:
 
 ```ruby
 use_frameworks!
@@ -75,7 +75,7 @@ To complete the integration, follow the instructions [here](https://github.com/C
 
 ####Xcode 8
 
-Carthage currently is not supported for BMSCore in Xcode 8 beta. Please use Cocoapods instead.
+Carthage currently is not supported for BMSPush in Xcode 8 beta. Please use Cocoapods instead.
 
 ## Enabling iOS applications to receive push notifications
 
