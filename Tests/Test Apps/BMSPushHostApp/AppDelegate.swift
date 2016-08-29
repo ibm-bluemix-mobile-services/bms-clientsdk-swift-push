@@ -149,11 +149,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         if error.isEmpty {
                             
-                            print( "Response during retrive tags : \(response)")
+                            print( "Response during retrieve tags : \(response)")
                             
                             print( "status code during retrieve tags : \(statusCode)")
                             
-                            self.sendNotifToDisplayResponse(responseValue: "Response during retrive tags: \(response?.description)")
+                            self.sendNotifToDisplayResponse(responseValue: "Response during retrieve tags: \(response?.description)")
                             
                             // MARK:    SUBSCRIBING TO AVAILABLE TAGS
                             push.subscribeToTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
@@ -377,11 +377,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         if error.isEmpty {
                             
-                            print( "Response during retrive tags : \(response)")
+                            print( "Response during retrieve tags : \(response)")
                             
                             print( "status code during retrieve tags : \(statusCode)")
                             
-                            self.sendNotifToDisplayResponse("Response during retrive tags: \(response?.description)")
+                            self.sendNotifToDisplayResponse("Response during retrieve tags: \(response?.description)")
                             
                             // MARK:    SUBSCRIBING TO AVAILABLE TAGS
                             push.subscribeToTags(response!, completionHandler: { (response, statusCode, error) -> Void in

@@ -129,7 +129,7 @@ push.initializeWithAppGUID("appGUID")
 
 The Push app GUID value.
 
-For *userId* based notifiction initialize the `BMSPush` with `clientSecret` .
+For `*userId*` based notifiction initialize the `BMSPush` with `clientSecret` .
 
 ```
 let push =  BMSPushClient.sharedInstance
@@ -156,35 +156,59 @@ Add this code to registering the app for push notification in APNS,
 
 ```
 
-//swift3 
 let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
 UIApplication.sharedApplication().registerUserNotificationSettings(settings)
 UIApplication.sharedApplication().registerForRemoteNotifications()
 
+//For iOS 10 beta
+
+ UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
+ { (granted, error) in
+
+    UIApplication.shared.registerForRemoteNotifications()
+ }
+
 ```    
+
+>**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
+
 After the token is received from APNS, pass the token to Push Notifications as part of the
  ***didRegisterForRemoteNotificationsWithDeviceToken*** method.
 
 ```
+
+//Swift3
+
+ func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
+
+   let push =  BMSPushClient.sharedInstance
+   push.initializeWithAppGUID(appGUID: "your pushAppGUID")
+   push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
+    if error.isEmpty {
+      print( "Response during device registration : \(response)")
+      print( "status code during device registration : \(statusCode)")
+    } else{
+      print( "Error during device registration \(error) ")
+      Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }  
+ }
+
+
+ //Swift2.3 and Older
+
  func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
    let push =  BMSPushClient.sharedInstance
    push.initializeWithAppGUID("pushAppGUID")
    push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
-
         if error.isEmpty {
-
             print( "Response during device registration : \(response)")
-
             print( "status code during device registration : \(statusCode)")
-        }
-        else{
+        }else{
             print( "Error during device registration \(error) ")
-
             Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
         }
     }
-
 }
 ```
 
@@ -192,25 +216,37 @@ For *user Id* based notification, the register method will accept one more param
 
 
 ```
+//Swift3
+
+func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
+
+   let push =  BMSPushClient.sharedInstance
+   push.initializeWithAppGUID(appGUID: "your pushAppGUID", clientSecret:"your pushApp Client Secret")
+   push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "your userId") { (response, statusCode, error) -> Void in
+    if error.isEmpty {
+      print( "Response during device registration : \(response)")
+      print( "status code during device registration : \(statusCode)")
+    } else{
+      print( "Error during device registration \(error) ")
+      Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }  
+}
+
+//Swift2.3 and Older
+
 func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
     let push =  BMSPushClient.sharedInstance
-    push.initializeWithAppGUID("pushAppGUID", clientSecret:"clientSecret")
-    push.registerWithDeviceToken(deviceToken, WithUserId: "your user id") { (response, statusCode, error) -> Void in
-
+    push.initializeWithAppGUID("your pushAppGUID", clientSecret:"your pushApp Client Secret")
+    push.registerWithDeviceToken(deviceToken, WithUserId: "your userId") { (response, statusCode, error) -> Void in
         if error.isEmpty {
-
             print( "Response during device registration : \(response)")
-
             print( "status code during device registration : \(statusCode)")
-        }
-        else{
+        }else{
             print( "Error during device registration \(error) ")
-
             Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
         }
     }
-
 }
 ```
 
@@ -235,17 +271,29 @@ Copy the following code snippets into your Swift mobile application to get a lis
 device can subscribe.
 
 ```
+
+//Swift3
+
+push.retrieveAvailableTagsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
+
+  if error.isEmpty {
+    print( "Response during retrieve tags : \(response)")
+    print( "status code during retrieve tags : \(statusCode)")
+  }else{
+    print( "Error during retrieve tags \(error) ")
+    Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+  }
+}
+
+//Swift2.3 and Older
+
 push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) -> Void in
 
     if error.isEmpty {
-
         print( "Response during retrieve tags : \(response)")
-
         print( "status code during retrieve tags : \(statusCode)")
-    }
-    else{
+    }else{
         print( "Error during retrieve tags \(error) ")
-
         Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -253,18 +301,29 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) 
 ##### Subscribe to Available tags
 
 ```
+
+//Swift3
+
+ push.subscribeToTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
+
+   if error.isEmpty {
+       print( "Response during Subscribing to tags : \(response?.description)")     
+       print( "status code during Subscribing tags : \(statusCode)")
+     }else{
+       print( "Error during subscribing tags \(error) ")
+       Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+     }
+ }
+
+//Swift2.3 and Older
+
 push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -> Void in
 
     if error.isEmpty {
-
         print( "Response during Subscribing to tags : \(response?.description)")
-
         print( "status code during Subscribing tags : \(statusCode)")
-    }
-    else {
-
+    }else {
         print( "Error during subscribing tags \(error) ")
-
         Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -273,18 +332,27 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
 ##### Retrieve Subscribed tags
 
 ```
+
+//Swift3
+ push.retrieveSubscriptionsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
+
+   if error.isEmpty {                                     
+     print( "Response during retrieving subscribed tags : \(response?.description)")
+     print( "status code during retrieving subscribed tags : \(statusCode)")
+   }else{
+     print( "Error during retrieving subscribed tags \(error) ")
+     Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+   }
+ }
+
+//Swift2.3 and Older
 push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
 
     if error.isEmpty {
-
         print( "Response during retrieving subscribed tags : \(response?.description)")
-
         print( "status code during retrieving subscribed tags : \(statusCode)")
-    }
-    else {
-
+    }else {
         print( "Error during retrieving subscribed tags \(error) ")
-
         Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
@@ -295,6 +363,20 @@ Use the following code snippets to allow your devices to get unsubscribe
 from a tag.
 
 ```
+
+//Swift3
+push.unsubscribeFromTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
+
+  if error.isEmpty {
+    print( "Response during unsubscribed tags : \(response?.description)")
+    print( "status code during unsubscribed tags : \(statusCode)")
+  }else{
+    print( "Error during  unsubscribed tags \(error) ")
+  }
+}
+
+//Swift2.3 and Older
+
 push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -> Void in
 
     if error.isEmpty {
@@ -315,17 +397,28 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
 Use the following code snippets to Unregister the device from Bluemix Push Notification
 
 ```
+
+//Swift3
+
+push.unregisterDevice(completionHandler: { (response, statusCode, error) -> Void in
+
+  if error.isEmpty {                 
+     print( "Response during unregistering device : \(response)")
+     print( "status code during unregistering device : \(statusCode)")
+   }else{
+     print( "Error during unregistering device \(error) ")
+   }
+}
+
+//Swift2.3 and Older
+
 push.unregisterDevice({ (response, statusCode, error) -> Void in
 
     if error.isEmpty {
-
         print( "Response during unregistering device : \(response)")
-
         print( "status code during unregistering device : \(statusCode)")
-    }
-    else{
+    }else{
         print( "Error during unregistering device \(error) ")
-
         print( "Error during unregistering device \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
