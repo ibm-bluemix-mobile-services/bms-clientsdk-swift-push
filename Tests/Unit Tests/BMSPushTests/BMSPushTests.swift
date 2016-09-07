@@ -28,7 +28,9 @@ class testBMSPushClient: XCTestCase {
         
         
         #if swift(>=3.0)
-            BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+           // BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
             
             let clientInstance = BMSPushClient.sharedInstance
             clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061")
@@ -68,7 +70,9 @@ class testBMSPushClient: XCTestCase {
                 XCTFail("Test timed out");
             }
         #else
-            BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            //BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
             
             let clientInstance = BMSPushClient.sharedInstance
             clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061")

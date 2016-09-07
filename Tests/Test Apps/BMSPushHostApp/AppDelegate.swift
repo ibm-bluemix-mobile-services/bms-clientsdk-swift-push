@@ -31,7 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Override point for customization after application launch.
             let myBMSClient = BMSClient.sharedInstance
             
-            myBMSClient.initializeWithBluemixAppRoute(bluemixAppRoute: "", bluemixAppGUID: "", bluemixRegion: "")
+           // myBMSClient.initializeWithBluemixAppRoute(bluemixAppRoute: "", bluemixAppGUID: "", bluemixRegion: "")
+            myBMSClient.initialize(bluemixRegion: "")
             // BMSPushClient.overrideServerHost = "http://9.109.242.204:1337"
             
             myBMSClient.defaultRequestTimeout = 10.0 // seconds
@@ -268,7 +269,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Override point for customization after application launch.
             let myBMSClient = BMSClient.sharedInstance
             
-            myBMSClient.initializeWithBluemixAppRoute("", bluemixAppGUID: "", bluemixRegion: "")
+            //myBMSClient.initializeWithBluemixAppRoute("", bluemixAppGUID: "", bluemixRegion: "")
+            myBMSClient.initialize(bluemixRegion: "")
             // BMSPushClient.overrideServerHost = "http://9.109.242.204:1337"
             
             myBMSClient.defaultRequestTimeout = 10.0 // seconds
