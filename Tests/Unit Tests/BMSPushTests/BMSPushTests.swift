@@ -1,15 +1,15 @@
 /*
-*     Copyright 2015 IBM Corp.
-*     Licensed under the Apache License, Version 2.0 (the "License");
-*     you may not use this file except in compliance with the License.
-*     You may obtain a copy of the License at
-*     http://www.apache.org/licenses/LICENSE-2.0
-*     Unless required by applicable law or agreed to in writing, software
-*     distributed under the License is distributed on an "AS IS" BASIS,
-*     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*     See the License for the specific language governing permissions and
-*     limitations under the License.
-*/
+ *     Copyright 2016 IBM Corp.
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 
 import XCTest
 
@@ -26,45 +26,93 @@ class testBMSPushClient: XCTestCase {
     
     func testRegister () {
         
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
         
-        let clientInstance = BMSPushClient.sharedInstance
-        clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061")
-        let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
-        
-        let token = string.dataUsingEncoding(NSUTF8StringEncoding)
-        
-        clientInstance.registerWithDeviceToken(token!,completionHandler:  { (response, statusCode, error) -> Void in
+        #if swift(>=3.0)
+           // BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
+            
+            let clientInstance = BMSPushClient.sharedInstance
+            clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061")
+            let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
+            
+            let token = string.data(using: String.Encoding.utf8)
+            
+            clientInstance.registerWithDeviceToken(deviceToken: token!,completionHandler:  { (response, statusCode, error) -> Void in
+                
+                
+                NSLog("the status code for registartion is \(statusCode)");
+                
+                if error.isEmpty{
+                    
+                    print( "Response during device registration : \(response)")
+                    
+                    print( "status code during device registration : \(statusCode)")
+                }
+                else {
+                    
+                    print( "Error during device registration \(error) ")
+                    // XCTFail("Failed to register")
+                }
+                
+                self.responseHasArrived = true
+            })
+            
+            
+            while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
+                CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.01, true)
+            }
+            if responseHasArrived {
+                
+                NSLog("Success Execution")
+            }
+            else{
+                XCTFail("Test timed out");
+            }
+        #else
+            //BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
+            
+            let clientInstance = BMSPushClient.sharedInstance
+            clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061")
+            let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
+            
+            let token = string.dataUsingEncoding(NSUTF8StringEncoding)
+            
+            clientInstance.registerWithDeviceToken(token!,completionHandler:  { (response, statusCode, error) -> Void in
             
             
             NSLog("the status code for registartion is \(statusCode)");
             
             if error.isEmpty{
-                
-                print( "Response during device registration : \(response)")
-                
-                print( "status code during device registration : \(statusCode)")
+            
+            print( "Response during device registration : \(response)")
+            
+            print( "status code during device registration : \(statusCode)")
             }
             else {
-                
-                print( "Error during device registration \(error) ")
-                // XCTFail("Failed to register")
+            
+            print( "Error during device registration \(error) ")
+            // XCTFail("Failed to register")
             }
             
             self.responseHasArrived = true
-        })
-        
-        
-        while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
+            })
+            
+            
+            while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
-        }
-        if responseHasArrived {
+            }
+            if responseHasArrived {
             
             NSLog("Success Execution")
-        }
-        else{
+            }
+            else{
             XCTFail("Test timed out");
-        }
+            }
+        #endif
+        
     }
     
     func testSubscribeToTags () {
@@ -82,7 +130,7 @@ class testBMSPushClient: XCTestCase {
             
             if error.isEmpty{
                 
-                print( "Response during retrive tags : \(response)")
+                print( "Response during retrieve tags : \(response)")
                 
                 print( "status code during retrieve tags : \(statusCode)")
                 
@@ -104,7 +152,11 @@ class testBMSPushClient: XCTestCase {
         
         
         while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+            #if swift(>=3.0)
+                CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.01, true)
+            #else
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+            #endif
         }
         if responseHasArrived && (tagsArray.count > 0) {
             
@@ -112,25 +164,48 @@ class testBMSPushClient: XCTestCase {
             
             self.responseHasArrived = false
             
-            clientInstance.subscribeToTags(tagsArray) { (response, statusCode, error) -> Void in
+            #if swift(>=3.0)
+                clientInstance.subscribeToTags(tagsArray: tagsArray) { (response, statusCode, error) -> Void in
+                    
+                    if error.isEmpty {
+                        
+                        print( "Response during Subscribing to tags : \(response?.description)")
+                        
+                        print( "status code during Subscribing tags : \(statusCode)")
+                    }
+                    else {
+                        print( "Error during subscribing tags \(error) ")
+                        //XCTFail("Failed to subscribe tags")
+                    }
+                    
+                    self.responseHasArrived = true
+                }
+            #else
+                clientInstance.subscribeToTags(tagsArray) { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
-                    
-                    print( "Response during Subscribing to tags : \(response?.description)")
-                    
-                    print( "status code during Subscribing tags : \(statusCode)")
+                
+                print( "Response during Subscribing to tags : \(response?.description)")
+                
+                print( "status code during Subscribing tags : \(statusCode)")
                 }
                 else {
-                    print( "Error during subscribing tags \(error) ")
-                    //XCTFail("Failed to subscribe tags")
+                print( "Error during subscribing tags \(error) ")
+                //XCTFail("Failed to subscribe tags")
                 }
                 
                 self.responseHasArrived = true
-            }
+                }
+            #endif
+            
             
             
             while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
-                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+                #if swift(>=3.0)
+                    CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.01, true)
+                #else
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+                #endif
             }
             if responseHasArrived {
                 
@@ -155,8 +230,11 @@ class testBMSPushClient: XCTestCase {
     func testUnregisterDevice () {
         
         // MARK: retrieve subscibed tags
-        
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e767755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        #if swift(>=3.0)
+            BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e767755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        #else
+            BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e767755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        #endif
         let clientInstance = BMSPushClient.sharedInstance
         
         var tagsArray = NSMutableArray()
@@ -185,7 +263,11 @@ class testBMSPushClient: XCTestCase {
         
         
         while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+            #if swift(>=3.0)
+                CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.01, true)
+            #else
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+            #endif
         }
         if responseHasArrived {
             
@@ -195,25 +277,48 @@ class testBMSPushClient: XCTestCase {
             
             self.responseHasArrived = false
             
-            clientInstance.unsubscribeFromTags(tagsArray) { (response, statusCode, error) -> Void in
+            #if swift(>=3.0)
+                clientInstance.unsubscribeFromTags(tagsArray: tagsArray) { (response, statusCode, error) -> Void in
+                    
+                    if error.isEmpty {
+                        
+                        print( "Response during unsubscribing tags : \(response?.description)")
+                        
+                        print( "status code during unsubscribing tags : \(statusCode)")
+                    }
+                    else {
+                        print( "Error during  unsubscribing tags \(error) ")
+                        //XCTFail("Failed to unsubscribing tags")
+                    }
+                    
+                    self.responseHasArrived = true
+                }
+            #else
+                clientInstance.unsubscribeFromTags(tagsArray) { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
-                    
-                    print( "Response during unsubscribing tags : \(response?.description)")
-                    
-                    print( "status code during unsubscribing tags : \(statusCode)")
+                
+                print( "Response during unsubscribing tags : \(response?.description)")
+                
+                print( "status code during unsubscribing tags : \(statusCode)")
                 }
                 else {
-                    print( "Error during  unsubscribing tags \(error) ")
-                    //XCTFail("Failed to unsubscribing tags")
+                print( "Error during  unsubscribing tags \(error) ")
+                //XCTFail("Failed to unsubscribing tags")
                 }
                 
                 self.responseHasArrived = true
-            }
+                }
+            #endif
+            
             
             
             while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
-                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+                #if swift(>=3.0)
+                    CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.01, true)
+                #else
+                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+                #endif
             }
             if responseHasArrived {
                 
@@ -240,7 +345,11 @@ class testBMSPushClient: XCTestCase {
                 
                 
                 while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
-                    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+                    #if swift(>=3.0)
+                        CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.01, true)
+                    #else
+                        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+                    #endif
                 }
                 if responseHasArrived {
                     
@@ -262,39 +371,75 @@ class testBMSPushClient: XCTestCase {
     
     
     func testRegisterWithUserId(){
-        
-        BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        #if swift(>=3.0)
+            BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        #else
+            BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+        #endif
         
         let clientInstance = BMSPushClient.sharedInstance
-    
-        clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061", clientSecret:"134234-23432423-32423432")
-        let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310a9c"
         
-        let token = string.dataUsingEncoding(NSUTF8StringEncoding)
-        
-        clientInstance.registerWithDeviceToken(token!, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
+        #if swift(>=3.0)
+            clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061", clientSecret:"134234-23432423-32423432")
+            let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310a9c"
+            
+            let token = string.data(using: String.Encoding.utf8)
+            
+            clientInstance.registerWithDeviceToken(deviceToken: token!, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
+                
+                
+                NSLog("the status code for registartion is \(statusCode)");
+                
+                if error.isEmpty{
+                    
+                    print( "Response during device registration : \(response)")
+                    
+                    print( "status code during device registration : \(statusCode)")
+                }
+                else {
+                    
+                    print( "Error during device registration \(error) ")
+                    // XCTFail("Failed to register")
+                }
+                
+                self.responseHasArrived = true
+            })
+            
+        #else
+            clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061", clientSecret:"134234-23432423-32423432")
+            let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310a9c"
+            
+            let token = string.dataUsingEncoding(NSUTF8StringEncoding)
+            
+            clientInstance.registerWithDeviceToken(token!, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
             
             
             NSLog("the status code for registartion is \(statusCode)");
             
             if error.isEmpty{
-                
-                print( "Response during device registration : \(response)")
-                
-                print( "status code during device registration : \(statusCode)")
+            
+            print( "Response during device registration : \(response)")
+            
+            print( "status code during device registration : \(statusCode)")
             }
             else {
-                
-                print( "Error during device registration \(error) ")
-                // XCTFail("Failed to register")
+            
+            print( "Error during device registration \(error) ")
+            // XCTFail("Failed to register")
             }
             
             self.responseHasArrived = true
-        })
+            })
+            
+        #endif
         
         
         while (responseHasArrived == false && (timeoutDate.timeIntervalSinceNow > 0)){
-            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+            #if swift(>=3.0)
+                CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.01, true)
+            #else
+                CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.01, true)
+            #endif
         }
         if responseHasArrived {
             
