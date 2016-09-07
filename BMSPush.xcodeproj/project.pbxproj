@@ -7,12 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		145835341CC5279E00788110 /* BMSAnalyticsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */; };
-		145835361CC527A300788110 /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835351CC527A300788110 /* BMSCore.framework */; };
-		14E4D0CB1CC8A07C00D37D5A /* BMSAnalyticsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */; };
-		14E4D0CC1CC8A07C00D37D5A /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835351CC527A300788110 /* BMSCore.framework */; };
-		14E4D0CD1CC8A08500D37D5A /* BMSAnalyticsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */; };
-		14E4D0CE1CC8A08500D37D5A /* BMSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 145835351CC527A300788110 /* BMSCore.framework */; };
 		561BFE421C6C856900CDB375 /* BMSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3E1C6C856900CDB375 /* BMSConstants.swift */; };
 		561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */; };
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
@@ -71,8 +65,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BMSAnalyticsAPI.framework; path = Carthage/Build/iOS/BMSAnalyticsAPI.framework; sourceTree = "<group>"; };
-		145835351CC527A300788110 /* BMSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BMSCore.framework; path = Carthage/Build/iOS/BMSCore.framework; sourceTree = "<group>"; };
 		561BFE331C6C855300CDB375 /* BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		561BFE3E1C6C856900CDB375 /* BMSConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSConstants.swift; sourceTree = "<group>"; };
 		561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClient.swift; sourceTree = "<group>"; };
@@ -101,8 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14E4D0CB1CC8A07C00D37D5A /* BMSAnalyticsAPI.framework in Frameworks */,
-				14E4D0CC1CC8A07C00D37D5A /* BMSCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,8 +101,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				568867721CA688420049CD8C /* BMSPush.framework in Frameworks */,
-				14E4D0CD1CC8A08500D37D5A /* BMSAnalyticsAPI.framework in Frameworks */,
-				14E4D0CE1CC8A08500D37D5A /* BMSCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,8 +109,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				56B431C71C72EAFA00AE421C /* BMSPush.framework in Frameworks */,
-				145835341CC5279E00788110 /* BMSAnalyticsAPI.framework in Frameworks */,
-				145835361CC527A300788110 /* BMSCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,29 +122,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		145835371CC5282D00788110 /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				145835381CC5283600788110 /* iOS */,
-			);
-			name = Dependencies;
-			sourceTree = "<group>";
-		};
-		145835381CC5283600788110 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				145835351CC527A300788110 /* BMSCore.framework */,
-				145835331CC5279E00788110 /* BMSAnalyticsAPI.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
 		561BFE291C6C855300CDB375 = {
 			isa = PBXGroup;
 			children = (
 				561BFE351C6C855300CDB375 /* Source */,
 				568867641CA687AE0049CD8C /* Tests */,
-				145835371CC5282D00788110 /* Dependencies */,
 				561BFE341C6C855300CDB375 /* Products */,
 			);
 			sourceTree = "<group>";
