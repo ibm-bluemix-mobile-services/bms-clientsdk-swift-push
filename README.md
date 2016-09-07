@@ -76,13 +76,13 @@ Carthage currently is not supported for BMSPush in Xcode 8 beta. Please use Coco
 
 ##Enabling iOS applications to receive push notifications
 
-####Reference the SDK in your code.
+###Reference the SDK in your code.
 
 ```
 import BMSPush
 import BMSCore
 ```
-####Initializing the Core SDK
+###Initializing the Core SDK
 
 ```
 let myBMSClient = BMSClient.sharedInstance
@@ -111,7 +111,7 @@ case-sensitive.
 
 - Specifies the location where the app hosted. You can use one of three values - `BMSClient.REGION_US_SOUTH`, `BMSClient.REGION_UK` and `BMSClient.REGION_SYDNEY`.
 
-####Initializing the Push SDK
+###Initializing the Push SDK
 
 ```
 let push =  BMSPushClient.sharedInstance
@@ -126,9 +126,8 @@ push.initializeWithAppGUID("appGUID")
 
 - The Push app GUID value.
 
-####Initializing the Push SDK with UserId
-
-For `userId` based notifications initialize the `BMSPush` with `clientSecret` .
+###Initializing the Push SDK with UserId
+If you wish to associate a userId with this client so as to be able to send `userId` based notifications then initialize the `BMSPush` with `clientSecret` .
 
 ```
 let push =  BMSPushClient.sharedInstance
@@ -151,7 +150,7 @@ push.initializeWithAppGUID("appGUID", clientSecret:"clientSecret")
 
 - The Push client secret value.
 
-####Registering iOS applications and devices
+###Registering iOS applications and devices
 
 Add this code to registering the app for push notification in APNS,
 
@@ -212,7 +211,7 @@ After the token is received from APNS, pass the token to Push Notifications as p
 }
 ```
 
-####Registering iOS applications and devices with userId
+###Registering iOS applications and devices with userId
 
 For `userId` based notification, the register method will accept one more parameter - `userId`
 
@@ -259,7 +258,7 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 >**Note**: If userId is provided the client secret value must be provided.
 
 
-####Retrieve Available Tags and register for Tags
+###Retrieve Available Tags and subscribe for Tags based Notifications
 
 #####Retrieve Available tags
 
@@ -357,7 +356,7 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
     }
 }
 ```
-####unsubscribing tags
+###Unsubscribing from tags based notifications
 
 Use the following code snippets to allow your devices to get unsubscribe
 from a tag.
@@ -392,7 +391,7 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
     }
 }
 ```
-####Unregistering the Device from Bluemix Push Notification
+###Unregistering the Device from Bluemix Push Notification
 
 Use the following code snippets to Unregister the device from Bluemix Push Notification
 
