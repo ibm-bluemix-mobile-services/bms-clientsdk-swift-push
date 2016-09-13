@@ -28,12 +28,11 @@ class testBMSPushClient: XCTestCase {
         
         
         #if swift(>=3.0)
-           // BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
             
             BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
             
             let clientInstance = BMSPushClient.sharedInstance
-            clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061")
+            clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061", clientSecret: "ed35ea1b-25d4-4521-885b-13ac874fe258")
             let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
             
             let token = string.data(using: String.Encoding.utf8)
@@ -70,12 +69,11 @@ class testBMSPushClient: XCTestCase {
                 XCTFail("Test timed out");
             }
         #else
-            //BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
             
             BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
             
             let clientInstance = BMSPushClient.sharedInstance
-            clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061")
+            clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061", clientSecret: "ed35ea1b-25d4-4521-885b-13ac874fe258")
             let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
             
             let token = string.dataUsingEncoding(NSUTF8StringEncoding)
@@ -231,9 +229,9 @@ class testBMSPushClient: XCTestCase {
         
         // MARK: retrieve subscibed tags
         #if swift(>=3.0)
-            BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e767755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
         #else
-            BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e767755301", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion:  BMSClient.REGION_US_SOUTH)
         #endif
         let clientInstance = BMSPushClient.sharedInstance
         
@@ -372,9 +370,9 @@ class testBMSPushClient: XCTestCase {
     
     func testRegisterWithUserId(){
         #if swift(>=3.0)
-            BMSClient.sharedInstance.initializeWithBluemixAppRoute(bluemixAppRoute: "http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
         #else
-            BMSClient.sharedInstance.initializeWithBluemixAppRoute("http://sdktest.mybluemix.net", bluemixAppGUID: "f085b69f-f713-410a-b65d-e7b061", bluemixRegion: BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion:  BMSClient.REGION_US_SOUTH)
         #endif
         
         let clientInstance = BMSPushClient.sharedInstance

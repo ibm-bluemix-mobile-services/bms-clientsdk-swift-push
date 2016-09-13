@@ -113,6 +113,7 @@ import BMSAnalyticsAPI
          
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
+        @available(*, deprecated, message: "This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
         public func initializeWithAppGUID (appGUID: String?) {
             self.applicationId = appGUID;
             isInitialized = true;
@@ -351,10 +352,14 @@ import BMSAnalyticsAPI
                 let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
-                let headers = urlBuilder.addHeader()
-                
+                var headers = urlBuilder.addHeader()
+                if(!(self.clientSecret!.isEmpty)){
+                   headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                }
+    
+    
                 let method =  HttpMethod.GET
-                
+    
                 self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Verifying previous device registration.")
                 let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                 
@@ -373,7 +378,11 @@ import BMSAnalyticsAPI
                             self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
                             let resourceURL:String = urlBuilder.getDevicesUrl()
                             
-                            let headers = urlBuilder.addHeader()
+                            var headers = urlBuilder.addHeader()
+                            if(!(self.clientSecret!.isEmpty)){
+                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                            }
+
                             
                             let method =  HttpMethod.POST
                             
@@ -439,7 +448,11 @@ import BMSAnalyticsAPI
                                 self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
                                 
-                                let headers = urlBuilder.addHeader()
+                                var headers = urlBuilder.addHeader()
+                                if(!(self.clientSecret!.isEmpty)){
+                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                                }
+
                                 
                                 let method =  HttpMethod.PUT
                                 
@@ -531,7 +544,11 @@ import BMSAnalyticsAPI
             let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             
             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(self.clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+            }
+
             
             let method =  HttpMethod.GET
             
@@ -552,7 +569,11 @@ import BMSAnalyticsAPI
                         self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
                         let resourceURL:String = urlBuilder.getDevicesUrl()
                         
-                        let headers = urlBuilder.addHeader()
+                        var headers = urlBuilder.addHeader()
+                        if(!(self.clientSecret!.isEmpty)){
+                            headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                        }
+
                         
                         let method =  HttpMethod.POST
                         
@@ -617,7 +638,10 @@ import BMSAnalyticsAPI
                             self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: rDevId)
                             
-                            let headers = urlBuilder.addHeader()
+                            var headers = urlBuilder.addHeader()
+                            if(!(self.clientSecret!.isEmpty)){
+                               headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                            }
                             
                             let method =  HttpMethod.PUT
                             
@@ -690,7 +714,11 @@ import BMSAnalyticsAPI
             
             let resourceURL:String = urlBuilder.getTagsUrl()
             
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(self.clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+            }
+
             
             let method =  HttpMethod.GET
             
@@ -742,7 +770,10 @@ import BMSAnalyticsAPI
                 let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
                 let resourceURL:String = urlBuilder.getSubscriptionsUrl()
                 
-                let headers = urlBuilder.addHeader()
+                var headers = urlBuilder.addHeader()
+                if(!(self.clientSecret!.isEmpty)){
+                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                }
                 
                 let method =  HttpMethod.POST
                 
@@ -811,7 +842,10 @@ import BMSAnalyticsAPI
             let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(deviceId: devId)
             
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(self.clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+            }
             
             let method =  HttpMethod.GET
             
@@ -866,7 +900,10 @@ import BMSAnalyticsAPI
                 let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
                 let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
                 
-                let headers = urlBuilder.addHeader()
+                var headers = urlBuilder.addHeader()
+                if(!(self.clientSecret!.isEmpty)){
+                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                }
                 
                 let method =  HttpMethod.POST
                 
@@ -928,7 +965,10 @@ import BMSAnalyticsAPI
             let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getUnregisterUrl(deviceId: devId)
             
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(self.clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+            }
             
             let method =  HttpMethod.DELETE
             
@@ -1117,6 +1157,7 @@ import BMSAnalyticsAPI
          
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
+        @available(*, deprecated, message="This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
         public func initializeWithAppGUID (appGUID: String?) {
             self.applicationId = appGUID;
             isInitialized = true;
@@ -1355,7 +1396,10 @@ import BMSAnalyticsAPI
                 let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
-                let headers = urlBuilder.addHeader()
+                var headers = urlBuilder.addHeader()
+                if(!(clientSecret!.isEmpty)){
+                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+                }
                 
                 let method =  HttpMethod.GET
                 
@@ -1377,7 +1421,10 @@ import BMSAnalyticsAPI
                             self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
                             let resourceURL:String = urlBuilder.getDevicesUrl()
                             
-                            let headers = urlBuilder.addHeader()
+                            var headers = urlBuilder.addHeader()
+                            if(!(self.clientSecret!.isEmpty)){
+                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                            }
                             
                             let method =  HttpMethod.POST
                             
@@ -1443,7 +1490,10 @@ import BMSAnalyticsAPI
                                 self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                                 
-                                let headers = urlBuilder.addHeader()
+                                var headers = urlBuilder.addHeader()
+                                if(!(self.clientSecret!.isEmpty)){
+                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                                }
                                 
                                 let method =  HttpMethod.PUT
                                 
@@ -1534,7 +1584,10 @@ import BMSAnalyticsAPI
             let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             
             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+            }
             
             let method =  HttpMethod.GET
             
@@ -1621,7 +1674,10 @@ import BMSAnalyticsAPI
                             self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(rDevId)
                             
-                            let headers = urlBuilder.addHeader()
+                            var headers = urlBuilder.addHeader()
+                            if(!(self.clientSecret!.isEmpty)){
+                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                            }
                             
                             let method =  HttpMethod.PUT
                             
@@ -1694,7 +1750,10 @@ import BMSAnalyticsAPI
             
             let resourceURL:String = urlBuilder.getTagsUrl()
             
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+            }
             
             let method =  HttpMethod.GET
             
@@ -1746,7 +1805,10 @@ import BMSAnalyticsAPI
                 let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
                 let resourceURL:String = urlBuilder.getSubscriptionsUrl()
                 
-                let headers = urlBuilder.addHeader()
+                var headers = urlBuilder.addHeader()
+                if(!(clientSecret!.isEmpty)){
+                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+                }
                 
                 let method =  HttpMethod.POST
                 
@@ -1815,7 +1877,10 @@ import BMSAnalyticsAPI
             let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
             
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+            }
             
             let method =  HttpMethod.GET
             
@@ -1870,7 +1935,10 @@ import BMSAnalyticsAPI
                 let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
                 let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
                 
-                let headers = urlBuilder.addHeader()
+                var headers = urlBuilder.addHeader()
+                if(!(clientSecret!.isEmpty)){
+                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+                }
                 
                 let method =  HttpMethod.POST
                 
@@ -1932,7 +2000,10 @@ import BMSAnalyticsAPI
             let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
             let resourceURL:String = urlBuilder.getUnregisterUrl(devId)
             
-            let headers = urlBuilder.addHeader()
+            var headers = urlBuilder.addHeader()
+            if(!(clientSecret!.isEmpty)){
+                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+            }
             
             let method =  HttpMethod.DELETE
             
