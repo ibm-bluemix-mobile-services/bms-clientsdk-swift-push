@@ -14,10 +14,10 @@
 import UIKit
 import BMSCore
 import BMSPush
-
+#if swift(>=3.0)
 import UserNotifications
 import UserNotificationsUI
-
+#endif
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -27,15 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     #if swift(>=3.0)
     
-        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
             // Override point for customization after application launch.
             let myBMSClient = BMSClient.sharedInstance
-            
-           // myBMSClient.initializeWithBluemixAppRoute(bluemixAppRoute: "", bluemixAppGUID: "", bluemixRegion: "")
-            myBMSClient.initialize(bluemixRegion: "")
-            // BMSPushClient.overrideServerHost = "http://9.109.242.204:1337"
-            
-            myBMSClient.defaultRequestTimeout = 10.0 // seconds
+            myBMSClient.initialize(bluemixRegion: "AppRegion")
             return true
         }
         
@@ -127,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
+            devId = authManager.deviceIdentity.ID!
             
             var token:String = deviceToken.description
             token = token.replacingOccurrences(of: "<", with: "")
@@ -138,11 +133,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(devId);
             
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: "")
-            //push.initializeWithAppGUID(appGUID: "", clientSecret:"")
+            push.initializeWithAppGUID(appGUID: "", clientSecret:"")
             //push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
             
-            push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
+            push.registerWithDeviceToken(deviceToken: deviceToken as NSData) { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -225,29 +219,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Called if unable to register for APNS.
         func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
             
-            let message:NSString = "Error registering for push notifications: \(error.localizedDescription)"
+            let message:NSString = "Error registering for push notifications: \(error.localizedDescription)" as NSString
             
             self.showAlert(title: "Registering for notifications", message: message)
-            
-            
-            
+  
         }
         
-        func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-            
-            let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
-            
-            self.showAlert(title: "Recieved Push notifications", message: payLoad)
-            
-        }
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
-        func sendNotifToDisplayResponse (responseValue:String){
-            
-            responseText = responseValue
-            NotificationCenter.default.post(name: "action" as NSNotification.Name, object: self)
-        }
+        let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
         
+        self.showAlert(title: "Recieved Push notifications", message: payLoad)
         
+    }
+    
+    func sendNotifToDisplayResponse (responseValue:String){
+        
+        responseText = responseValue
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "action"), object: self)
+    }
+    
+    
         func showAlert (title:NSString , message:NSString){
             
             // create the alert
@@ -268,12 +260,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
             // Override point for customization after application launch.
             let myBMSClient = BMSClient.sharedInstance
-            
-            //myBMSClient.initializeWithBluemixAppRoute("", bluemixAppGUID: "", bluemixRegion: "")
             myBMSClient.initialize(bluemixRegion: "")
-            // BMSPushClient.overrideServerHost = "http://9.109.242.204:1337"
-            
-            myBMSClient.defaultRequestTimeout = 10.0 // seconds
             return true
         }
         
@@ -356,7 +343,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
+            devId = authManager.deviceIdentity.ID!
             
             var token:String = deviceToken.description
             token = token.stringByReplacingOccurrencesOfString("<", withString: "")
@@ -367,8 +354,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(devId);
             
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID("")
-            //push.initializeWithAppGUID("", clientSecret:"")
+            push.initializeWithAppGUID("", clientSecret:"")
             //push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
             
             push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
