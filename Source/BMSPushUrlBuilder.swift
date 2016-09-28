@@ -12,6 +12,7 @@
 */
 
 import UIKit
+import BMSCore
 
 #if swift(>=3.0)
     
