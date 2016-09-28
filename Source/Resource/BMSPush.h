@@ -12,9 +12,10 @@
  */
 
 
-#import <UIKit/UIKit.h>
-@import BMSAnalyticsAPI;
+@import Foundation;
 @import BMSCore;
+@import BMSAnalyticsAPI;
+
 //! Project version number for BMSPush.
 FOUNDATION_EXPORT double BMSPushVersionNumber;
 
