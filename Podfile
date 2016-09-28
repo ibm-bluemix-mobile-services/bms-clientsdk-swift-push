@@ -1,13 +1,15 @@
 use_frameworks!
 
 target 'BMSPush' do
-	pod 'BMSCore', '~> 1.1'
+    platform :ios, '9.0'
+	pod 'BMSCore', '~> 2.0'
 end
 
 target 'BMSPushTests' do
-	platform :ios, '8.0'
-	pod 'BMSCore', '~> 1.1'
+	platform :ios, '9.0'
+	pod 'BMSCore', '~> 2.0'
 end
 
 target 'BMSPushHostApp' do
+    platform :ios, '9.0'
 end

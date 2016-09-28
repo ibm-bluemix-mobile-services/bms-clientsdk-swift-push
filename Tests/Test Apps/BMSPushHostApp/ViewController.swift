@@ -26,8 +26,7 @@ class ViewController: UIViewController {
             super.viewDidLoad()
             // Do any additional setup after loading the view, typically from a nib.
             
-            NotificationCenter.default.addObserver(self, selector: #selector(ViewController.updateMessage), name: "action" as NSNotification.Name, object: nil)
-            
+            NotificationCenter.default.addObserver(self, selector: #selector(ViewController.updateMessage), name: NSNotification.Name(rawValue: "action"), object: nil)
         }
         
         
@@ -67,7 +66,7 @@ class ViewController: UIViewController {
             super.viewDidLoad()
             // Do any additional setup after loading the view, typically from a nib.
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateMessage"), name: "action", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.updateMessage), name: "action", object: nil)
             
         }
         
