@@ -13,8 +13,6 @@
 
 
 import UIKit
-import BMSCore
-import BMSAnalyticsAPI
 
 #if swift(>=3.0)
     
