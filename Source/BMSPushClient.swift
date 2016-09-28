@@ -101,7 +101,7 @@ import BMSAnalyticsAPI
                 isInitialized = true;
             }
             else{
-                self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while registration - Client secret is not valid")
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
                 print("Error while registration - Client secret is not valid")
             }
         }
@@ -136,7 +136,7 @@ import BMSAnalyticsAPI
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
          */
         
-        public func registerWithDeviceToken(deviceToken:NSData , WithUserId:String?, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
+        public func registerWithDeviceToken(deviceToken:NSData , WithUserId:String?, completionHandler: @escaping(_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
             
             
             if (isInitialized){
@@ -147,7 +147,7 @@ import BMSAnalyticsAPI
                     
                     var devId = String()
                     let authManager  = BMSClient.sharedInstance.authorizationManager
-                    devId = authManager.deviceIdentity.id!
+                    devId = authManager.deviceIdentity.ID!
                     BMSPushUtils.saveValueToNSUserDefaults(value: devId, key: "deviceId")
                     
                     var token:String = deviceToken.description
@@ -156,23 +156,19 @@ import BMSAnalyticsAPI
                     token = token.replacingOccurrences(of: " ", with: "").trimmingCharacters(in: NSCharacterSet.symbols)
                     
                     
-                    let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!)
-                    
+                    let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
                     
                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
-                    var headers = urlBuilder.addHeader()
-                    
-                    //headers[IMFPUSH_USER_ID] = WithUserId;
-                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+                    let headers = urlBuilder.addHeader()
                     
                     let method =  HttpMethod.GET
                     
-                    self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Verifying previous device registration.")
-                    let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                    self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Verifying previous device registration.")
+                    let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                     
                     // MARK: FIrst Action, checking for previuos registration
                     
-                    getRequest.send(completionHandler: { (response: Response?, error: NSError?) -> Void in
+                    getRequest.send(completionHandler: { (response, error)  -> Void in
                         
                         if response?.statusCode != nil {
                             
@@ -182,62 +178,47 @@ import BMSAnalyticsAPI
                             
                             if (status == 404) {
                                 
-                                self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
+                                self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is not registered before.  Registering for the first time.")
                                 let resourceURL:String = urlBuilder.getDevicesUrl()
                                 
-                                var headers = urlBuilder.addHeader()
-                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                                let headers = urlBuilder.addHeader()
                                 
                                 let method =  HttpMethod.POST
                                 
-                                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                 
-                                
-                                let dict:NSMutableDictionary = NSMutableDictionary()
-                                
-                                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                                dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                                dict.setValue("A", forKey: IMFPUSH_PLATFORM)
-                                dict.setValue(WithUserId, forKey: IMFPUSH_USERID)
-                                
-                                // here "jsonData" is the dictionary encoded in JSON data
-                                let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                                
-                                // here "jsonData" is convereted to string
-                                let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-                                
-                                
+                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".data(using: .utf8)
                                 // MARK: Registering for the First Time
                                 
-                                getRequest.sendString(requestBody: jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                                 getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                                     
                                     if response?.statusCode != nil {
                                         
                                         let status = response?.statusCode ?? 0
                                         let responseText = response?.responseText ?? ""
                                         
-                                        self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
-                                        completionHandler(response: responseText, statusCode: status, error: "")
+                                        self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
+                                        completionHandler(responseText, status, "")
                                         
                                     }
                                     else if let responseError = error {
                                         
-                                        self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
-                                        completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                        completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error is: \(responseError.localizedDescription)")
                                     }
                                 })
                                 
                             }
                             else if (status == 406) || (status == 500) {
                                 
-                                self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                                completionHandler(response: responseText, statusCode: status, error: "")
+                                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
+                                 completionHandler(responseText, status, "")
                             }
                             else {
                                 
                                 // MARK: device is already Registered
                                 
-                                self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                                self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
                                 let respJson = response?.responseText
                                 let data = respJson!.data(using: String.Encoding.utf8)
                                 let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
@@ -251,71 +232,61 @@ import BMSAnalyticsAPI
                                     
                                     // MARK: Updating the registered device ,userID, token or deviceId changed
                                     
-                                    self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
+                                    self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
                                     
-                                    var headers = urlBuilder.addHeader()
-                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                                    let headers = urlBuilder.addHeader()
                                     
                                     let method =  HttpMethod.PUT
                                     
-                                    let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                    let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                                    
+                                    let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".data(using: .utf8)
                                     
                                     
-                                    let dict:NSMutableDictionary = NSMutableDictionary()
-                                    
-                                    dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                                    dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                                    dict.setValue(WithUserId, forKey: IMFPUSH_USERID)
-                                    
-                                    
-                                    let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                                    
-                                    let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-                                    
-                                    getRequest.sendString(requestBody: jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                                    getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                                         
                                         if response?.statusCode != nil  {
                                             
                                             let status = response?.statusCode ?? 0
                                             let responseText = response?.responseText ?? ""
                                             
-                                            self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
-                                            completionHandler(response: responseText, statusCode: status, error: "")
+                                            self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device updation - Response is: \(responseText)")
+                                            completionHandler(responseText, status, "")
                                         }
                                         else if let responseError = error {
                                             
-                                            self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
-                                            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
+                                            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device updatation - Error is : \(responseError.localizedDescription)")
+                                            completionHandler("", IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, "Error during device updatation - Error is : \(responseError.localizedDescription)")
                                         }
                                     })
                                 }
                                 else {
                                     // MARK: device already registered and parameteres not changed.
                                     
-                                    self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                    completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
+                                    completionHandler("Device is already registered and device registration parameters not changed", status, "")
                                 }
                             }
                             
                         }
                         else if let responseError = error {
                             
-                            self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                            completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                            completionHandler("", IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                             
                         }
                         
                     })
                 }else{
                     
-                    self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while registration - Provide a valid userId value")
-                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Provide a valid userId value")
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Provide a valid userId value")
+                    completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - Provide a valid userId value")
                 }
             }else{
                 
-                self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
-                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - BMSPush is not initialized")
+                completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - BMSPush is not initialized")
             }
             
         }
@@ -332,7 +303,7 @@ import BMSAnalyticsAPI
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
          */
         
-        public func registerWithDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
+        public func registerWithDeviceToken (deviceToken:NSData, completionHandler: @escaping(_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
             
             // Generate new ID
             // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
@@ -340,7 +311,7 @@ import BMSAnalyticsAPI
             if (isInitialized){
                 var devId = String()
                 let authManager  = BMSClient.sharedInstance.authorizationManager
-                devId = authManager.deviceIdentity.id!
+                devId = authManager.deviceIdentity.ID!
                 BMSPushUtils.saveValueToNSUserDefaults(value: devId, key: "deviceId")
                 
                 var token:String = deviceToken.description
@@ -349,23 +320,18 @@ import BMSAnalyticsAPI
                 token = token.replacingOccurrences(of: " ", with: "").trimmingCharacters(in: NSCharacterSet.symbols)
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
-                var headers = urlBuilder.addHeader()
-                if(!(self.clientSecret!.isEmpty)){
-                   headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                }
-    
-    
+                let headers = urlBuilder.addHeader()
+                
                 let method =  HttpMethod.GET
     
-                self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Verifying previous device registration.")
-                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Verifying previous device registration.")
+                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                 
                 // MARK: FIrst Action, checking for previuos registration
-                
-                getRequest.send(completionHandler:{ (response: Response?, error: NSError?) -> Void in
+                getRequest.send(completionHandler: { (response, error)  -> Void in
                     
                     if response?.statusCode != nil {
                         
@@ -375,64 +341,49 @@ import BMSAnalyticsAPI
                         
                         if (status == 404) {
                             
-                            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
+                            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is not registered before.  Registering for the first time.")
                             let resourceURL:String = urlBuilder.getDevicesUrl()
                             
-                            var headers = urlBuilder.addHeader()
-                            if(!(self.clientSecret!.isEmpty)){
-                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                            }
-
+                            let headers = urlBuilder.addHeader()
                             
                             let method =  HttpMethod.POST
                             
-                            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                            let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                             
-                            
-                            let dict:NSMutableDictionary = NSMutableDictionary()
-                            
-                            dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                            dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                            dict.setValue("A", forKey: IMFPUSH_PLATFORM)
-                            
-                            // here "jsonData" is the dictionary encoded in JSON data
-                            let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                            
-                            // here "jsonData" is convereted to string
-                            let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
+                            let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\"}".data(using: .utf8)
                             
                             
                             // MARK: Registering for the First Time
                             
-                            getRequest.sendString(requestBody: jsonString  , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                            getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
                                 
                                 if response?.statusCode != nil {
                                     
                                     let status = response?.statusCode ?? 0
                                     let responseText = response?.responseText ?? ""
                                     
-                                    self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
-                                    completionHandler(response: responseText, statusCode: status, error: "")
+                                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
+                                    completionHandler(responseText, status, "")
                                     
                                 }
                                 else if let responseError = error {
                                     
-                                    self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
-                                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                    completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue, "Error during device registration - Error is: \(responseError.localizedDescription)")
                                 }
                             })
                             
                         }
                         else if (status == 406) || (status == 500) {
                             
-                            self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                            completionHandler(response: responseText, statusCode: status, error: "")
+                            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
+                            completionHandler(responseText, status, "")
                         }
                         else {
                             
                             // MARK: device is already Registered
                             
-                            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
                             let respJson = response?.responseText
                             let data = respJson!.data(using: String.Encoding.utf8)
                             let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
@@ -445,258 +396,56 @@ import BMSAnalyticsAPI
                                 
                                 // MARK: Updating the registered userID , token or deviceId changed
                                 
-                                self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
+                                self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
                                 
-                                var headers = urlBuilder.addHeader()
-                                if(!(self.clientSecret!.isEmpty)){
-                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                                }
-
+                                let headers = urlBuilder.addHeader()
                                 
                                 let method =  HttpMethod.PUT
                                 
-                                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                               
+                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\"}".data(using: .utf8)
                                 
-                                
-                                let dict:NSMutableDictionary = NSMutableDictionary()
-                                
-                                dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                                
-                                
-                                let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                                
-                                let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-                                
-                                getRequest.sendString(requestBody: jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
-                                    
-                                    
+                                getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
                                     
                                     if response?.statusCode != nil  {
                                         
                                         let status = response?.statusCode ?? 0
                                         let responseText = response?.responseText ?? ""
                                         
-                                        self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
-                                        completionHandler(response: responseText, statusCode: status, error: "")
+                                        self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Response of device updation - Response is: \(responseText)")
+                                       completionHandler(responseText, status, "")
                                     }
                                     else if let responseError = error {
                                         
-                                        self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
-                                        completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
+                                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error during device updatation - Error is : \(responseError.localizedDescription)")
+                                        completionHandler("", IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, "Error during device updatation - Error is : \(responseError.localizedDescription)")
                                     }
-                                    
                                 })
-                                
                             }
                             else {
                                 // MARK: device already registered and parameteres not changed.
                                 
-                                self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                                self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
+                                completionHandler("Device is already registered and device registration parameters not changed", status, "")
                             }
                         }
-                        
                     }
                     else if let responseError = error {
                         
-                        self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                        completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                        completionHandler("", IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                     }
                 })
             }else{
                 
-                self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
-                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - BMSPush is not initialized")
+               completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - BMSPush is not initialized")
             }
         }
         
-        /**
-         
-         This Methode used to register the client device to the Bluemix Push service.
-         
-         Call this methode after successfully registering for remote push notification in the Apple Push
-         Notification Service .
-         
-         - Parameter deviceToken: This is the response we get from the push registartion in APNS.
-         - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
-         */
-        
-        @available(*, deprecated, message: "Please use registerWithDeviceToken")
-        public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
-            
-            
-            // Generate new ID
-            // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
-            
-            var devId = String()
-            let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
-            BMSPushUtils.saveValueToNSUserDefaults(value: devId, key: "deviceId")
-            
-            var token:String = deviceToken.description
-            token = token.replacingOccurrences(of: "<", with: "")
-            token = token.replacingOccurrences(of: ">", with: "")
-            token = token.replacingOccurrences(of: " ", with: "").trimmingCharacters(in: NSCharacterSet.symbols)
-            
-            
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
-            
-            let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
-            var headers = urlBuilder.addHeader()
-            if(!(self.clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-            }
 
-            
-            let method =  HttpMethod.GET
-            
-            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Verifying previous device registration.")
-            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-            
-            // MARK: FIrst Action, checking for previuos registration
-            getRequest.send(completionHandler:{ (response: Response?, error: NSError?) -> Void in
-                
-                if response?.statusCode != nil {
-                    
-                    let status = response?.statusCode ?? 0
-                    let responseText = response?.responseText ?? ""
-                    
-                    
-                    if (status == 404) {
-                        
-                        self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
-                        let resourceURL:String = urlBuilder.getDevicesUrl()
-                        
-                        var headers = urlBuilder.addHeader()
-                        if(!(self.clientSecret!.isEmpty)){
-                            headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                        }
-
-                        
-                        let method =  HttpMethod.POST
-                        
-                        let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-                        
-                        
-                        let dict:NSMutableDictionary = NSMutableDictionary()
-                        
-                        dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                        dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                        dict.setValue("A", forKey: IMFPUSH_PLATFORM)
-                        
-                        // here "jsonData" is the dictionary encoded in JSON data
-                        let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                        
-                        // here "jsonData" is convereted to string
-                        let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-                        
-                        
-                        // MARK: Registering for the First Time
-                        
-                        getRequest.sendString(requestBody: jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
-                            
-                            if response?.statusCode != nil {
-                                
-                                let status = response?.statusCode ?? 0
-                                let responseText = response?.responseText ?? ""
-                                
-                                self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
-                                completionHandler(response: responseText, statusCode: status, error: "")
-                                
-                            }
-                            else if let responseError = error {
-                                
-                                self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
-                                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
-                            }
-                        })
-                        
-                    }
-                    else if (status == 406) || (status == 500) {
-                        
-                        self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                        completionHandler(response: responseText, statusCode: status, error: "")
-                    }
-                    else {
-                        
-                        // MARK: device is already Registered
-                        
-                        self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
-                        let respJson = response?.responseText
-                        let data = respJson!.data(using: String.Encoding.utf8)
-                        let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-                        
-                        let rToken = jsonResponse.object(forKey: IMFPUSH_TOKEN) as! String
-                        let rDevId = jsonResponse.object(forKey: IMFPUSH_DEVICE_ID) as! String
-                        
-                        if ((rToken.compare(token)) != ComparisonResult.orderedSame) || (!(devId.isEmpty) && (devId.compare(rDevId) != ComparisonResult.orderedSame))  {
-                            
-                            // MARK: Updating the registered device , token or deviceId changed
-                            
-                            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
-                            let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: rDevId)
-                            
-                            var headers = urlBuilder.addHeader()
-                            if(!(self.clientSecret!.isEmpty)){
-                               headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                            }
-                            
-                            let method =  HttpMethod.PUT
-                            
-                            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-                            
-                            
-                            let dict:NSMutableDictionary = NSMutableDictionary()
-                            
-                            dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                            dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                            
-                            
-                            let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                            
-                            let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-                            
-                            getRequest.sendString(requestBody: jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
-                                
-                                
-                                
-                                if response?.statusCode != nil  {
-                                    
-                                    let status = response?.statusCode ?? 0
-                                    let responseText = response?.responseText ?? ""
-                                    
-                                    self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
-                                    completionHandler(response: responseText, statusCode: status, error: "")
-                                }
-                                else if let responseError = error {
-                                    
-                                    self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
-                                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
-                                }
-                                
-                            })
-                            
-                        }
-                        else {
-                            // MARK: device already registered and parameteres not changed.
-                            
-                            self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
-                            completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
-                        }
-                    }
-                    
-                }
-                else if let responseError = error {
-                    
-                    self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                    
-                }
-                
-            })
-        }
         
         /**
          
@@ -706,24 +455,19 @@ import BMSAnalyticsAPI
          
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
          */
-        public func retrieveAvailableTagsWithCompletionHandler (completionHandler: (response:NSMutableArray?, statusCode:Int?, error:String) -> Void){
+        public func retrieveAvailableTagsWithCompletionHandler (completionHandler: @escaping(_ response:NSMutableArray?, _ statusCode:Int?, _ error:String) -> Void){
             
             
-            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
             
             let resourceURL:String = urlBuilder.getTagsUrl()
             
-            var headers = urlBuilder.addHeader()
-            if(!(self.clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-            }
-
-            
+            let headers = urlBuilder.addHeader()
+           
             let method =  HttpMethod.GET
             
-            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-            
+            let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
             
             getRequest.send(completionHandler:{ (response, error) -> Void in
                 
@@ -733,14 +477,14 @@ import BMSAnalyticsAPI
                     let status = response?.statusCode ?? 0
                     let responseText = response?.responseText ?? ""
                     
-                    self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Successfully retrieved available tags - Response is: \(responseText)")
+                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully retrieved available tags - Response is: \(responseText)")
                     let availableTagsArray = response?.availableTags()
                     
-                    completionHandler(response: availableTagsArray, statusCode: status, error: "")
+                    completionHandler(availableTagsArray, status, "")
                 } else if let responseError = error {
                     
-                    self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while retrieving available tags - Error is: \(responseError.description)")
-                    completionHandler(response: [], statusCode: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving available tags - Error is: \(responseError.localizedDescription)")
+                    completionHandler([], IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue,"Error while retrieving available tags - Error is: \(responseError.localizedDescription)")
                     
                 }
             })
@@ -756,57 +500,48 @@ import BMSAnalyticsAPI
          - parameter tagsArray: the array that contains name tags.
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
          */
-        public func subscribeToTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary?, statusCode:Int?, error:String) -> Void) {
+        public func subscribeToTags (tagsArray:NSArray, completionHandler: @escaping (_ response:NSMutableDictionary?, _ statusCode:Int?, _ error:String) -> Void) {
             
             
-            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData:"Entering: subscribeToTags." )
+            self.sendAnalyticsData(logType: LogLevel.debug, logStringData:"Entering: subscribeToTags." )
             
             if tagsArray.count != 0 {
                 
                 let authManager  = BMSClient.sharedInstance.authorizationManager
-                let devId = authManager.deviceIdentity.id!
+                let devId = authManager.deviceIdentity.ID!
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
                 let resourceURL:String = urlBuilder.getSubscriptionsUrl()
                 
-                var headers = urlBuilder.addHeader()
-                if(!(self.clientSecret!.isEmpty)){
-                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                }
+                let headers = urlBuilder.addHeader()
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                 
+                let mappedArray = tagsArray.flatMap{"\($0)"}.description;
                 
-                let dict:NSMutableDictionary = NSMutableDictionary()
+                let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(mappedArray), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".data(using: .utf8)
                 
-                dict.setValue(tagsArray, forKey: IMFPUSH_TAGNAMES)
-                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                
-                let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                
-                let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-                
-                getRequest.sendString(requestBody: jsonString, completionHandler: { (response, error) -> Void in
+                getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                     
                     if response?.statusCode != nil {
                         
                         let status = response?.statusCode ?? 0
                         let responseText = response?.responseText ?? ""
                         
-                        self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Successfully subscribed to tags - Response is: \(responseText)")
+                        self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully subscribed to tags - Response is: \(responseText)")
                         let subscriptionResponse = response?.subscribeStatus()
                         
-                        completionHandler(response: subscriptionResponse, statusCode: status, error: "")
+                        completionHandler(subscriptionResponse, status, "")
                         
                     } else if let responseError = error {
                         
                         let subscriptionResponse = NSMutableDictionary()
                         
-                        self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while subscribing to tags - Error is: \(responseError.description)")
-                        completionHandler(response: subscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
+                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error is: \(responseError.localizedDescription)")
+                        completionHandler(subscriptionResponse, IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,"Error while retrieving available tags - Error is: \(responseError.localizedDescription)")
                         
                     }
                 })
@@ -815,8 +550,8 @@ import BMSAnalyticsAPI
                 
                 let subscriptionResponse = NSMutableDictionary()
                 
-                self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
-                completionHandler(response: subscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
+                completionHandler(subscriptionResponse, IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, "Error.  Tag array cannot be null. Create tags in your Bluemix App")
             }
         }
         
@@ -830,29 +565,25 @@ import BMSAnalyticsAPI
          
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableArray), StatusCode (Int) and error (string).
          */
-        public func retrieveSubscriptionsWithCompletionHandler (completionHandler: (response:NSMutableArray?, statusCode:Int?, error:String) -> Void) {
+        public func retrieveSubscriptionsWithCompletionHandler  (completionHandler: @escaping (_ response:NSMutableArray?, _ statusCode:Int?, _ error:String) -> Void) {
             
             
-            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
+            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
             
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            let devId = authManager.deviceIdentity.id!
+            let devId = authManager.deviceIdentity.ID!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
             let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(deviceId: devId)
             
-            var headers = urlBuilder.addHeader()
-            if(!(self.clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-            }
+            let headers = urlBuilder.addHeader()
             
             let method =  HttpMethod.GET
             
-            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+            let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
             
-            
-            getRequest.send(completionHandler:{ (response: Response?, error: NSError?) -> Void in
+            getRequest.send(completionHandler: { (response, error) -> Void in
                 
                 
                 
@@ -861,16 +592,16 @@ import BMSAnalyticsAPI
                     let status = response?.statusCode ?? 0
                     let responseText = response?.responseText ?? ""
                     
-                    self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Subscription retrieved successfully - Response is: \(responseText)")
+                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Subscription retrieved successfully - Response is: \(responseText)")
                     let subscriptionArray = response?.subscriptions()
                     
-                    completionHandler(response: subscriptionArray, statusCode: status, error: "")
+                    completionHandler(subscriptionArray, status, "")
                     
                 } else if let responseError = error {
                     
-                    self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
                     
-                    completionHandler(response: [], statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,error: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
+                    completionHandler([], IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,"Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
                     
                 }
             })
@@ -886,65 +617,56 @@ import BMSAnalyticsAPI
          - Parameter tagsArray: The list of tags that need to be unsubscribed.
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (NSMutableDictionary), StatusCode (Int) and error (string).
          */
-        public func unsubscribeFromTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary?, statusCode:Int?, error:String) -> Void) {
+        public func unsubscribeFromTags (tagsArray:NSArray, completionHandler: @escaping (_ response:NSMutableDictionary?, _ statusCode:Int?, _ error:String) -> Void) {
             
-            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Entering: unsubscribeFromTags")
+            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering: unsubscribeFromTags")
             
             if tagsArray.count != 0 {
                 
                 
                 let authManager  = BMSClient.sharedInstance.authorizationManager
-                let devId = authManager.deviceIdentity.id!
+                let devId = authManager.deviceIdentity.ID!
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
                 let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
                 
-                var headers = urlBuilder.addHeader()
-                if(!(self.clientSecret!.isEmpty)){
-                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                }
+                let headers = urlBuilder.addHeader()
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                 
+                let mappedArray = tagsArray.flatMap{"\($0)"}.description;
                 
-                let dict:NSMutableDictionary = NSMutableDictionary()
+                let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(mappedArray), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".data(using: .utf8)
                 
-                dict.setValue(tagsArray, forKey: IMFPUSH_TAGNAMES)
-                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                
-                let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                
-                let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-                
-                getRequest.sendString(requestBody: jsonString, completionHandler: { (response, error) -> Void in
+                getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
                     
                     if response?.statusCode != nil {
                         
                         let status = response?.statusCode ?? 0
                         let responseText = response?.responseText ?? ""
                         
-                        self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Successfully unsubscribed from tags - Response is: \(responseText)")
+                        self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully unsubscribed from tags - Response is: \(responseText)")
                         let unSubscriptionResponse = response?.unsubscribeStatus()
                         
-                        completionHandler(response: unSubscriptionResponse, statusCode: status, error: "")
+                        completionHandler(unSubscriptionResponse, status, "")
                         
                     } else if let responseError = error{
                         
                         let unSubscriptionResponse = NSMutableDictionary()
                         
-                        self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while unsubscribing from tags - Error is: \(responseError.description)")
-                        completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
+                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unsubscribing from tags - Error is: \(responseError.localizedDescription)")
+                        completionHandler(unSubscriptionResponse, IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,"Error while retrieving available tags - Error is: \(responseError.localizedDescription)")
                     }
                 })
             } else {
                 
                 let unSubscriptionResponse = NSMutableDictionary()
                 
-                self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error.  Tag array cannot be null.")
-                completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error.  Tag array cannot be null.")
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error.  Tag array cannot be null.")
+                completionHandler(unSubscriptionResponse, IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, "Error.  Tag array cannot be null.")
             }
         }
         
@@ -955,24 +677,21 @@ import BMSAnalyticsAPI
          
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
          */
-        public func unregisterDevice (completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
+        public func unregisterDevice  (completionHandler: @escaping (_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
             
-            self.sendAnalyticsData(logType: LogLevel.Debug, logStringData: "Entering unregisterDevice.")
+            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering unregisterDevice.")
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            let devId = authManager.deviceIdentity.id!
+            let devId = authManager.deviceIdentity.ID!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
             let resourceURL:String = urlBuilder.getUnregisterUrl(deviceId: devId)
             
-            var headers = urlBuilder.addHeader()
-            if(!(self.clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-            }
+            let headers = urlBuilder.addHeader()
             
             let method =  HttpMethod.DELETE
             
-            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+            let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
             
             
             getRequest.send(completionHandler: { (response, error) -> Void in
@@ -982,14 +701,14 @@ import BMSAnalyticsAPI
                     let status = response?.statusCode ?? 0
                     let responseText = response?.responseText ?? ""
                     
-                    self.sendAnalyticsData(logType: LogLevel.Info, logStringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
+                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
                     
-                    completionHandler(response: responseText, statusCode: status, error: "")
+                    completionHandler(responseText, status, "")
                     
                 } else if let responseError = error  {
                     
-                    self.sendAnalyticsData(logType: LogLevel.Error, logStringData: "Error while unregistering device - Error is: \(responseError.description)")
-                    completionHandler(response:"", statusCode: IMFPushErrorvalues.BMSPushUnregitrationError.rawValue,error: "Error while unregistering device - Error is: \(responseError.description)")
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unregistering device - Error is: \(responseError.localizedDescription)")
+                    completionHandler("", IMFPushErrorvalues.BMSPushUnregitrationError.rawValue,"Error while unregistering device - Error is: \(responseError.localizedDescription)")
                 }
             })
         }
@@ -997,58 +716,37 @@ import BMSAnalyticsAPI
         // MARK: Methods (Internal)
         
         //Begin Logger implementation
-        
-        
-        /**
-         Assigning Re-Write Domain.
-         */
-        internal func buildRewriteDomain() -> String {
-            return BMSClient.sharedInstance.bluemixRegion!
-        }
+    
         
         // Setting Log info
         internal func sendAnalyticsData (logType:LogLevel, logStringData:String){
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
-            let testLogger = Logger.logger(forName:devId)
-            
-            if (logType == LogLevel.Debug){
-                
-                Logger.logLevelFilter = LogLevel.Debug
+            devId = authManager.deviceIdentity.ID!
+            let testLogger = Logger.logger(name:devId)
+            if (logType == LogLevel.debug){
+                Logger.logLevelFilter = LogLevel.debug
                 testLogger.debug(message: logStringData)
-                
-            } else if (logType == LogLevel.Error){
-                
-                Logger.logLevelFilter = LogLevel.Error
+            } else if (logType == LogLevel.error){
+                Logger.logLevelFilter = LogLevel.error
                 testLogger.error(message: logStringData)
-                
-            } else if (logType == LogLevel.Analytics){
-                
-                Logger.logLevelFilter = LogLevel.Analytics
+            } else if (logType == LogLevel.analytics){
+                Logger.logLevelFilter = LogLevel.analytics
                 testLogger.debug(message: logStringData)
-                
-            } else if (logType == LogLevel.Fatal){
-                
-                Logger.logLevelFilter = LogLevel.Fatal
+            } else if (logType == LogLevel.fatal){
+                Logger.logLevelFilter = LogLevel.fatal
                 testLogger.fatal(message: logStringData)
-                
-            } else if (logType == LogLevel.Warn){
-                
-                Logger.logLevelFilter = LogLevel.Warn
+            } else if (logType == LogLevel.warn){
+                Logger.logLevelFilter = LogLevel.warn
                 testLogger.warn(message: logStringData)
-                
-            } else if (logType == LogLevel.Info){
-                
-                Logger.logLevelFilter = LogLevel.Info
+            } else if (logType == LogLevel.info){
+                Logger.logLevelFilter = LogLevel.info
                 testLogger.info(message: logStringData)
-                
             }
             else {
-                Logger.logLevelFilter = LogLevel.None
+                Logger.logLevelFilter = LogLevel.none
                 testLogger.debug(message: logStringData)
             }
-            
         }
         
         internal func validateString(object:String) -> Bool{
@@ -1137,7 +835,7 @@ import BMSAnalyticsAPI
          - parameter clientSecret:    The clientSecret of the Push Service
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
-        public func initializeWithAppGUID (appGUID: String?, clientSecret: String?) {
+        public func initializeWithAppGUID (appGUID appGUID: String?, clientSecret: String?) {
             
             if validateString(clientSecret!) {
                 self.clientSecret = clientSecret
@@ -1145,7 +843,7 @@ import BMSAnalyticsAPI
                 isInitialized = true;
             }
             else{
-                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Client secret is not valid")
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
                 print("Error while registration - Client secret is not valid")
             }
         }
@@ -1158,7 +856,7 @@ import BMSAnalyticsAPI
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
         @available(*, deprecated, message="This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
-        public func initializeWithAppGUID (appGUID: String?) {
+        public func initializeWithAppGUID (appGUID appGUID: String?) {
             self.applicationId = appGUID;
             isInitialized = true;
         }
@@ -1191,7 +889,7 @@ import BMSAnalyticsAPI
                     
                     var devId = String()
                     let authManager  = BMSClient.sharedInstance.authorizationManager
-                    devId = authManager.deviceIdentity.id!
+                    devId = authManager.deviceIdentity.ID!
                     BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
                     
                     var token:String = deviceToken.description
@@ -1200,23 +898,19 @@ import BMSAnalyticsAPI
                     token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
                     
                     
-                    let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!)
-                    
+                    let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
                     
                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
-                    var headers = urlBuilder.addHeader()
-                    
-                    //headers[IMFPUSH_USER_ID] = WithUserId;
-                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
+                    let headers = urlBuilder.addHeader()
                     
                     let method =  HttpMethod.GET
                     
-                    self.sendAnalyticsData(LogLevel.Debug, logStringData: "Verifying previous device registration.")
+                    self.sendAnalyticsData(LogLevel.debug, logStringData: "Verifying previous device registration.")
                     let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                     
                     // MARK: FIrst Action, checking for previuos registration
                     
-                    getRequest.sendWithCompletionHandler ({ (response: Response?, error: NSError?) -> Void in
+                     getRequest.send(completionHandler: { (response, error) -> Void in
                         
                         if response?.statusCode != nil {
                             
@@ -1226,47 +920,31 @@ import BMSAnalyticsAPI
                             
                             if (status == 404) {
                                 
-                                self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
+                                self.sendAnalyticsData(LogLevel.debug, logStringData: "Device is not registered before.  Registering for the first time.")
                                 let resourceURL:String = urlBuilder.getDevicesUrl()
                                 
-                                var headers = urlBuilder.addHeader()
-                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                                
+                                let headers = urlBuilder.addHeader()
                                 let method =  HttpMethod.POST
                                 
-                                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                 
-                                
-                                let dict:NSMutableDictionary = NSMutableDictionary()
-                                
-                                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                                dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                                dict.setValue("A", forKey: IMFPUSH_PLATFORM)
-                                dict.setValue(WithUserId, forKey: IMFPUSH_USERID)
-                                
-                                // here "jsonData" is the dictionary encoded in JSON data
-                                let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                                
-                                // here "jsonData" is convereted to string
-                                let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                                
+                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                                 
                                 // MARK: Registering for the First Time
-                                
-                                getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                                getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
                                     
                                     if response?.statusCode != nil {
                                         
                                         let status = response?.statusCode ?? 0
                                         let responseText = response?.responseText ?? ""
                                         
-                                        self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
+                                        self.sendAnalyticsData(LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
                                         completionHandler(response: responseText, statusCode: status, error: "")
                                         
                                     }
                                     else if let responseError = error {
                                         
-                                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                        self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
                                         completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
                                     }
                                 })
@@ -1274,14 +952,14 @@ import BMSAnalyticsAPI
                             }
                             else if (status == 406) || (status == 500) {
                                 
-                                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
+                                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
                                 completionHandler(response: responseText, statusCode: status, error: "")
                             }
                             else {
                                 
                                 // MARK: device is already Registered
                                 
-                                self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                                self.sendAnalyticsData(LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
                                 let respJson = response?.responseText
                                 let data = respJson!.dataUsingEncoding(NSUTF8StringEncoding)
                                 let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
@@ -1295,41 +973,30 @@ import BMSAnalyticsAPI
                                     
                                     // MARK: Updating the registered device ,userID, token or deviceId changed
                                     
-                                    self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
+                                    self.sendAnalyticsData(LogLevel.debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                                     let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                                     
-                                    var headers = urlBuilder.addHeader()
-                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
+                                    let headers = urlBuilder.addHeader()
                                     
                                     let method =  HttpMethod.PUT
                                     
-                                    let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                    let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                     
+                                    let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                                     
-                                    let dict:NSMutableDictionary = NSMutableDictionary()
-                                    
-                                    dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                                    dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                                    dict.setValue(WithUserId, forKey: IMFPUSH_USERID)
-                                    
-                                    
-                                    let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                                    
-                                    let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                                    
-                                    getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                                    getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                                         
                                         if response?.statusCode != nil  {
                                             
                                             let status = response?.statusCode ?? 0
                                             let responseText = response?.responseText ?? ""
                                             
-                                            self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
+                                            self.sendAnalyticsData(LogLevel.info, logStringData: "Response of device updation - Response is: \(responseText)")
                                             completionHandler(response: responseText, statusCode: status, error: "")
                                         }
                                         else if let responseError = error {
                                             
-                                            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
+                                            self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
                                             completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
                                         }
                                     })
@@ -1337,7 +1004,7 @@ import BMSAnalyticsAPI
                                 else {
                                     // MARK: device already registered and parameteres not changed.
                                     
-                                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
+                                    self.sendAnalyticsData(LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
                                     completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
                                 }
                             }
@@ -1345,7 +1012,7 @@ import BMSAnalyticsAPI
                         }
                         else if let responseError = error {
                             
-                            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                             completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                             
                         }
@@ -1384,7 +1051,7 @@ import BMSAnalyticsAPI
             if (isInitialized){
                 var devId = String()
                 let authManager  = BMSClient.sharedInstance.authorizationManager
-                devId = authManager.deviceIdentity.id!
+                devId = authManager.deviceIdentity.ID!
                 BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
                 
                 var token:String = deviceToken.description
@@ -1393,22 +1060,20 @@ import BMSAnalyticsAPI
                 token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+                
+                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
-                var headers = urlBuilder.addHeader()
-                if(!(clientSecret!.isEmpty)){
-                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
-                }
-                
+                let headers = urlBuilder.addHeader()
+              
                 let method =  HttpMethod.GET
                 
-                self.sendAnalyticsData(LogLevel.Debug, logStringData: "Verifying previous device registration.")
+                self.sendAnalyticsData(LogLevel.debug, logStringData: "Verifying previous device registration.")
                 let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                 
                 // MARK: FIrst Action, checking for previuos registration
                 
-                getRequest.sendWithCompletionHandler ({ (response: Response?, error: NSError?) -> Void in
+                 getRequest.send(completionHandler: { (response, error)  -> Void in
                     
                     if response?.statusCode != nil {
                         
@@ -1418,48 +1083,31 @@ import BMSAnalyticsAPI
                         
                         if (status == 404) {
                             
-                            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
+                            self.sendAnalyticsData(LogLevel.debug, logStringData: "Device is not registered before.  Registering for the first time.")
                             let resourceURL:String = urlBuilder.getDevicesUrl()
                             
-                            var headers = urlBuilder.addHeader()
-                            if(!(self.clientSecret!.isEmpty)){
-                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                            }
-                            
+                            let headers = urlBuilder.addHeader()
                             let method =  HttpMethod.POST
                             
-                            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                            let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                             
-                            
-                            let dict:NSMutableDictionary = NSMutableDictionary()
-                            
-                            dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                            dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                            dict.setValue("A", forKey: IMFPUSH_PLATFORM)
-                            
-                            // here "jsonData" is the dictionary encoded in JSON data
-                            let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                            
-                            // here "jsonData" is convereted to string
-                            let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                            
+                            let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\"}".dataUsingEncoding(NSUTF8StringEncoding)
                             
                             // MARK: Registering for the First Time
-                            
-                            getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
+                            getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                                 
                                 if response?.statusCode != nil {
                                     
                                     let status = response?.statusCode ?? 0
                                     let responseText = response?.responseText ?? ""
                                     
-                                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
+                                    self.sendAnalyticsData(LogLevel.info, logStringData: "Response of device registration - Response is: \(responseText)")
                                     completionHandler(response: responseText, statusCode: status, error: "")
                                     
                                 }
                                 else if let responseError = error {
                                     
-                                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
+                                    self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
                                     completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
                                 }
                             })
@@ -1467,14 +1115,14 @@ import BMSAnalyticsAPI
                         }
                         else if (status == 406) || (status == 500) {
                             
-                            self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
+                            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
                             completionHandler(response: responseText, statusCode: status, error: "")
                         }
                         else {
                             
                             // MARK: device is already Registered
                             
-                            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
+                            self.sendAnalyticsData(LogLevel.debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
                             let respJson = response?.responseText
                             let data = respJson!.dataUsingEncoding(NSUTF8StringEncoding)
                             let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
@@ -1487,44 +1135,31 @@ import BMSAnalyticsAPI
                                 
                                 // MARK: Updating the registered userID , token or deviceId changed
                                 
-                                self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
+                                self.sendAnalyticsData(LogLevel.debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
                                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                                 
-                                var headers = urlBuilder.addHeader()
-                                if(!(self.clientSecret!.isEmpty)){
-                                    headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                                }
+                                let headers = urlBuilder.addHeader()
                                 
                                 let method =  HttpMethod.PUT
                                 
-                                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                 
                                 
-                                let dict:NSMutableDictionary = NSMutableDictionary()
+                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                                 
-                                dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                                
-                                
-                                let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                                
-                                let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                                
-                                getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
-                                    
-                                    
+                                getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
                                     
                                     if response?.statusCode != nil  {
                                         
                                         let status = response?.statusCode ?? 0
                                         let responseText = response?.responseText ?? ""
                                         
-                                        self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
+                                        self.sendAnalyticsData(LogLevel.info, logStringData: "Response of device updation - Response is: \(responseText)")
                                         completionHandler(response: responseText, statusCode: status, error: "")
                                     }
                                     else if let responseError = error {
                                         
-                                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
+                                        self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
                                         completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
                                     }
                                     
@@ -1534,7 +1169,7 @@ import BMSAnalyticsAPI
                             else {
                                 // MARK: device already registered and parameteres not changed.
                                 
-                                self.sendAnalyticsData(LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
+                                self.sendAnalyticsData(LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
                                 completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
                             }
                         }
@@ -1542,197 +1177,17 @@ import BMSAnalyticsAPI
                     }
                     else if let responseError = error {
                         
-                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
+                        self.sendAnalyticsData(LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                         completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
                     }
                 })
             }else{
                 
-                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - BMSPush is not initialized")
                 completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
             }
         }
         
-        /**
-         
-         This Methode used to register the client device to the Bluemix Push service.
-         
-         Call this methode after successfully registering for remote push notification in the Apple Push
-         Notification Service .
-         
-         - Parameter deviceToken: This is the response we get from the push registartion in APNS.
-         - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
-         */
-        
-        @available(*, deprecated, message="Please use registerWithDeviceToken")
-        public func registerDeviceToken (deviceToken:NSData, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
-            
-            // Generate new ID
-            // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
-            
-            var devId = String()
-            let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
-            BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
-            
-            var token:String = deviceToken.description
-            token = token.stringByReplacingOccurrencesOfString("<", withString: "")
-            token = token.stringByReplacingOccurrencesOfString(">", withString: "")
-            token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
-            
-            
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
-            
-            let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
-            var headers = urlBuilder.addHeader()
-            if(!(clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
-            }
-            
-            let method =  HttpMethod.GET
-            
-            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Verifying previous device registration.")
-            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-            
-            // MARK: FIrst Action, checking for previuos registration
-            
-            getRequest.sendWithCompletionHandler ({ (response: Response?, error: NSError?) -> Void in
-                
-                if response?.statusCode != nil {
-                    
-                    let status = response?.statusCode ?? 0
-                    let responseText = response?.responseText ?? ""
-                    
-                    
-                    if (status == 404) {
-                        
-                        self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is not registered before.  Registering for the first time.")
-                        let resourceURL:String = urlBuilder.getDevicesUrl()
-                        
-                        let headers = urlBuilder.addHeader()
-                        
-                        let method =  HttpMethod.POST
-                        
-                        let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-                        
-                        
-                        let dict:NSMutableDictionary = NSMutableDictionary()
-                        
-                        dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                        dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                        dict.setValue("A", forKey: IMFPUSH_PLATFORM)
-                        
-                        // here "jsonData" is the dictionary encoded in JSON data
-                        let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                        
-                        // here "jsonData" is convereted to string
-                        let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                        
-                        
-                        // MARK: Registering for the First Time
-                        
-                        getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
-                            
-                            if response?.statusCode != nil {
-                                
-                                let status = response?.statusCode ?? 0
-                                let responseText = response?.responseText ?? ""
-                                
-                                self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device registration - Response is: \(responseText)")
-                                completionHandler(response: responseText, statusCode: status, error: "")
-                                
-                            }
-                            else if let responseError = error {
-                                
-                                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device registration - Error is: \(responseError.localizedDescription)")
-                                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: \(responseError.localizedDescription)")
-                            }
-                        })
-                        
-                    }
-                    else if (status == 406) || (status == 500) {
-                        
-                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                        completionHandler(response: responseText, statusCode: status, error: "")
-                    }
-                    else {
-                        
-                        // MARK: device is already Registered
-                        
-                        self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device is already registered. Return the device Id - Response is: \(response?.responseText)")
-                        let respJson = response?.responseText
-                        let data = respJson!.dataUsingEncoding(NSUTF8StringEncoding)
-                        let jsonResponse:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                        
-                        let rToken = jsonResponse.objectForKey(IMFPUSH_TOKEN) as! String
-                        let rDevId = jsonResponse.objectForKey(IMFPUSH_DEVICE_ID) as! String
-                        
-                        if ((rToken.compare(token)) != NSComparisonResult.OrderedSame) || (!(devId.isEmpty) && (devId.compare(rDevId) != NSComparisonResult.OrderedSame))  {
-                            
-                            // MARK: Updating the registered device , token or deviceId changed
-                            
-                            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Device token or DeviceId has changed. Sending update registration request.")
-                            let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(rDevId)
-                            
-                            var headers = urlBuilder.addHeader()
-                            if(!(self.clientSecret!.isEmpty)){
-                                headers[IMFPUSH_CLIENT_SECRET] = self.clientSecret
-                            }
-                            
-                            let method =  HttpMethod.PUT
-                            
-                            let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
-                            
-                            
-                            let dict:NSMutableDictionary = NSMutableDictionary()
-                            
-                            dict.setValue(token, forKey: IMFPUSH_TOKEN)
-                            dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                            
-                            
-                            let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                            
-                            let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                            
-                            getRequest.sendString(jsonString , completionHandler: { (response: Response?, error: NSError?) -> Void in
-                                
-                                
-                                
-                                if response?.statusCode != nil  {
-                                    
-                                    let status = response?.statusCode ?? 0
-                                    let responseText = response?.responseText ?? ""
-                                    
-                                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Response of device updation - Response is: \(responseText)")
-                                    completionHandler(response: responseText, statusCode: status, error: "")
-                                }
-                                else if let responseError = error {
-                                    
-                                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error during device updatation - Error is : \(responseError.description)")
-                                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationUpdateError.rawValue, error: "Error during device updatation - Error is : \(responseError.description)")
-                                }
-                                
-                            })
-                            
-                        }
-                        else {
-                            // MARK: device already registered and parameteres not changed.
-                            
-                            self.sendAnalyticsData(LogLevel.Info, logStringData: "Device is already registered and device registration parameters not changed.")
-                            completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
-                        }
-                    }
-                    
-                }
-                else if let responseError = error {
-                    
-                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationVerificationError.rawValue , error: "Error while verifying previous registration - Error is: \(responseError.localizedDescription)")
-                    
-                }
-                
-            })
-        }
         
         /**
          
@@ -1745,36 +1200,31 @@ import BMSAnalyticsAPI
         public func retrieveAvailableTagsWithCompletionHandler (completionHandler: (response:NSMutableArray?, statusCode:Int?, error:String) -> Void){
             
             
-            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+            self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
             
             let resourceURL:String = urlBuilder.getTagsUrl()
             
-            var headers = urlBuilder.addHeader()
-            if(!(clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
-            }
-            
+            let headers = urlBuilder.addHeader()
             let method =  HttpMethod.GET
             
             let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
             
             
-            getRequest.sendWithCompletionHandler ({ (response, error) -> Void in
-                
+            getRequest.send(completionHandler: { (response, error) -> Void in
                 
                 if response?.statusCode != nil {
                     
                     let status = response?.statusCode ?? 0
                     let responseText = response?.responseText ?? ""
                     
-                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully retrieved available tags - Response is: \(responseText)")
+                    self.sendAnalyticsData(LogLevel.info, logStringData: "Successfully retrieved available tags - Response is: \(responseText)")
                     let availableTagsArray = response?.availableTags()
                     
                     completionHandler(response: availableTagsArray, statusCode: status, error: "")
                 } else if let responseError = error {
                     
-                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while retrieving available tags - Error is: \(responseError.description)")
+                    self.sendAnalyticsData(LogLevel.error, logStringData: "Error while retrieving available tags - Error is: \(responseError.description)")
                     completionHandler(response: [], statusCode: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
                     
                 }
@@ -1794,44 +1244,35 @@ import BMSAnalyticsAPI
         public func subscribeToTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary?, statusCode:Int?, error:String) -> Void) {
             
             
-            self.sendAnalyticsData(LogLevel.Debug, logStringData:"Entering: subscribeToTags." )
+            self.sendAnalyticsData(LogLevel.debug, logStringData:"Entering: subscribeToTags." )
             
             if tagsArray.count != 0 {
                 
                 let authManager  = BMSClient.sharedInstance.authorizationManager
-                let devId = authManager.deviceIdentity.id!
+                let devId = authManager.deviceIdentity.ID!
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
                 let resourceURL:String = urlBuilder.getSubscriptionsUrl()
                 
-                var headers = urlBuilder.addHeader()
-                if(!(clientSecret!.isEmpty)){
-                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
-                }
+                let headers = urlBuilder.addHeader()
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                 
+                let mappedArray = tagsArray.flatMap{"\($0)"}.description;
                 
-                let dict:NSMutableDictionary = NSMutableDictionary()
+                let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(mappedArray), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                 
-                dict.setValue(tagsArray, forKey: IMFPUSH_TAGNAMES)
-                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                
-                let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                
-                let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                
-                getRequest.sendString(jsonString, completionHandler: { (response, error) -> Void in
+                getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                     
                     if response?.statusCode != nil {
                         
                         let status = response?.statusCode ?? 0
                         let responseText = response?.responseText ?? ""
                         
-                        self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully subscribed to tags - Response is: \(responseText)")
+                        self.sendAnalyticsData(LogLevel.info, logStringData: "Successfully subscribed to tags - Response is: \(responseText)")
                         let subscriptionResponse = response?.subscribeStatus()
                         
                         completionHandler(response: subscriptionResponse, statusCode: status, error: "")
@@ -1840,7 +1281,7 @@ import BMSAnalyticsAPI
                         
                         let subscriptionResponse = NSMutableDictionary()
                         
-                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while subscribing to tags - Error is: \(responseError.description)")
+                        self.sendAnalyticsData(LogLevel.error, logStringData: "Error while subscribing to tags - Error is: \(responseError.description)")
                         completionHandler(response: subscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
                         
                     }
@@ -1850,7 +1291,7 @@ import BMSAnalyticsAPI
                 
                 let subscriptionResponse = NSMutableDictionary()
                 
-                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
                 completionHandler(response: subscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error.  Tag array cannot be null. Create tags in your Bluemix App")
             }
         }
@@ -1868,42 +1309,36 @@ import BMSAnalyticsAPI
         public func retrieveSubscriptionsWithCompletionHandler (completionHandler: (response:NSMutableArray?, statusCode:Int?, error:String) -> Void) {
             
             
-            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
+            self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering retrieveSubscriptionsWithCompletitionHandler.")
             
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            let devId = authManager.deviceIdentity.id!
+            let devId = authManager.deviceIdentity.ID!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
             let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
             
-            var headers = urlBuilder.addHeader()
-            if(!(clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
-            }
-            
+            let headers = urlBuilder.addHeader()
+           
             let method =  HttpMethod.GET
             
             let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
             
-            
-            getRequest.sendWithCompletionHandler({ (response: Response?, error: NSError?) -> Void in
-                
-                
+            getRequest.send(completionHandler: { (response, error)  -> Void in
                 
                 if response?.statusCode != nil {
                     
                     let status = response?.statusCode ?? 0
                     let responseText = response?.responseText ?? ""
                     
-                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Subscription retrieved successfully - Response is: \(responseText)")
+                    self.sendAnalyticsData(LogLevel.info, logStringData: "Subscription retrieved successfully - Response is: \(responseText)")
                     let subscriptionArray = response?.subscriptions()
                     
                     completionHandler(response: subscriptionArray, statusCode: status, error: "")
                     
                 } else if let responseError = error {
                     
-                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
+                    self.sendAnalyticsData(LogLevel.error, logStringData: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
                     
                     completionHandler(response: [], statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue,error: "Error while retrieving subscriptions - Error is: \(responseError.localizedDescription)")
                     
@@ -1923,45 +1358,37 @@ import BMSAnalyticsAPI
          */
         public func unsubscribeFromTags (tagsArray:NSArray, completionHandler: (response:NSMutableDictionary?, statusCode:Int?, error:String) -> Void) {
             
-            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering: unsubscribeFromTags")
+            self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering: unsubscribeFromTags")
             
             if tagsArray.count != 0 {
                 
                 
                 let authManager  = BMSClient.sharedInstance.authorizationManager
-                let devId = authManager.deviceIdentity.id!
+                let devId = authManager.deviceIdentity.ID!
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
                 let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
                 
-                var headers = urlBuilder.addHeader()
-                if(!(clientSecret!.isEmpty)){
-                    headers[IMFPUSH_CLIENT_SECRET] = clientSecret
-                }
+                let headers = urlBuilder.addHeader()
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                 
+                let data1 = tagsArray.flatMap{"\($0)"}.description;
                 
-                let dict:NSMutableDictionary = NSMutableDictionary()
+                let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(data1), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                 
-                dict.setValue(tagsArray, forKey: IMFPUSH_TAGNAMES)
-                dict.setValue(devId, forKey: IMFPUSH_DEVICE_ID)
-                
-                let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-                
-                let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
-                
-                getRequest.sendString(jsonString, completionHandler: { (response, error) -> Void in
+                getRequest.send(requestBody: data, completionHandler: { (response, error) -> Void in
+
                     
                     if response?.statusCode != nil {
                         
                         let status = response?.statusCode ?? 0
                         let responseText = response?.responseText ?? ""
                         
-                        self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully unsubscribed from tags - Response is: \(responseText)")
+                        self.sendAnalyticsData(LogLevel.info, logStringData: "Successfully unsubscribed from tags - Response is: \(responseText)")
                         let unSubscriptionResponse = response?.unsubscribeStatus()
                         
                         completionHandler(response: unSubscriptionResponse, statusCode: status, error: "")
@@ -1970,7 +1397,7 @@ import BMSAnalyticsAPI
                         
                         let unSubscriptionResponse = NSMutableDictionary()
                         
-                        self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while unsubscribing from tags - Error is: \(responseError.description)")
+                        self.sendAnalyticsData(LogLevel.error, logStringData: "Error while unsubscribing from tags - Error is: \(responseError.description)")
                         completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
                     }
                 })
@@ -1978,7 +1405,7 @@ import BMSAnalyticsAPI
                 
                 let unSubscriptionResponse = NSMutableDictionary()
                 
-                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error.  Tag array cannot be null.")
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error.  Tag array cannot be null.")
                 completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error.  Tag array cannot be null.")
             }
         }
@@ -1992,38 +1419,35 @@ import BMSAnalyticsAPI
          */
         public func unregisterDevice (completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
             
-            self.sendAnalyticsData(LogLevel.Debug, logStringData: "Entering unregisterDevice.")
+            self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering unregisterDevice.")
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            let devId = authManager.deviceIdentity.id!
+            let devId = authManager.deviceIdentity.ID!
             
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
             let resourceURL:String = urlBuilder.getUnregisterUrl(devId)
             
-            var headers = urlBuilder.addHeader()
-            if(!(clientSecret!.isEmpty)){
-                headers[IMFPUSH_CLIENT_SECRET] = clientSecret
-            }
+            let headers = urlBuilder.addHeader()
             
             let method =  HttpMethod.DELETE
             
             let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
             
             
-            getRequest.sendWithCompletionHandler ({ (response, error) -> Void in
+            getRequest.send(completionHandler: { (response, error) -> Void in
                 
                 if response?.statusCode != nil {
                     
                     let status = response?.statusCode ?? 0
                     let responseText = response?.responseText ?? ""
                     
-                    self.sendAnalyticsData(LogLevel.Info, logStringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
+                    self.sendAnalyticsData(LogLevel.info, logStringData: "Successfully unregistered the device. - Response is: \(response?.responseText)")
                     
                     completionHandler(response: responseText, statusCode: status, error: "")
                     
                 } else if let responseError = error  {
                     
-                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while unregistering device - Error is: \(responseError.description)")
+                    self.sendAnalyticsData(LogLevel.error, logStringData: "Error while unregistering device - Error is: \(responseError.description)")
                     completionHandler(response:"", statusCode: IMFPushErrorvalues.BMSPushUnregitrationError.rawValue,error: "Error while unregistering device - Error is: \(responseError.description)")
                 }
             })
@@ -2033,57 +1457,47 @@ import BMSAnalyticsAPI
         
         //Begin Logger implementation
         
-        
-        /**
-         Assigning Re-Write Domain.
-         */
-        internal func buildRewriteDomain() -> String {
-            return BMSClient.sharedInstance.bluemixRegion!
-        }
-        
         // Setting Log info
         internal func sendAnalyticsData (logType:LogLevel, logStringData:String){
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.id!
-            let testLogger = Logger.logger(forName:devId)
+            devId = authManager.deviceIdentity.ID!
+            let testLogger = Logger.logger(name:devId)
             
-            if (logType == LogLevel.Debug){
+            if (logType == LogLevel.debug){
                 
-                Logger.logLevelFilter = LogLevel.Debug
-                testLogger.debug(logStringData)
+                Logger.logLevelFilter = LogLevel.debug
+                testLogger.debug(message: logStringData)
                 
-            } else if (logType == LogLevel.Error){
+            } else if (logType == LogLevel.error){
                 
-                Logger.logLevelFilter = LogLevel.Error
-                testLogger.error(logStringData)
+                Logger.logLevelFilter = LogLevel.error
+                testLogger.error(message: logStringData)
                 
-            } else if (logType == LogLevel.Analytics){
+            } else if (logType == LogLevel.analytics){
                 
-                Logger.logLevelFilter = LogLevel.Analytics
-                testLogger.debug(logStringData)
+                Logger.logLevelFilter = LogLevel.analytics
+                testLogger.debug(message: logStringData)
                 
-            } else if (logType == LogLevel.Fatal){
+            } else if (logType == LogLevel.fatal){
                 
-                Logger.logLevelFilter = LogLevel.Fatal
-                testLogger.fatal(logStringData)
+                Logger.logLevelFilter = LogLevel.fatal
+                testLogger.fatal(message: logStringData)
                 
-            } else if (logType == LogLevel.Warn){
+            } else if (logType == LogLevel.warn){
                 
-                Logger.logLevelFilter = LogLevel.Warn
-                testLogger.warn(logStringData)
+                Logger.logLevelFilter = LogLevel.warn
+                testLogger.warn(message: logStringData)
                 
-            } else if (logType == LogLevel.Info){
+            } else if (logType == LogLevel.warn){
                 
-                Logger.logLevelFilter = LogLevel.Info
-                testLogger.info(logStringData)
-                
+                Logger.logLevelFilter = LogLevel.warn
+                testLogger.info(message: logStringData)
             }
             else {
-                Logger.logLevelFilter = LogLevel.None
-                testLogger.debug(logStringData)
+                Logger.logLevelFilter = LogLevel.none
+                testLogger.debug(message: logStringData)
             }
-            
         }
         
         internal func validateString(object:String) -> Bool{

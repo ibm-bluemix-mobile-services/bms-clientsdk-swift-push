@@ -29,15 +29,14 @@ class testBMSPushClient: XCTestCase {
         
         #if swift(>=3.0)
             
-            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
-            
+            BMSClient.sharedInstance.initialize(bluemixRegion:BMSClient.Region.usSouth)
             let clientInstance = BMSPushClient.sharedInstance
             clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061", clientSecret: "ed35ea1b-25d4-4521-885b-13ac874fe258")
             let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
             
             let token = string.data(using: String.Encoding.utf8)
             
-            clientInstance.registerWithDeviceToken(deviceToken: token!,completionHandler:  { (response, statusCode, error) -> Void in
+            clientInstance.registerWithDeviceToken(deviceToken: token! as NSData,completionHandler:  { (response, statusCode, error) -> Void in
                 
                 
                 NSLog("the status code for registartion is \(statusCode)");
@@ -70,10 +69,10 @@ class testBMSPushClient: XCTestCase {
             }
         #else
             
-            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
             
             let clientInstance = BMSPushClient.sharedInstance
-            clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061", clientSecret: "ed35ea1b-25d4-4521-885b-13ac874fe258")
+            clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061", clientSecret: "ed35ea1b-25d4-4521-885b-13ac874fe258")
             let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
             
             let token = string.dataUsingEncoding(NSUTF8StringEncoding)
@@ -229,9 +228,9 @@ class testBMSPushClient: XCTestCase {
         
         // MARK: retrieve subscibed tags
         #if swift(>=3.0)
-            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
         #else
-            BMSClient.sharedInstance.initialize(bluemixRegion:  BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion:  BMSClient.Region.usSouth)
         #endif
         let clientInstance = BMSPushClient.sharedInstance
         
@@ -370,9 +369,9 @@ class testBMSPushClient: XCTestCase {
     
     func testRegisterWithUserId(){
         #if swift(>=3.0)
-            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
         #else
-            BMSClient.sharedInstance.initialize(bluemixRegion:  BMSClient.REGION_US_SOUTH)
+            BMSClient.sharedInstance.initialize(bluemixRegion:  BMSClient.Region.usSouth)
         #endif
         
         let clientInstance = BMSPushClient.sharedInstance
@@ -383,7 +382,7 @@ class testBMSPushClient: XCTestCase {
             
             let token = string.data(using: String.Encoding.utf8)
             
-            clientInstance.registerWithDeviceToken(deviceToken: token!, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
+            clientInstance.registerWithDeviceToken(deviceToken: token! as NSData, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
                 
                 
                 NSLog("the status code for registartion is \(statusCode)");
@@ -404,7 +403,7 @@ class testBMSPushClient: XCTestCase {
             })
             
         #else
-            clientInstance.initializeWithAppGUID("f085b69f-f713-410a-b65d-e7b061", clientSecret:"134234-23432423-32423432")
+            clientInstance.initializeWithAppGUID(appGUID: "f085b69f-f713-410a-b65d-e7b061", clientSecret:"134234-23432423-32423432")
             let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310a9c"
             
             let token = string.dataUsingEncoding(NSUTF8StringEncoding)
