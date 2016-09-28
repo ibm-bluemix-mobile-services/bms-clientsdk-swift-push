@@ -1020,12 +1020,12 @@ import BMSAnalyticsAPI
                     })
                 }else{
                     
-                    self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - Provide a valid userId value")
+                    self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - Provide a valid userId value")
                     completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - Provide a valid userId value")
                 }
             }else{
                 
-                self.sendAnalyticsData(LogLevel.Error, logStringData: "Error while registration - BMSPush is not initialized")
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - BMSPush is not initialized")
                 completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue , error: "Error while registration - BMSPush is not initialized")
             }
             
