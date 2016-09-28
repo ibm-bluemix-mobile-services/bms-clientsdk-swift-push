@@ -2,4 +2,4 @@
 Build/
 xcuserdata/
 DerivedData/
-.idea/
+Carthage/
