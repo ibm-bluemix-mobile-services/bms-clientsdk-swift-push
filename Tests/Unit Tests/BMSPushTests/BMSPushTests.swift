@@ -35,8 +35,7 @@ class testBMSPushClient: XCTestCase {
             let string = "46f5b4fde98a7013ebeb189a3be65e585fc7eccd310af99359c7c6b67"
             
             let token = string.data(using: String.Encoding.utf8)
-            
-            clientInstance.registerWithDeviceToken(deviceToken: token! as NSData,completionHandler:  { (response, statusCode, error) -> Void in
+            clientInstance.registerWithDeviceToken(deviceToken: token!, completionHandler: { (response, statusCode, error) -> Void in
                 
                 
                 NSLog("the status code for registartion is \(statusCode)");
@@ -382,7 +381,7 @@ class testBMSPushClient: XCTestCase {
             
             let token = string.data(using: String.Encoding.utf8)
             
-            clientInstance.registerWithDeviceToken(deviceToken: token! as NSData, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
+            clientInstance.registerWithDeviceToken(deviceToken: token!, WithUserId: "testUser", completionHandler:  { (response, statusCode, error) -> Void in
                 
                 
                 NSLog("the status code for registartion is \(statusCode)");
