@@ -149,11 +149,10 @@ import BMSCore
                     devId = authManager.deviceIdentity.ID!
                     BMSPushUtils.saveValueToNSUserDefaults(value: devId, key: "deviceId")
                     
-                    var token:String = deviceToken.description
-                    token = token.replacingOccurrences(of: "<", with: "")
-                    token = token.replacingOccurrences(of: ">", with: "")
-                    token = token.replacingOccurrences(of: " ", with: "").trimmingCharacters(in: NSCharacterSet.symbols)
-                    
+                    var token = ""
+                    for i in 0..<deviceToken.count {
+                        token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+                    }
                     
                     let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
                     
@@ -313,10 +312,10 @@ import BMSCore
                 devId = authManager.deviceIdentity.ID!
                 BMSPushUtils.saveValueToNSUserDefaults(value: devId, key: "deviceId")
                 
-                var token:String = deviceToken.description
-                token = token.replacingOccurrences(of: "<", with: "")
-                token = token.replacingOccurrences(of: ">", with: "")
-                token = token.replacingOccurrences(of: " ", with: "").trimmingCharacters(in: NSCharacterSet.symbols)
+                var token = ""
+                for i in 0..<deviceToken.count {
+                    token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+                }
                 
                 
                 let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)

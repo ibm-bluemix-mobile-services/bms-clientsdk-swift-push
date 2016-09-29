@@ -118,11 +118,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
             
-            var token:String = deviceToken.description
-            token = token.replacingOccurrences(of: "<", with: "")
-            token = token.replacingOccurrences(of: ">", with: "")
-            token = token.replacingOccurrences(of: " ", with: "").trimmingCharacters(in: NSCharacterSet.symbols)
-            
             let push =  BMSPushClient.sharedInstance
             push.initializeWithAppGUID(appGUID: "", clientSecret:"")
             //push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
@@ -329,11 +324,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
-    
-            var token:String = deviceToken.description
-            token = token.stringByReplacingOccurrencesOfString("<", withString: "")
-            token = token.stringByReplacingOccurrencesOfString(">", withString: "")
-            token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
     
             let push =  BMSPushClient.sharedInstance
             push.initializeWithAppGUID("", clientSecret:"")
