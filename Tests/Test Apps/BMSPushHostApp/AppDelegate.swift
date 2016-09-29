@@ -118,25 +118,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
             
-            
-            
-            var devId = String()
-            let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.ID!
-            
-            var token:String = deviceToken.description
-            token = token.replacingOccurrences(of: "<", with: "")
-            token = token.replacingOccurrences(of: ">", with: "")
-            token = token.replacingOccurrences(of: " ", with: "").trimmingCharacters(in: NSCharacterSet.symbols)
-            
-            print(token);
-            print(devId);
-            
             let push =  BMSPushClient.sharedInstance
             push.initializeWithAppGUID(appGUID: "", clientSecret:"")
             //push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
             
-            push.registerWithDeviceToken(deviceToken: deviceToken as NSData) { (response, statusCode, error) -> Void in
+            push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -338,21 +324,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
-            
-            
-            
-            var devId = String()
-            let authManager  = BMSClient.sharedInstance.authorizationManager
-            devId = authManager.deviceIdentity.ID!
-            
-            var token:String = deviceToken.description
-            token = token.stringByReplacingOccurrencesOfString("<", withString: "")
-            token = token.stringByReplacingOccurrencesOfString(">", withString: "")
-            token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
-            
-            print(token);
-            print(devId);
-            
+    
             let push =  BMSPushClient.sharedInstance
             push.initializeWithAppGUID("", clientSecret:"")
             //push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
@@ -362,7 +334,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if error.isEmpty {
                     
                     print( "Response during device registration : \(response)")
-                    
+    
                     print( "status code during device registration : \(statusCode)")
                     
                     self.sendNotifToDisplayResponse("Response during device registration json: \(response)")
