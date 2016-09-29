@@ -186,7 +186,17 @@ import BMSCore
                                 
                                 let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                 
-                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".data(using: .utf8)
+								var json = [
+									IMFPUSH_DEVICE_ID:devId,
+									IMFPUSH_TOKEN:token,
+									IMFPUSH_PLATFORM: "A"]
+								if let WithUserId = WithUserId {
+									json[IMFPUSH_USERID] = WithUserId
+								}
+
+
+								let data = try? JSONSerialization.data(withJSONObject: json, options: [])
+
                                 // MARK: Registering for the First Time
                                 
                                  getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
@@ -240,9 +250,17 @@ import BMSCore
                                     
                                     let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                     
-                                    let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".data(using: .utf8)
-                                    
-                                    
+									var json = [
+										IMFPUSH_DEVICE_ID:devId,
+										IMFPUSH_TOKEN:token]
+
+									if let WithUserId = WithUserId {
+										json[IMFPUSH_USERID] = WithUserId
+									}
+
+
+									let data = try? JSONSerialization.data(withJSONObject: json, options: [])
+									
                                     getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                                         
                                         if response?.statusCode != nil  {
