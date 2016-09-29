@@ -18,7 +18,7 @@ This package contains the Push components of the Swift SDK.
 
 * iOS 8.0+
 * Xcode 7.3, 8.0
-* Swift 2.2 - 3.0
+* Swift 2.3 - 3.0
 
 ##Installation
 

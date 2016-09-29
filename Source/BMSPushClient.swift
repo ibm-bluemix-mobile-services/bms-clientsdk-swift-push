@@ -135,7 +135,7 @@ import BMSCore
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
          */
         
-        public func registerWithDeviceToken(deviceToken:NSData , WithUserId:String?, completionHandler: @escaping(_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
+        public func registerWithDeviceToken(deviceToken:Data , WithUserId:String?, completionHandler: @escaping(_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
             
             
             if (isInitialized){
@@ -186,7 +186,7 @@ import BMSCore
                                 
                                 let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                 
-                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".data(using: .utf8)
+                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
                                 // MARK: Registering for the First Time
                                 
                                  getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
@@ -240,7 +240,7 @@ import BMSCore
                                     
                                     let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                     
-                                    let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".data(using: .utf8)
+                                    let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
                                     
                                     
                                     getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
@@ -302,7 +302,7 @@ import BMSCore
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
          */
         
-        public func registerWithDeviceToken (deviceToken:NSData, completionHandler: @escaping(_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
+        public func registerWithDeviceToken (deviceToken:Data, completionHandler: @escaping(_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
             
             // Generate new ID
             // TODO: This need to be verified. The Device Id is not storing anywhere in BMSCore
@@ -927,7 +927,7 @@ import BMSCore
                                 
                                 let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                 
-                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".dataUsingEncoding(NSUTF8StringEncoding)
+                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                                 
                                 // MARK: Registering for the First Time
                                 getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
@@ -981,7 +981,7 @@ import BMSCore
                                     
                                     let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                     
-                                    let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId)\"}".dataUsingEncoding(NSUTF8StringEncoding)
+                                    let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                                     
                                     getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
                                         
