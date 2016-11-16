@@ -711,6 +711,45 @@ import BMSCore
             })
         }
         
+        public func sendMessageDeliveryStatus (messageId:String, status:String){
+            
+            
+            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
+            let authManager  = BMSClient.sharedInstance.authorizationManager
+            let devId = authManager.deviceIdentity.ID!
+            
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId: messageId)
+            
+            let headers = urlBuilder.addHeader()
+            
+            let method =  HttpMethod.PUT
+            
+            let data =  "{\"\(IMFPUSH_PLATFORM)\":A, \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\", \"\(IMFPUSH_STATUS)\":OPEN}".data(using: .utf8)
+            
+            let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+            
+            getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
+                
+                if response?.statusCode != nil {
+                    
+                    let responseText = response?.responseText ?? ""
+                    
+                    self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully updated the message status.  The response is: \(responseText)")
+                    print("Successfully updated the message status.  The response is: "+responseText)
+                    
+                } else if let responseError = error{
+                    
+                    
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status.  The response is:  \(responseError.localizedDescription)")
+                    print("Failed to update the message status.  The response is: "+responseError.localizedDescription)
+                    
+                    
+                }
+            })
+        }
+        
         // MARK: Methods (Internal)
         
         //Begin Logger implementation
@@ -1450,11 +1489,52 @@ import BMSCore
                 }
             })
         }
-        
+    
+    
+    
+        public func sendMessageDeliveryStatus (messageId:String, status:String){
+            
+            
+            self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
+            let authManager  = BMSClient.sharedInstance.authorizationManager
+            let devId = authManager.deviceIdentity.ID!
+            
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId)
+            
+            let headers = urlBuilder.addHeader()
+            
+            let method =  HttpMethod.PUT
+            
+            let data =  "{\"\(IMFPUSH_PLATFORM)\":A, \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\", \"\(IMFPUSH_STATUS)\":OPEN}".dataUsingEncoding(NSUTF8StringEncoding)
+            
+            let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+            
+            getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
+                
+                if response?.statusCode != nil {
+                    
+                    let responseText = response?.responseText ?? ""
+                    
+                    self.sendAnalyticsData(LogLevel.info, logStringData: "Successfully updated the message status.  The response is: \(responseText)")
+                    print("Successfully updated the message status.  The response is: "+responseText)
+                    
+                } else if let responseError = error{
+                    
+                    
+                    self.sendAnalyticsData(LogLevel.error, logStringData: "Failed to update the message status.  The response is:  \(responseError.localizedDescription)")
+                    print("Failed to update the message status.  The response is: "+responseError.localizedDescription)
+                    
+                    
+                }
+            })
+        }
+    
         // MARK: Methods (Internal)
-        
+    
         //Begin Logger implementation
-        
+    
         // Setting Log info
         internal func sendAnalyticsData (logType:LogLevel, logStringData:String){
             var devId = String()
