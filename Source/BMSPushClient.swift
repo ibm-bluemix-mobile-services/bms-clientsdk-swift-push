@@ -726,7 +726,7 @@ import BMSCore
             
             let method =  HttpMethod.PUT
             
-            let data =  "{\"\(IMFPUSH_PLATFORM)\":A, \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\", \"\(IMFPUSH_STATUS)\":OPEN}".data(using: .utf8)
+            let data =  "{\"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\", \"\(IMFPUSH_STATUS)\":OPEN}".data(using: .utf8)
             
             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
             
@@ -1507,7 +1507,7 @@ import BMSCore
             
             let method =  HttpMethod.PUT
             
-            let data =  "{\"\(IMFPUSH_PLATFORM)\":A, \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\", \"\(IMFPUSH_STATUS)\":OPEN}".dataUsingEncoding(NSUTF8StringEncoding)
+            let data =  "{\"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\", \"\(IMFPUSH_STATUS)\":OPEN}".dataUsingEncoding(NSUTF8StringEncoding)
             
             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
             
