@@ -92,9 +92,9 @@ import BMSCore
          - parameter clientSecret:    The clientSecret of the Push Service
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
-        public func initializeWithAppGUID (appGUID: String?, clientSecret: String?) {
+        public func initializeWithAppGUID (appGUID: String, clientSecret: String) {
             
-            if validateString(object: clientSecret!) {
+            if validateString(object: clientSecret) {
                 self.clientSecret = clientSecret
                 self.applicationId = appGUID
                 isInitialized = true;
@@ -113,7 +113,7 @@ import BMSCore
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
         @available(*, deprecated, message: "This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
-        public func initializeWithAppGUID (appGUID: String?) {
+        public func initializeWithAppGUID (appGUID: String) {
             self.applicationId = appGUID;
             isInitialized = true;
         }
@@ -833,9 +833,9 @@ import BMSCore
          - parameter clientSecret:    The clientSecret of the Push Service
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
-        public func initializeWithAppGUID (appGUID appGUID: String?, clientSecret: String?) {
+        public func initializeWithAppGUID (appGUID appGUID: String, clientSecret: String) {
             
-            if validateString(clientSecret!) {
+            if validateString(clientSecret) {
                 self.clientSecret = clientSecret
                 self.applicationId = appGUID
                 isInitialized = true;
@@ -854,7 +854,7 @@ import BMSCore
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
         @available(*, deprecated, message="This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
-        public func initializeWithAppGUID (appGUID appGUID: String?) {
+        public func initializeWithAppGUID (appGUID appGUID: String) {
             self.applicationId = appGUID;
             isInitialized = true;
         }

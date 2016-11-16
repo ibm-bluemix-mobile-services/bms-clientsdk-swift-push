@@ -89,13 +89,9 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
     // Public access required by BMSSecurity framework.
     public var networkSession: URLSession!
     
-    // The time at which the request is sent.
-    // Public access required by BMSAnalytics framework.
-    public private(set) var startTime: TimeInterval = 0.0
-    
     // The unique ID to keep track of each request.
     // Public access required by BMSAnalytics framework.
-    public private(set) var trackingId: String = ""
+    open private(set) var trackingId: String = ""
     
     // Metadata for the request.
     // This will obtain a value when the Analytics class from BMSAnalytics is initialized.
@@ -189,8 +185,6 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
             self.headers["x-mfp-analytics-metadata"] = requestMetadata
         }
         
-        self.startTime = Date.timeIntervalSinceReferenceDate
-        
         if let url = URL(string: self.resourceUrl) {
             
             buildAndSendRequest(url: url, callback: completionHandler)
@@ -208,13 +202,27 @@ open class BaseRequest: NSObject, URLSessionTaskDelegate {
     
     private func buildAndSendRequest(url: URL, callback: BMSCompletionHandler?) {
         
-        // A callback that builds the Response object and passes it to the user
-        let buildAndSendResponse = {
-            (data: Data?, response: URLResponse?, error: Error?) -> Void in
+        // The time at which the request is sent.
+        let startTime = Int64(Date.timeIntervalSinceReferenceDate * 1000)
+        
+        // Our internal completion handler that does 2 things:
+        // 1) Builds the Response object and passes it to the user
+        // 2) Records network metadata for Analytics
+        let buildAndSendResponse = { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             
             let networkResponse = Response(responseData: data, httpResponse: response as? HTTPURLResponse, isRedirect: self.allowRedirects)
 
             callback?(networkResponse, error)
+            
+            // Log network request metadata
+            if BMSURLSession.shouldRecordNetworkMetadata {
+                
+                let dataSent = Int64(self.requestBody?.count ?? 0)
+                let dataReceived = Int64(data?.count ?? 0)
+                let requestMetadata = BMSURLSession.getRequestMetadata(response: response, bytesSent: dataSent, bytesReceived: dataReceived, trackingId: self.trackingId, startTime: startTime, url: url)
+                
+                Analytics.log(metadata: requestMetadata)
+            }
         }
         
         var requestUrl = url
@@ -388,10 +396,6 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     // Public access required by BMSSecurity framework.
     public var networkSession: NSURLSession!
     
-    // The time at which the request is sent.
-    // Public access required by BMSAnalytics framework.
-    public private(set) var startTime: NSTimeInterval = 0.0
-    
     // The unique ID to keep track of each request.
     // Public access required by BMSAnalytics framework.
     public private(set) var trackingId: String = ""
@@ -487,8 +491,6 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
             self.headers["x-mfp-analytics-metadata"] = requestMetadata
         }
         
-        self.startTime = NSDate.timeIntervalSinceReferenceDate()
-        
         if let url = NSURL(string: self.resourceUrl) {
             buildAndSendRequest(url: url, callback: completionHandler)
         }
@@ -506,13 +508,27 @@ public class BaseRequest: NSObject, NSURLSessionTaskDelegate {
     
     private func buildAndSendRequest(url url: NSURL, callback: BMSCompletionHandler?) {
     
-        // A callback that builds the Response object and passes it to the user
-        let buildAndSendResponse = {
-            (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-    
+        // The time at which the request is sent.
+        let startTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000)
+        
+        // Our internal completion handler that does 2 things:
+        // 1) Builds the Response object and passes it to the user
+        // 2) Records network metadata for Analytics
+        let buildAndSendResponse = { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            
             let networkResponse = Response(responseData: data, httpResponse: response as? NSHTTPURLResponse, isRedirect: self.allowRedirects)
             
-            callback?(networkResponse as Response, error)
+            callback?(networkResponse, error)
+            
+            // Log network request metadata
+            if BMSURLSession.shouldRecordNetworkMetadata {
+                
+                let dataSent = Int64(self.requestBody?.length ?? 0)
+                let dataReceived = Int64(data?.length ?? 0)
+                let requestMetadata = BMSURLSession.getRequestMetadata(response: response, bytesSent: dataSent, bytesReceived: dataReceived, trackingId: self.trackingId, startTime: startTime, url: url)
+                
+                Analytics.log(metadata: requestMetadata)
+            }
         }
     
         var requestUrl = url

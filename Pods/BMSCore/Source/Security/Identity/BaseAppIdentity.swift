@@ -45,7 +45,7 @@ open class BaseAppIdentity: AppIdentity {
     
     public init() {
         
-        jsonData[BaseAppIdentity.Key.ID] = Bundle(for:object_getClass(self)).bundleIdentifier
+        jsonData[BaseAppIdentity.Key.ID] = Bundle.main.bundleIdentifier
         jsonData[BaseAppIdentity.Key.version] = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
     
@@ -102,7 +102,7 @@ public class BaseAppIdentity: AppIdentity {
 	
 	public init() {
         
-        jsonData[BaseAppIdentity.Key.ID] = NSBundle(forClass:object_getClass(self)).bundleIdentifier
+        jsonData[BaseAppIdentity.Key.ID] = NSBundle.mainBundle().bundleIdentifier
         jsonData[BaseAppIdentity.Key.version] = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
 	}
 	
