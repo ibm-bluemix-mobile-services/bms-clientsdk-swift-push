@@ -711,7 +711,7 @@ import BMSCore
             })
         }
         
-        public func sendMessageDeliveryStatus (messageId:String, status:String){
+        public func sendMessageDeliveryStatus (messageId:String){
             
             
             self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
@@ -1492,7 +1492,7 @@ import BMSCore
     
     
     
-        public func sendMessageDeliveryStatus (messageId:String, status:String){
+        public func sendMessageDeliveryStatus (messageId:String){
             
             
             self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
