@@ -263,7 +263,7 @@ import BMSCore
                                     // MARK: device already registered and parameteres not changed.
                                     
                                     self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                    completionHandler("Device is already registered and device registration parameters not changed", status, "")
+                                    completionHandler(response?.responseText, status, "")
                                 }
                             }
                             
@@ -426,7 +426,7 @@ import BMSCore
                                 // MARK: device already registered and parameteres not changed.
                                 
                                 self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                completionHandler("Device is already registered and device registration parameters not changed", status, "")
+                                completionHandler(response?.responseText, status, "")
                             }
                         }
                     }
@@ -1042,7 +1042,7 @@ import BMSCore
                                     // MARK: device already registered and parameteres not changed.
                                     
                                     self.sendAnalyticsData(LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                    completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                                    completionHandler(response: response?.responseText, statusCode: status, error: "")
                                 }
                             }
                             
@@ -1207,7 +1207,7 @@ import BMSCore
                                 // MARK: device already registered and parameteres not changed.
                                 
                                 self.sendAnalyticsData(LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                                completionHandler(response: response?.responseText, statusCode: status, error: "")
                             }
                         }
                         
