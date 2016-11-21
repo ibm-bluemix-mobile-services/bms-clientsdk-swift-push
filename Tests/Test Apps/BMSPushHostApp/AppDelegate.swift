@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Override point for customization after application launch.
             let myBMSClient = BMSClient.sharedInstance
             myBMSClient.initialize(bluemixRegion: "AppRegion")
+            let push =  BMSPushClient.sharedInstance
+            push.initializeWithAppGUID(appGUID: "", clientSecret:"")
             return true
         }
         
@@ -119,7 +121,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
             
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: "", clientSecret:"")
             //push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
             
             push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
@@ -247,6 +248,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Override point for customization after application launch.
             let myBMSClient = BMSClient.sharedInstance
             myBMSClient.initialize(bluemixRegion: "")
+            let push =  BMSPushClient.sharedInstance
+            push.initializeWithAppGUID(appGUID: "", clientSecret:"")
             return true
         }
         
@@ -326,7 +329,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
     
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID("", clientSecret:"")
             //push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
             
             push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
@@ -425,6 +427,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let payLoad = ((((userInfo as NSDictionary).valueForKey("aps") as! NSDictionary).valueForKey("alert") as! NSDictionary).valueForKey("body") as! NSString)
             
             self.showAlert("Recieved Push notifications", message: payLoad)
+            
+            
+            let payLoad1 = ((userInfo as NSDictionary).valueForKey("payload")) as! NSString
+            let data = payLoad1.dataUsingEncoding(NSUTF8StringEncoding)
+            
+            
+            do {
+                let responseObject = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+                let nid = responseObject.valueForKey("nid") as! String
+                print(nid)
+                
+                let push =  BMSPushClient.sharedInstance
+                
+                push.sendMessageDeliveryStatus(nid)
+                
+            } catch let error as NSError {
+                print("error: \(error.localizedDescription)")
+            }
             
         }
         
