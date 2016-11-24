@@ -132,21 +132,6 @@ import BMSCore
             isInitialized = true;
         }
         
-        public func registerWithAPNS ()  {
-            
-            if #available(iOS 10.0, *) {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
-                { (granted, error) in
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            } else {
-                // Fallback on earlier versions
-                let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-                UIApplication.shared.registerUserNotificationSettings(settings)
-                UIApplication.shared.registerForRemoteNotifications()
-            }
-        }
-        
         
         // MARK: Methods (Public)
         
