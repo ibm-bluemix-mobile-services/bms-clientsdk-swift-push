@@ -15,7 +15,10 @@
 import UIKit
 import BMSCore
 
+
 #if swift(>=3.0)
+    import UserNotifications
+    import UserNotificationsUI
     
     /**
      Used in the `BMSPushClient` class, the `IMFPushErrorvalues` denotes error in the requests.
@@ -70,6 +73,17 @@ import BMSCore
         
         // used to test in test zone and dev zone
         public static var overrideServerHost = "";
+
+        private var _notificationOptions : BMSPushClientOptions?
+        
+        public var notificationOptions:BMSPushClientOptions? {
+            get{
+                return _notificationOptions
+            }
+            set(value){
+                _notificationOptions = value
+            }
+        }
         
         // MARK: Properties (private)
         
@@ -116,6 +130,21 @@ import BMSCore
         public func initializeWithAppGUID (appGUID: String?) {
             self.applicationId = appGUID;
             isInitialized = true;
+        }
+        
+        public func registerWithAPNS ()  {
+            
+            if #available(iOS 10.0, *) {
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
+                { (granted, error) in
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            } else {
+                // Fallback on earlier versions
+                let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+                UIApplication.shared.registerUserNotificationSettings(settings)
+                UIApplication.shared.registerForRemoteNotifications()
+            }
         }
         
         
@@ -804,7 +833,19 @@ import BMSCore
         
         /// This singleton should be used for all `BMSPushClient` activity.
         public static let sharedInstance = BMSPushClient()
-        
+    
+        private var _notificationOptions : BMSPushClientOptions?
+    
+        public var notificationOptions:BMSPushClientOptions? {
+        get{
+            return _notificationOptions
+        }
+        set(value){
+            _notificationOptions = value
+            }
+        }
+    
+    
         // Specifies the bluemix push clientSecret value
         public private(set) var clientSecret: String?
         public private(set) var applicationId: String?
@@ -813,7 +854,7 @@ import BMSCore
         public static var overrideServerHost = "";
         
         // MARK: Properties (private)
-        
+    
         /// `BMSClient` object.
         private var bmsClient = BMSClient.sharedInstance
         
