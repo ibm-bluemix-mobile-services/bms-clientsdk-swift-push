@@ -114,12 +114,6 @@
 		DF0785F91DD4555E0082ADC1 /* BMSPushApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushApplication.swift; sourceTree = "<group>"; };
 		DF8D2CD01DDC5FBD000FB1A4 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		DF8D2CD21DDC5FBD000FB1A4 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
-		DF8D2CD51DDC5FBD000FB1A4 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		DF8D2CD81DDC5FBD000FB1A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		DF8D2CDA1DDC5FBD000FB1A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DF8D2CEA1DDC79DF000FB1A4 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		DF8D2CED1DDC79DF000FB1A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		DF8D2CEF1DDC79DF000FB1A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DFAAA1051DC9E1CD002C16D8 /* BMSPushHostApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BMSPushHostApp.entitlements; sourceTree = "<group>"; };
 		DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClientOptions.swift; sourceTree = "<group>"; };
 		DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationAction.swift; sourceTree = "<group>"; };
@@ -170,8 +164,6 @@
 				DFAAA1051DC9E1CD002C16D8 /* BMSPushHostApp.entitlements */,
 				561BFE351C6C855300CDB375 /* Source */,
 				568867641CA687AE0049CD8C /* Tests */,
-				DF8D2CD41DDC5FBD000FB1A4 /* PushImageExtension */,
-				DF8D2CE91DDC79DF000FB1A4 /* BMSPushNotificationContentExtension */,
 				561BFE341C6C855300CDB375 /* Products */,
 				F9EE4CA35253C550C7EFCE82 /* Pods */,
 				72D580F6A3C6BDBFDA343952 /* Frameworks */,
@@ -274,26 +266,6 @@
 				DF8D2CD21DDC5FBD000FB1A4 /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DF8D2CD41DDC5FBD000FB1A4 /* PushImageExtension */ = {
-			isa = PBXGroup;
-			children = (
-				DF8D2CD51DDC5FBD000FB1A4 /* NotificationViewController.swift */,
-				DF8D2CD71DDC5FBD000FB1A4 /* MainInterface.storyboard */,
-				DF8D2CDA1DDC5FBD000FB1A4 /* Info.plist */,
-			);
-			path = PushImageExtension;
-			sourceTree = "<group>";
-		};
-		DF8D2CE91DDC79DF000FB1A4 /* BMSPushNotificationContentExtension */ = {
-			isa = PBXGroup;
-			children = (
-				DF8D2CEA1DDC79DF000FB1A4 /* NotificationViewController.swift */,
-				DF8D2CEC1DDC79DF000FB1A4 /* MainInterface.storyboard */,
-				DF8D2CEF1DDC79DF000FB1A4 /* Info.plist */,
-			);
-			path = BMSPushNotificationContentExtension;
 			sourceTree = "<group>";
 		};
 		F9EE4CA35253C550C7EFCE82 /* Pods */ = {
@@ -693,22 +665,6 @@
 				56B431B31C72EAA800AE421C /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		DF8D2CD71DDC5FBD000FB1A4 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DF8D2CD81DDC5FBD000FB1A4 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
-		DF8D2CEC1DDC79DF000FB1A4 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DF8D2CED1DDC79DF000FB1A4 /* Base */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
