@@ -16,7 +16,6 @@
 		568867791CA6889E0049CD8C /* BMSPushUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568867781CA6889E0049CD8C /* BMSPushUtilsTest.swift */; };
 		5688677B1CA688BC0049CD8C /* BMSResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5688677A1CA688BC0049CD8C /* BMSResponseTests.swift */; };
 		5688677F1CA68B0B0049CD8C /* BMSPush.h in Headers */ = {isa = PBXBuildFile; fileRef = 5688677D1CA68B0B0049CD8C /* BMSPush.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431A91C72EAA800AE421C /* AppDelegate.swift */; };
 		56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431AB1C72EAA800AE421C /* ViewController.swift */; };
 		56B431AF1C72EAA800AE421C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431AD1C72EAA800AE421C /* Main.storyboard */; };
 		56B431B11C72EAA800AE421C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56B431B01C72EAA800AE421C /* Assets.xcassets */; };
@@ -26,6 +25,11 @@
 		56BCCEC81C9029F50026E58C /* BMSPushUrlBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */; };
 		719AD35A3A34721043FAC24E /* Pods_BMSPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58C35E9BFA9B535E5AE3B2BC /* Pods_BMSPush.framework */; };
 		D13E62AE73154CA41CA325DD /* Pods_BMSPushHostApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D66745AA48F8E34D871917B /* Pods_BMSPushHostApp.framework */; };
+		DF0785FA1DD4555E0082ADC1 /* BMSPushApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0785F91DD4555E0082ADC1 /* BMSPushApplication.swift */; };
+		DF42EEF01DE6F00600AF2AAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431A91C72EAA800AE421C /* AppDelegate.swift */; };
+		DFAAA1071DCB10F6002C16D8 /* BMSPushClientOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */; };
+		DFAAA1091DCB47B2002C16D8 /* BMSPushNotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */; };
+		DFAAA10B1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */; };
 		E768F1F88B9DC080EC149E01 /* Pods_BMSPushTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7BF40A418735A932D502B31 /* Pods_BMSPushTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +69,16 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DF8D2CE11DDC5FBD000FB1A4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +111,19 @@
 		58C35E9BFA9B535E5AE3B2BC /* Pods_BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D66745AA48F8E34D871917B /* Pods_BMSPushHostApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BMSPushHostApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79DB4735F0466F8B5D279B69 /* Pods-BMSPushHostApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BMSPushHostApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BMSPushHostApp/Pods-BMSPushHostApp.debug.xcconfig"; sourceTree = "<group>"; };
+		DF0785F91DD4555E0082ADC1 /* BMSPushApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushApplication.swift; sourceTree = "<group>"; };
+		DF8D2CD01DDC5FBD000FB1A4 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		DF8D2CD21DDC5FBD000FB1A4 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		DF8D2CD51DDC5FBD000FB1A4 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		DF8D2CD81DDC5FBD000FB1A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		DF8D2CDA1DDC5FBD000FB1A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DF8D2CEA1DDC79DF000FB1A4 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		DF8D2CED1DDC79DF000FB1A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		DF8D2CEF1DDC79DF000FB1A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DFAAA1051DC9E1CD002C16D8 /* BMSPushHostApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BMSPushHostApp.entitlements; sourceTree = "<group>"; };
+		DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClientOptions.swift; sourceTree = "<group>"; };
+		DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationAction.swift; sourceTree = "<group>"; };
+		DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationActionCategory.swift; sourceTree = "<group>"; };
 		F7BF40A418735A932D502B31 /* Pods_BMSPushTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BMSPushTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -140,8 +167,11 @@
 		561BFE291C6C855300CDB375 = {
 			isa = PBXGroup;
 			children = (
+				DFAAA1051DC9E1CD002C16D8 /* BMSPushHostApp.entitlements */,
 				561BFE351C6C855300CDB375 /* Source */,
 				568867641CA687AE0049CD8C /* Tests */,
+				DF8D2CD41DDC5FBD000FB1A4 /* PushImageExtension */,
+				DF8D2CE91DDC79DF000FB1A4 /* BMSPushNotificationContentExtension */,
 				561BFE341C6C855300CDB375 /* Products */,
 				F9EE4CA35253C550C7EFCE82 /* Pods */,
 				72D580F6A3C6BDBFDA343952 /* Frameworks */,
@@ -167,6 +197,10 @@
 				561BFE401C6C856900CDB375 /* BMSPushUtils.swift */,
 				561BFE411C6C856900CDB375 /* BMSResponse.swift */,
 				56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */,
+				DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */,
+				DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */,
+				DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */,
+				DF0785F91DD4555E0082ADC1 /* BMSPushApplication.swift */,
 				5688677C1CA68B0B0049CD8C /* Resource */,
 			);
 			path = Source;
@@ -236,8 +270,30 @@
 				58C35E9BFA9B535E5AE3B2BC /* Pods_BMSPush.framework */,
 				5D66745AA48F8E34D871917B /* Pods_BMSPushHostApp.framework */,
 				F7BF40A418735A932D502B31 /* Pods_BMSPushTests.framework */,
+				DF8D2CD01DDC5FBD000FB1A4 /* UserNotifications.framework */,
+				DF8D2CD21DDC5FBD000FB1A4 /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DF8D2CD41DDC5FBD000FB1A4 /* PushImageExtension */ = {
+			isa = PBXGroup;
+			children = (
+				DF8D2CD51DDC5FBD000FB1A4 /* NotificationViewController.swift */,
+				DF8D2CD71DDC5FBD000FB1A4 /* MainInterface.storyboard */,
+				DF8D2CDA1DDC5FBD000FB1A4 /* Info.plist */,
+			);
+			path = PushImageExtension;
+			sourceTree = "<group>";
+		};
+		DF8D2CE91DDC79DF000FB1A4 /* BMSPushNotificationContentExtension */ = {
+			isa = PBXGroup;
+			children = (
+				DF8D2CEA1DDC79DF000FB1A4 /* NotificationViewController.swift */,
+				DF8D2CEC1DDC79DF000FB1A4 /* MainInterface.storyboard */,
+				DF8D2CEF1DDC79DF000FB1A4 /* Info.plist */,
+			);
+			path = BMSPushNotificationContentExtension;
 			sourceTree = "<group>";
 		};
 		F9EE4CA35253C550C7EFCE82 /* Pods */ = {
@@ -319,6 +375,7 @@
 				56B431CB1C72EAFA00AE421C /* Embed Frameworks */,
 				95EBC9C0970BD3DC671BA16E /* [CP] Embed Pods Frameworks */,
 				1304A578C7716DCDB2403CA7 /* [CP] Copy Pods Resources */,
+				DF8D2CE11DDC5FBD000FB1A4 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -354,7 +411,7 @@
 		561BFE2A1C6C855300CDB375 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "IBM Corp";
 				TargetAttributes = {
@@ -366,9 +423,16 @@
 					};
 					56B431A61C72EAA800AE421C = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = TN6YQNGLXP;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					56B431B91C72EAA800AE421C = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = TN6YQNGLXP;
 						TestTargetID = 56B431A61C72EAA800AE421C;
 					};
 				};
@@ -558,9 +622,13 @@
 			files = (
 				561BFE421C6C856900CDB375 /* BMSConstants.swift in Sources */,
 				561BFE451C6C856900CDB375 /* BMSResponse.swift in Sources */,
+				DFAAA1071DCB10F6002C16D8 /* BMSPushClientOptions.swift in Sources */,
 				561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */,
 				561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */,
+				DFAAA1091DCB47B2002C16D8 /* BMSPushNotificationAction.swift in Sources */,
 				56BCCEC81C9029F50026E58C /* BMSPushUrlBuilder.swift in Sources */,
+				DF0785FA1DD4555E0082ADC1 /* BMSPushApplication.swift in Sources */,
+				DFAAA10B1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,8 +646,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF42EEF01DE6F00600AF2AAE /* AppDelegate.swift in Sources */,
 				56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */,
-				56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -625,6 +693,22 @@
 				56B431B31C72EAA800AE421C /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		DF8D2CD71DDC5FBD000FB1A4 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DF8D2CD81DDC5FBD000FB1A4 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		DF8D2CEC1DDC79DF000FB1A4 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DF8D2CED1DDC79DF000FB1A4 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -734,8 +818,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -758,8 +842,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -809,7 +893,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CODE_SIGN_ENTITLEMENTS = BMSPushHostApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jim Dickens (43J45E8MJJ)";
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -817,9 +904,10 @@
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.Push;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bms.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5984c177-4cf6-4348-9c45-1ef785a90f6f";
+				PROVISIONING_PROFILE_SPECIFIER = JimProvisioningProfileOct19;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -830,7 +918,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CODE_SIGN_ENTITLEMENTS = BMSPushHostApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jim Dickens (43J45E8MJJ)";
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -838,9 +929,10 @@
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.Push;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bms.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5984c177-4cf6-4348-9c45-1ef785a90f6f";
+				PROVISIONING_PROFILE_SPECIFIER = JimProvisioningProfileOct19;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -849,7 +941,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostAppTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -864,7 +957,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostAppTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
