@@ -211,20 +211,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.showAlert(title: "Registering for notifications", message: message)
   
         }
-        
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
-        let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
-        
-        self.showAlert(title: "Recieved Push notifications", message: payLoad)
-        
-    }
     
-    func sendNotifToDisplayResponse (responseValue:String){
+        func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+            
+            let push =  BMSPushClient.sharedInstance
+            
+            let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+            let data = respJson.data(using: String.Encoding.utf8)
+            
+            let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+            
+            let messageId:String = jsonResponse.value(forKey: "nid") as! String
+            push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+                print("Send message status to the Push server")
+            }
+            
+        }
+
+            
+        func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+            
+            let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
+            
+            self.showAlert(title: "Recieved Push notifications", message: payLoad)
+            
+            let push =  BMSPushClient.sharedInstance
+            
+            let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+            let data = respJson.data(using: String.Encoding.utf8)
+            
+            let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+            
+            let messageId:String = jsonResponse.value(forKey: "nid") as! String
+            push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+                completionHandler(UIBackgroundFetchResult.newData)
+            }
+        }
         
-        responseText = responseValue
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "action"), object: self)
-    }
+        func sendNotifToDisplayResponse (responseValue:String){
+            
+            responseText = responseValue
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "action"), object: self)
+        }
     
     
         func showAlert (title:NSString , message:NSString){
@@ -421,7 +449,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             
         }
-        
+    
+        func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+            
+            let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
+            let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
+            
+            do {
+                let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+                let nid = responseObject.valueForKey("nid") as! String
+                print(nid)
+                
+                let push =  BMSPushClient.sharedInstance
+                
+                push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
+                    
+                    print("Send message status to the Push server")
+                })
+                
+            } catch let error as NSError {
+                print("error: \(error.localizedDescription)")
+            }
+            
+        }
         func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
             
             let payLoad = ((((userInfo as NSDictionary).valueForKey("aps") as! NSDictionary).valueForKey("alert") as! NSDictionary).valueForKey("body") as! NSString)
@@ -429,32 +479,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.showAlert("Recieved Push notifications", message: payLoad)
             
             
-            let payLoad1 = ((userInfo as NSDictionary).valueForKey("payload")) as! NSString
-            let data = payLoad1.dataUsingEncoding(NSUTF8StringEncoding)
-            
+            let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
+            let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
             
             do {
-                let responseObject = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+                let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
                 let nid = responseObject.valueForKey("nid") as! String
                 print(nid)
                 
                 let push =  BMSPushClient.sharedInstance
                 
-                push.sendMessageDeliveryStatus(nid)
+                push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
+                    completionHandler(UIBackgroundFetchResult.NewData)
+                })
                 
             } catch let error as NSError {
                 print("error: \(error.localizedDescription)")
             }
             
         }
-        
+    
         func sendNotifToDisplayResponse (responseValue:String){
-            
+    
             responseText = responseValue
             NSNotificationCenter.defaultCenter().postNotificationName("action", object: self)
         }
-        
-        
+    
+    
         func showAlert (title:NSString , message:NSString){
             
             // create the alert

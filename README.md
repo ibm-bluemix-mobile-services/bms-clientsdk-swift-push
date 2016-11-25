@@ -402,6 +402,100 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
 }
 ```
 
+##Enable Monitoring.
+<p>To see the push notification monitoring status for iOS you have add the following code snippets. </p>
+
+<strong>Swift 3</strong>
+```
+// Send notification status when app is opened by clicking the notifications
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+
+     let push =  BMSPushClient.sharedInstance
+     let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+     let data = respJson.data(using: String.Encoding.utf8)
+
+     let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+
+     let messageId:String = jsonResponse.value(forKey: "nid") as! String
+     push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+         print("Send message status to the Push server")
+     }
+}
+
+
+// Send notification status when the app is in background mode.
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+   let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
+
+   self.showAlert(title: "Recieved Push notifications", message: payLoad)
+
+   let push =  BMSPushClient.sharedInstance
+
+   let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+   let data = respJson.data(using: String.Encoding.utf8)
+
+   let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+
+   let messageId:String = jsonResponse.value(forKey: "nid") as! String
+   push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+       completionHandler(UIBackgroundFetchResult.newData)
+   }
+}
+```
+<strong>Swift 2.3</strong>
+
+```
+func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+
+  let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
+  let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
+
+  do {
+      let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+      let nid = responseObject.valueForKey("nid") as! String
+      print(nid)
+
+      let push =  BMSPushClient.sharedInstance
+
+      push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
+
+          print("Send message status to the Push server")
+      })
+
+  } catch let error as NSError {
+      print("error: \(error.localizedDescription)")
+  }
+}
+
+func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+
+  let payLoad = ((((userInfo as NSDictionary).valueForKey("aps") as! NSDictionary).valueForKey("alert") as! NSDictionary).valueForKey("body") as! NSString)
+
+  self.showAlert("Recieved Push notifications", message: payLoad)
+
+
+  let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
+  let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
+
+  do {
+      let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+      let nid = responseObject.valueForKey("nid") as! String
+      print(nid)
+
+      let push =  BMSPushClient.sharedInstance
+
+      push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
+          completionHandler(UIBackgroundFetchResult.NewData)
+      })
+
+  } catch let error as NSError {
+      print("error: \(error.localizedDescription)")
+  }
+}
+```
+>**Note**: To get the message status when the app is in background you have to send either <strong>MIXED</strong> or <strong>SILENT</strong> push notifications.
+
 ###Learning More
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
 
