@@ -494,7 +494,7 @@ func application(application: UIApplication, didReceiveRemoteNotification userIn
   }
 }
 ```
->**Note**: To get the message status when the app is in background you have to send either <strong>MIXED</strong> or <strong>SILENT</strong> push notifications.
+>**Note**: To get the message status when the app is in background you have to send either <strong>MIXED</strong> or <strong>SILENT</strong> push notifications. If the app is force quite you will not get any message delivery status.
 
 ###Learning More
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
