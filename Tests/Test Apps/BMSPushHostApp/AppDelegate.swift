@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func registerForPush () {
             
             print("Registering for push notifications")
-            BMSPushApplication.setupPush()
+            BMSPushClient.sharedInstance.setupPush()
             
         }
         func unRegisterPush () {
