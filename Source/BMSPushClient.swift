@@ -764,7 +764,27 @@ import BMSCore
         public func setupPush ()  {
             
             if #available(iOS 10.0, *) {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
+                
+                let center = UNUserNotificationCenter.current()
+                let options :BMSPushClientOptions  = BMSPushClient.sharedInstance.notificationOptions!
+                let category : [BMSPushNotificationActionCategory] = options.category
+                
+                let categoryFirst : BMSPushNotificationActionCategory = category.first!
+                
+                let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+                let pushCategoryIdentifier : String = categoryFirst.identifier
+                
+                let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+                let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+                
+                let replyActionButtonOne = UNNotificationAction(identifier: firstActionButton.identifier, title: firstActionButton.title)
+                let replyActionButtonTwo = UNNotificationAction(identifier: secondActionButton.identifier, title: secondActionButton.title)
+                
+                let responseCategory = UNNotificationCategory(identifier: pushCategoryIdentifier, actions: [replyActionButtonOne, replyActionButtonTwo], intentIdentifiers: [])
+                
+                center.setNotificationCategories([responseCategory])
+                
+                center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
                         UIApplication.shared.registerForRemoteNotifications()
                     } else {
