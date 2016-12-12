@@ -106,9 +106,9 @@ import BMSCore
          - parameter clientSecret:    The clientSecret of the Push Service
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
-        public func initializeWithAppGUID (appGUID: String?, clientSecret: String?) {
+        public func initializeWithAppGUID (appGUID: String, clientSecret: String) {
             
-            if validateString(object: clientSecret!) {
+            if validateString(object: clientSecret) {
                 self.clientSecret = clientSecret
                 self.applicationId = appGUID
                 isInitialized = true;
@@ -127,7 +127,7 @@ import BMSCore
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
         @available(*, deprecated, message: "This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
-        public func initializeWithAppGUID (appGUID: String?) {
+        public func initializeWithAppGUID (appGUID: String) {
             self.applicationId = appGUID;
             isInitialized = true;
         }
@@ -277,7 +277,7 @@ import BMSCore
                                     // MARK: device already registered and parameteres not changed.
                                     
                                     self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                    completionHandler("Device is already registered and device registration parameters not changed", status, "")
+                                    completionHandler(response?.responseText, status, "")
                                 }
                             }
                             
@@ -440,7 +440,7 @@ import BMSCore
                                 // MARK: device already registered and parameteres not changed.
                                 
                                 self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                completionHandler("Device is already registered and device registration parameters not changed", status, "")
+                                completionHandler(response?.responseText, status, "")
                             }
                         }
                     }
@@ -725,6 +725,62 @@ import BMSCore
             })
         }
         
+        public func sendMessageDeliveryStatus (messageId:String, completionHandler: @escaping (_ response:String?, _ statusCode:Int?, _ error:String) -> Void) {
+            
+            
+            self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
+            let authManager  = BMSClient.sharedInstance.authorizationManager
+            let devId = authManager.deviceIdentity.ID!
+            
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId: messageId)
+            
+            let headers = urlBuilder.addHeader()
+            
+            let method =  HttpMethod.PUT
+            
+            var status = "";
+            
+            if (UIApplication.shared.applicationState == UIApplicationState.background){
+                status = "SEEN";
+            } else {
+                status = "OPEN"
+            }
+            
+            if !(status.isEmpty){
+                let json = [
+                    IMFPUSH_DEVICE_ID : devId,
+                    IMFPUSH_STATUS : status
+                ]
+                
+                let data = try? JSONSerialization.data(withJSONObject: json, options: [])
+                
+                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                
+                getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
+                    
+                    if response?.statusCode != nil {
+                        
+                        let responseText = response?.responseText ?? ""
+                        
+                        self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully updated the message status.  The response is: \(responseText)")
+                        print("Successfully updated the message status.  The response is: "+responseText)
+                        completionHandler(responseText,200,"")
+                        
+                    } else if let responseError = error{
+                        
+                        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status.  The response is:  \(responseError.localizedDescription)")
+                        print("Failed to update the message status.  The response is: "+responseError.localizedDescription)
+                        completionHandler("",400,responseError.localizedDescription)
+                    }
+                })
+            } else{
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status.  The response is:  Status should be either SEEN or OPEN")
+                print("Failed to update the message status.  The response is: Status should be either SEEN or OPEN")
+            }
+        }
+        
         // MARK: Methods (Internal)
         
         //Begin Logger implementation
@@ -933,9 +989,9 @@ import BMSCore
          - parameter clientSecret:    The clientSecret of the Push Service
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
-        public func initializeWithAppGUID (appGUID appGUID: String?, clientSecret: String?) {
+        public func initializeWithAppGUID (appGUID appGUID: String, clientSecret: String) {
             
-            if validateString(clientSecret!) {
+            if validateString(clientSecret) {
                 self.clientSecret = clientSecret
                 self.applicationId = appGUID
                 isInitialized = true;
@@ -954,7 +1010,7 @@ import BMSCore
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
         @available(*, deprecated, message="This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
-        public func initializeWithAppGUID (appGUID appGUID: String?) {
+        public func initializeWithAppGUID (appGUID appGUID: String) {
             self.applicationId = appGUID;
             isInitialized = true;
         }
@@ -1103,7 +1159,7 @@ import BMSCore
                                     // MARK: device already registered and parameteres not changed.
                                     
                                     self.sendAnalyticsData(LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                    completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                                    completionHandler(response: response?.responseText, statusCode: status, error: "")
                                 }
                             }
                             
@@ -1268,7 +1324,7 @@ import BMSCore
                                 // MARK: device already registered and parameteres not changed.
                                 
                                 self.sendAnalyticsData(LogLevel.info, logStringData: "Device is already registered and device registration parameters not changed.")
-                                completionHandler(response: "Device is already registered and device registration parameters not changed", statusCode: status, error: "")
+                                completionHandler(response: response?.responseText, statusCode: status, error: "")
                             }
                         }
                         
@@ -1582,6 +1638,62 @@ import BMSCore
     UIApplication.shared.registerForRemoteNotifications()
     }
     
+        public func sendMessageDeliveryStatus (messageId:String, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
+            
+            self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
+            let authManager  = BMSClient.sharedInstance.authorizationManager
+            let devId = authManager.deviceIdentity.ID!
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId)
+            
+            let headers = urlBuilder.addHeader()
+            
+            let method =  HttpMethod.PUT
+            
+            var status = "";
+            
+            if ( UIApplication.sharedApplication().applicationState == UIApplicationState.Background){
+                status = "SEEN";
+            } else{
+                status = "OPEN"
+            }
+            
+            if !(status.isEmpty){
+                let json = [
+                    IMFPUSH_DEVICE_ID:devId,
+                    IMFPUSH_STATUS:status
+                ]
+                let data = try? NSJSONSerialization.dataWithJSONObject(json, options: [])
+                
+                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                
+                getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
+                    
+                    if response?.statusCode != nil {
+                        
+                        let responseText = response?.responseText ?? ""
+                        let status = response?.statusCode ?? 0
+                        
+                        self.sendAnalyticsData(LogLevel.info, logStringData: "Successfully updated the message status.  The response is: \(responseText)")
+                        print("Successfully updated the message status.  The response is: "+responseText)
+                        completionHandler(response: responseText, statusCode: status, error: "")
+                        
+                    } else if let responseError = error{
+                        
+                        let status = response?.statusCode ?? 0
+                        
+                        self.sendAnalyticsData(LogLevel.error, logStringData: "Failed to update the message status.  The response is:  \(responseError.localizedDescription)")
+                        print("Failed to update the message status.  The response is: "+responseError.localizedDescription)
+                        completionHandler(response: "", statusCode: status, error: responseError.localizedDescription)
+                    }
+                })
+            }else{
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Failed to update the message status.  The response is:  Status should be either SEEN or OPEN")
+                print("Failed to update the message status.  The response is: Status should be either SEEN or OPEN")
+            }
+        }
+    
         // MARK: Methods (Internal)
     
         //Begin Logger implementation
@@ -1592,12 +1704,12 @@ import BMSCore
             let authManager  = BMSClient.sharedInstance.authorizationManager
             devId = authManager.deviceIdentity.ID!
             let testLogger = Logger.logger(name:devId)
-            
+    
             if (logType == LogLevel.debug){
-                
+    
                 Logger.logLevelFilter = LogLevel.debug
                 testLogger.debug(message: logStringData)
-                
+    
             } else if (logType == LogLevel.error){
                 
                 Logger.logLevelFilter = LogLevel.error
