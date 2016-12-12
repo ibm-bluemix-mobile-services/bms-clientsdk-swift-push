@@ -14,6 +14,8 @@
 import UIKit
 import BMSCore
 import BMSPush
+
+
 #if swift(>=3.0)
 import UserNotifications
 import UserNotificationsUI
@@ -23,37 +25,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    
-    
     #if swift(>=3.0)
     
          func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-            // Override point for customization after application launch.
+
             let myBMSClient = BMSClient.sharedInstance
-            myBMSClient.initialize(bluemixRegion: "AppRegion")
-            let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: "", clientSecret:"")
+            myBMSClient.initialize(bluemixRegion: BMSClient.Region.usSouth)
+            
+            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Button1", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Button2", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+            let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+            
+            let notificationOptions = BMSPushClientOptions(categoryName: [category])
+            
+            let push = BMSPushClient.sharedInstance
+           
+            push.notificationOptions = notificationOptions
+           
             return true
         }
         
         func registerForPush () {
             
+            print("Registering for push notifications")
+            BMSPushClient.sharedInstance.setupPush()
             
-            if #available(iOS 10.0, *) {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
-                { (granted, error) in
-                
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            } else {
-                // Fallback on earlier versions
-                let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-                UIApplication.shared.registerUserNotificationSettings(settings)
-                UIApplication.shared.registerForRemoteNotifications()
-            }
         }
         func unRegisterPush () {
-    
+                
             // MARK:  RETRIEVING AVAILABLE SUBSCRIPTIONS
             
             let push =  BMSPushClient.sharedInstance
@@ -121,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
             
             let push =  BMSPushClient.sharedInstance
-            //push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
+            push.initializeWithAppGUID(appGUID: "APP-GUID", clientSecret:"CLIENT-SECRET")
             
             push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
                 
@@ -211,6 +212,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.showAlert(title: "Registering for notifications", message: message)
   
         }
+        
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+        
+        let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
+        
+        self.showAlert(title: "Recieved Push notifications", message: payLoad)
+        
+    }
     
         func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
             
@@ -357,8 +367,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
     
             let push =  BMSPushClient.sharedInstance
-            //push.registerWithDeviceToken(deviceToken, WithUserId: "") { (response, statusCode, error) -> Void in
-            
+            push.initializeWithAppGUID(appGUID: "APP-GUID", clientSecret:"CLIENT-SECRET")
+
             push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {

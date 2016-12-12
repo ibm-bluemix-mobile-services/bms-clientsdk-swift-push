@@ -15,7 +15,10 @@
 import UIKit
 import BMSCore
 
+
 #if swift(>=3.0)
+    import UserNotifications
+    import UserNotificationsUI
     
     /**
      Used in the `BMSPushClient` class, the `IMFPushErrorvalues` denotes error in the requests.
@@ -70,6 +73,17 @@ import BMSCore
         
         // used to test in test zone and dev zone
         public static var overrideServerHost = "";
+
+        private var _notificationOptions : BMSPushClientOptions?
+        
+        public var notificationOptions:BMSPushClientOptions? {
+            get{
+                return _notificationOptions
+            }
+            set(value){
+                _notificationOptions = value
+            }
+        }
         
         // MARK: Properties (private)
         
@@ -803,6 +817,80 @@ import BMSCore
             }
         }
         
+        public func setupPush ()  {
+            
+            if #available(iOS 10.0, *) {
+                
+                let center = UNUserNotificationCenter.current()
+                let options :BMSPushClientOptions  = BMSPushClient.sharedInstance.notificationOptions!
+                let category : [BMSPushNotificationActionCategory] = options.category
+                
+                let categoryFirst : BMSPushNotificationActionCategory = category.first!
+                
+                let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+                let pushCategoryIdentifier : String = categoryFirst.identifier
+                
+                let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+                let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+                
+                let replyActionButtonOne = UNNotificationAction(identifier: firstActionButton.identifier, title: firstActionButton.title)
+                let replyActionButtonTwo = UNNotificationAction(identifier: secondActionButton.identifier, title: secondActionButton.title)
+                
+                let responseCategory = UNNotificationCategory(identifier: pushCategoryIdentifier, actions: [replyActionButtonOne, replyActionButtonTwo], intentIdentifiers: [])
+                
+                center.setNotificationCategories([responseCategory])
+                
+                center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
+                    if(granted) {
+                        UIApplication.shared.registerForRemoteNotifications()
+                    } else {
+                        print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                    }
+                })
+            } else {
+                // Fallback on earlier versions
+                
+                let options :BMSPushClientOptions  = BMSPushClient.sharedInstance.notificationOptions!
+                let category : [BMSPushNotificationActionCategory] = options.category
+                
+                let categoryFirst : BMSPushNotificationActionCategory = category.first!
+                
+                let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+                let pushCategoryIdentifier : String = categoryFirst.identifier
+                
+                let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+                let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+                
+                let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+                replyActionButtonOne.identifier = firstActionButton.identifier
+                replyActionButtonOne.title = firstActionButton.title
+                replyActionButtonOne.activationMode = firstActionButton.activationMode
+                replyActionButtonOne.isAuthenticationRequired = firstActionButton.authenticationRequired!
+                
+                let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+                replyActionButtonTwo.identifier = secondActionButton.identifier
+                replyActionButtonTwo.title = secondActionButton.title
+                replyActionButtonTwo.activationMode = secondActionButton.activationMode
+                replyActionButtonTwo.isAuthenticationRequired = secondActionButton.authenticationRequired!
+                
+                let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
+                responseCategory.identifier = pushCategoryIdentifier
+                
+                let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
+                
+                responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.default)
+                responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.minimal)
+                
+                let categories = NSSet(object: responseCategory)
+                
+                let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
+                
+                UIApplication.shared.registerUserNotificationSettings(settings)
+                UIApplication.shared.registerForRemoteNotifications()
+                
+            }
+        }
+        
         internal func validateString(object:String) -> Bool{
             if (object.isEmpty || object == "") {
                 return false;
@@ -860,7 +948,19 @@ import BMSCore
         
         /// This singleton should be used for all `BMSPushClient` activity.
         public static let sharedInstance = BMSPushClient()
-        
+    
+        private var _notificationOptions : BMSPushClientOptions?
+    
+        public var notificationOptions:BMSPushClientOptions? {
+        get{
+            return _notificationOptions
+        }
+        set(value){
+            _notificationOptions = value
+            }
+        }
+    
+    
         // Specifies the bluemix push clientSecret value
         public private(set) var clientSecret: String?
         public private(set) var applicationId: String?
@@ -869,7 +969,7 @@ import BMSCore
         public static var overrideServerHost = "";
         
         // MARK: Properties (private)
-        
+    
         /// `BMSClient` object.
         private var bmsClient = BMSClient.sharedInstance
         
@@ -1507,6 +1607,36 @@ import BMSCore
             })
         }
     
+    public func setupPush() {
+    
+    let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+    replyActionButtonOne.identifier = "FIRST_BUTTON"
+    replyActionButtonOne.title = "First"
+    replyActionButtonOne.activationMode = UIUserNotificationActivationMode.background
+    replyActionButtonOne.isAuthenticationRequired = false
+    
+    let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+    replyActionButtonTwo.identifier = "SECOND_BUTTON"
+    replyActionButtonTwo.title = "Second"
+    replyActionButtonTwo.activationMode = UIUserNotificationActivationMode.background
+    replyActionButtonTwo.isAuthenticationRequired = false
+    
+    let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
+    responseCategory.identifier = "categoryOne"
+    
+    //let replyActions: NSArray = [replyActionButtonOne, replyActionButtonTwo]
+    let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
+    
+    responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.default)
+    responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.minimal)
+    
+    let categories = NSSet(object: responseCategory)
+    
+    let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
+    
+    UIApplication.shared.registerUserNotificationSettings(settings)
+    UIApplication.shared.registerForRemoteNotifications()
+    }
     
         public func sendMessageDeliveryStatus (messageId:String, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
             
