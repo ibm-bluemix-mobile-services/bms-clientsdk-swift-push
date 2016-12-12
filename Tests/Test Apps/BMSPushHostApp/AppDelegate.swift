@@ -28,29 +28,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     #if swift(>=3.0)
     
          func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
-            let myBMSClient = BMSClient.sharedInstance
-            myBMSClient.initialize(bluemixRegion: BMSClient.Region.usSouth)
-            
-            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Button1", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
-            
-            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Button2", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
-            
-            let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
-            
-            let notificationOptions = BMSPushClientOptions(categoryName: [category])
-            
-            let push = BMSPushClient.sharedInstance
-           
-            push.notificationOptions = notificationOptions
            
             return true
         }
         
         func registerForPush () {
             
-            print("Registering for push notifications")
-            BMSPushClient.sharedInstance.setupPush()
+            let myBMSClient = BMSClient.sharedInstance
+            myBMSClient.initialize(bluemixRegion: BMSClient.Region.usSouth)
+            
+            let push =  BMSPushClient.sharedInstance
+            
+            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+            let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+            
+            let notifOptions = BMSPushClientOptions(categoryName: [category])
+            push.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"APP-SECRET-HERE", options: notifOptions)
             
         }
         func unRegisterPush () {
@@ -122,7 +118,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
             
             let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: "APP-GUID", clientSecret:"CLIENT-SECRET")
             
             push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
                 
@@ -212,15 +207,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.showAlert(title: "Registering for notifications", message: message)
   
         }
-        
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
-        
-        let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
-        
-        self.showAlert(title: "Recieved Push notifications", message: payLoad)
-        
-    }
     
         func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
             
@@ -238,7 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
 
-            
+    
         func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
             
             let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
@@ -257,7 +243,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 completionHandler(UIBackgroundFetchResult.newData)
             }
         }
-        
+    
         func sendNotifToDisplayResponse (responseValue:String){
             
             responseText = responseValue
@@ -284,22 +270,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
             // Override point for customization after application launch.
-            let myBMSClient = BMSClient.sharedInstance
-            myBMSClient.initialize(bluemixRegion: "")
-            let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: "", clientSecret:"")
             return true
         }
         
         func registerForPush () {
             
-            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-            UIApplication.sharedApplication().registerForRemoteNotifications()
-            
+            let myBMSClient = BMSClient.sharedInstance
+            myBMSClient.initialize(bluemixRegion: BMSClient.Region.usSouth)
+    
+            let push =  BMSPushClient.sharedInstance
+    
+            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+    
+            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+    
+            let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+    
+            let notifOptions = BMSPushClientOptions(categoryName: [category])
+            push.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE", options: notifOptions)
+    
         }
         func unRegisterPush () {
-            
+    
             // MARK:  RETRIEVING AVAILABLE SUBSCRIPTIONS
             
             let push =  BMSPushClient.sharedInstance
@@ -365,9 +357,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
-    
-            let push =  BMSPushClient.sharedInstance
-            push.initializeWithAppGUID(appGUID: "APP-GUID", clientSecret:"CLIENT-SECRET")
 
             push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
                 

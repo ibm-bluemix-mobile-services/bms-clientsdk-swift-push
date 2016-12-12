@@ -16,7 +16,3 @@ import Foundation
             self.category = category
         }
     }
-
-    
-
-//#endif

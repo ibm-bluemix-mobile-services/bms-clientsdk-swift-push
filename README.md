@@ -131,10 +131,10 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 
 ###Registering iOS applications and devices
 
-Add this code to registering the app for push notification in APNS,
+Add this code to initialize and register the app for push notification in APNS.
 
 ```
-BMSPushClient.sharedInstance.setupPush()
+BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE")
 ```    
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
@@ -403,9 +403,8 @@ let category = BMSPushNotificationActionCategory(identifierName: "category", but
             
 let notificationOptions = BMSPushClientOptions(categoryName: [category])
             
-let push = BMSPushClient.sharedInstance
+let push = BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE", options: notificationOptions)
            
-push.notificationOptions = notificationOptions
 ```
 
 ###Enabling Rich Push notification support in iOS 10 (Audio, Video, GIF and Images)

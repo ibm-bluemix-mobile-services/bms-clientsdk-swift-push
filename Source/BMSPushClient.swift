@@ -112,6 +112,118 @@ import BMSCore
                 self.clientSecret = clientSecret
                 self.applicationId = appGUID
                 isInitialized = true;
+                
+                if #available(iOS 10.0, *) {
+                    
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
+                        if(granted) {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        } else {
+                            print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        }
+                    })
+                } else {
+                    // Fallback on earlier versions
+                    
+                    let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+                    
+                    UIApplication.shared.registerUserNotificationSettings(settings)
+                    UIApplication.shared.registerForRemoteNotifications()
+                    
+                }
+            }
+            else{
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
+                print("Error while registration - Client secret is not valid")
+            }
+        }
+        
+        /**
+         The required intializer for the `BMSPushClient` class.
+         
+         This method will intialize the BMSPushClient with clientSecret based registration and take in notificationOptions.
+         
+         - parameter clientSecret:    The clientSecret of the Push Service
+         - parameter appGUID:    The pushAppGUID of the Push Service
+         - parameter options: The push notification options
+         */
+        public func initializeWithAppGUID (appGUID: String, clientSecret: String, options: BMSPushClientOptions) {
+            
+            if validateString(object: clientSecret) {
+                self.clientSecret = clientSecret
+                self.applicationId = appGUID
+                isInitialized = true;
+                
+                if #available(iOS 10.0, *) {
+                    
+                    let center = UNUserNotificationCenter.current()
+
+                    let category : [BMSPushNotificationActionCategory] = options.category
+                    
+                    let categoryFirst : BMSPushNotificationActionCategory = category.first!
+                    
+                    let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+                    let pushCategoryIdentifier : String = categoryFirst.identifier
+                    
+                    let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+                    let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+                    
+                    let replyActionButtonOne = UNNotificationAction(identifier: firstActionButton.identifier, title: firstActionButton.title)
+                    let replyActionButtonTwo = UNNotificationAction(identifier: secondActionButton.identifier, title: secondActionButton.title)
+                    
+                    let responseCategory = UNNotificationCategory(identifier: pushCategoryIdentifier, actions: [replyActionButtonOne, replyActionButtonTwo], intentIdentifiers: [])
+                    
+                    center.setNotificationCategories([responseCategory])
+                    
+                    center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
+                        if(granted) {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        } else {
+                            print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        }
+                    })
+                } else {
+                    // Fallback on earlier versions
+                    
+                    let category : [BMSPushNotificationActionCategory] = options.category
+                    
+                    let categoryFirst : BMSPushNotificationActionCategory = category.first!
+                    
+                    let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+                    let pushCategoryIdentifier : String = categoryFirst.identifier
+                    
+                    let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+                    let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+                    
+                    let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+                    replyActionButtonOne.identifier = firstActionButton.identifier
+                    replyActionButtonOne.title = firstActionButton.title
+                    replyActionButtonOne.activationMode = firstActionButton.activationMode
+                    replyActionButtonOne.isAuthenticationRequired = firstActionButton.authenticationRequired!
+                    
+                    let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+                    replyActionButtonTwo.identifier = secondActionButton.identifier
+                    replyActionButtonTwo.title = secondActionButton.title
+                    replyActionButtonTwo.activationMode = secondActionButton.activationMode
+                    replyActionButtonTwo.isAuthenticationRequired = secondActionButton.authenticationRequired!
+                    
+                    let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
+                    responseCategory.identifier = pushCategoryIdentifier
+                    
+                    let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
+                    
+                    responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.default)
+                    responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.minimal)
+                    
+                    let categories = NSSet(object: responseCategory)
+                    
+                    let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
+                    
+                    UIApplication.shared.registerUserNotificationSettings(settings)
+                    UIApplication.shared.registerForRemoteNotifications()
+                    
+                }
+                
             }
             else{
                 self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
@@ -817,80 +929,6 @@ import BMSCore
             }
         }
         
-        public func setupPush ()  {
-            
-            if #available(iOS 10.0, *) {
-                
-                let center = UNUserNotificationCenter.current()
-                let options :BMSPushClientOptions  = BMSPushClient.sharedInstance.notificationOptions!
-                let category : [BMSPushNotificationActionCategory] = options.category
-                
-                let categoryFirst : BMSPushNotificationActionCategory = category.first!
-                
-                let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
-                let pushCategoryIdentifier : String = categoryFirst.identifier
-                
-                let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
-                let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
-                
-                let replyActionButtonOne = UNNotificationAction(identifier: firstActionButton.identifier, title: firstActionButton.title)
-                let replyActionButtonTwo = UNNotificationAction(identifier: secondActionButton.identifier, title: secondActionButton.title)
-                
-                let responseCategory = UNNotificationCategory(identifier: pushCategoryIdentifier, actions: [replyActionButtonOne, replyActionButtonTwo], intentIdentifiers: [])
-                
-                center.setNotificationCategories([responseCategory])
-                
-                center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
-                    if(granted) {
-                        UIApplication.shared.registerForRemoteNotifications()
-                    } else {
-                        print("Error while registering with APNS server :  \(error?.localizedDescription)")
-                    }
-                })
-            } else {
-                // Fallback on earlier versions
-                
-                let options :BMSPushClientOptions  = BMSPushClient.sharedInstance.notificationOptions!
-                let category : [BMSPushNotificationActionCategory] = options.category
-                
-                let categoryFirst : BMSPushNotificationActionCategory = category.first!
-                
-                let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
-                let pushCategoryIdentifier : String = categoryFirst.identifier
-                
-                let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
-                let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
-                
-                let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
-                replyActionButtonOne.identifier = firstActionButton.identifier
-                replyActionButtonOne.title = firstActionButton.title
-                replyActionButtonOne.activationMode = firstActionButton.activationMode
-                replyActionButtonOne.isAuthenticationRequired = firstActionButton.authenticationRequired!
-                
-                let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
-                replyActionButtonTwo.identifier = secondActionButton.identifier
-                replyActionButtonTwo.title = secondActionButton.title
-                replyActionButtonTwo.activationMode = secondActionButton.activationMode
-                replyActionButtonTwo.isAuthenticationRequired = secondActionButton.authenticationRequired!
-                
-                let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
-                responseCategory.identifier = pushCategoryIdentifier
-                
-                let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
-                
-                responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.default)
-                responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.minimal)
-                
-                let categories = NSSet(object: responseCategory)
-                
-                let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
-                
-                UIApplication.shared.registerUserNotificationSettings(settings)
-                UIApplication.shared.registerForRemoteNotifications()
-                
-            }
-        }
-        
         internal func validateString(object:String) -> Bool{
             if (object.isEmpty || object == "") {
                 return false;
@@ -995,18 +1033,130 @@ import BMSCore
                 self.clientSecret = clientSecret
                 self.applicationId = appGUID
                 isInitialized = true;
+    
+            if #available(iOS 10.0, *) {
+    
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
+            if(granted) {
+                UIApplication.shared.registerForRemoteNotifications()
+            } else {
+                print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                }
+            })
+        } else {
+            // Fallback on earlier versions
+    
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+    
+            UIApplication.shared.registerUserNotificationSettings(settings)
+            UIApplication.shared.registerForRemoteNotifications()
+    
+        }
             }
             else{
                 self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
                 print("Error while registration - Client secret is not valid")
             }
         }
-        
+    
+    /**
+     The required intializer for the `BMSPushClient` class.
+     
+     This method will intialize the BMSPushClient with clientSecret based registration and take in notificationOptions.
+     
+     - parameter clientSecret:    The clientSecret of the Push Service
+     - parameter appGUID:    The pushAppGUID of the Push Service
+     - parameter options: The optional push notification options
+     */
+    public func initializeWithAppGUID (appGUID: String, clientSecret: String, options: BMSPushClientOptions) {
+    
+    if validateString(object: clientSecret) {
+        self.clientSecret = clientSecret
+        self.applicationId = appGUID
+        isInitialized = true;
+    
+    if #available(iOS 10.0, *) {
+    
+        let center = UNUserNotificationCenter.current()
+    
+        let category : [BMSPushNotificationActionCategory] = options.category
+    
+        let categoryFirst : BMSPushNotificationActionCategory = category.first!
+    
+        let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+        let pushCategoryIdentifier : String = categoryFirst.identifier
+    
+        let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+        let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+    
+        let replyActionButtonOne = UNNotificationAction(identifier: firstActionButton.identifier, title: firstActionButton.title)
+        let replyActionButtonTwo = UNNotificationAction(identifier: secondActionButton.identifier, title: secondActionButton.title)
+    
+        let responseCategory = UNNotificationCategory(identifier: pushCategoryIdentifier, actions: [replyActionButtonOne, replyActionButtonTwo], intentIdentifiers: [])
+    
+        center.setNotificationCategories([responseCategory])
+    
+        center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
+        if(granted) {
+            UIApplication.shared.registerForRemoteNotifications()
+            } else {
+                print("Error while registering with APNS server :  \(error?.localizedDescription)")
+            }
+        })
+    } else {
+    // Fallback on earlier versions
+    
+        let category : [BMSPushNotificationActionCategory] = options.category
+    
+        let categoryFirst : BMSPushNotificationActionCategory = category.first!
+    
+        let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+        let pushCategoryIdentifier : String = categoryFirst.identifier
+    
+        let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+        let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+    
+        let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+        replyActionButtonOne.identifier = firstActionButton.identifier
+        replyActionButtonOne.title = firstActionButton.title
+    	replyActionButtonOne.activationMode = firstActionButton.activationMode
+        replyActionButtonOne.isAuthenticationRequired = firstActionButton.authenticationRequired!
+    
+        let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+        replyActionButtonTwo.identifier = secondActionButton.identifier
+        replyActionButtonTwo.title = secondActionButton.title
+        replyActionButtonTwo.activationMode = secondActionButton.activationMode
+        replyActionButtonTwo.isAuthenticationRequired = secondActionButton.authenticationRequired!
+    
+        let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
+    	responseCategory.identifier = pushCategoryIdentifier
+    
+        let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
+    
+        responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.default)
+        responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.minimal)
+    
+        let categories = NSSet(object: responseCategory)
+    
+        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
+    
+        UIApplication.shared.registerUserNotificationSettings(settings)
+        UIApplication.shared.registerForRemoteNotifications()
+    
+        }
+    
+    }
+    else{
+        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
+        print("Error while registration - Client secret is not valid")
+        }
+    }
+    
         /**
          The required intializer for the `BMSPushClient` class.
-         
+     
          This method will intialize the BMSPushClient.
-         
+     
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
         @available(*, deprecated, message="This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
@@ -1014,19 +1164,19 @@ import BMSCore
             self.applicationId = appGUID;
             isInitialized = true;
         }
-        
-        
+    
+    
         // MARK: Methods (Public)
-        
+    
         //TODO: New method of device registraion with UsrId
-        
+    
         /**
-         
+     
          This Methode used to register the client device to the Bluemix Push service. This is the normal registration, without userId.
-         
+     
          Call this methode after successfully registering for remote push notification in the Apple Push
          Notification Service .
-         
+     
          - Parameter deviceToken: This is the response we get from the push registartion in APNS.
          - Parameter WithUserId: This is the userId value.
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
@@ -1606,37 +1756,6 @@ import BMSCore
                 }
             })
         }
-    
-    public func setupPush() {
-    
-    let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
-    replyActionButtonOne.identifier = "FIRST_BUTTON"
-    replyActionButtonOne.title = "First"
-    replyActionButtonOne.activationMode = UIUserNotificationActivationMode.background
-    replyActionButtonOne.isAuthenticationRequired = false
-    
-    let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
-    replyActionButtonTwo.identifier = "SECOND_BUTTON"
-    replyActionButtonTwo.title = "Second"
-    replyActionButtonTwo.activationMode = UIUserNotificationActivationMode.background
-    replyActionButtonTwo.isAuthenticationRequired = false
-    
-    let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
-    responseCategory.identifier = "categoryOne"
-    
-    //let replyActions: NSArray = [replyActionButtonOne, replyActionButtonTwo]
-    let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
-    
-    responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.default)
-    responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.minimal)
-    
-    let categories = NSSet(object: responseCategory)
-    
-    let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
-    
-    UIApplication.shared.registerUserNotificationSettings(settings)
-    UIApplication.shared.registerForRemoteNotifications()
-    }
     
         public func sendMessageDeliveryStatus (messageId:String, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
             
