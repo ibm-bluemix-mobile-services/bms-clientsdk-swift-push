@@ -134,19 +134,7 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 Add this code to registering the app for push notification in APNS,
 
 ```
-
-let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-UIApplication.sharedApplication().registerForRemoteNotifications()
-
-//For iOS 10
-
- UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
- { (granted, error) in
-
-    UIApplication.shared.registerForRemoteNotifications()
- }
-
+BMSPushClient.sharedInstance.setupPush()
 ```    
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
@@ -400,6 +388,61 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
         print( "Error during unregistering device \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
+```
+
+###Enabling interactive push notifications
+
+To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object.  The following is a sample code to enable interactive notifications.
+
+```
+let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+            
+let notificationOptions = BMSPushClientOptions(categoryName: [category])
+            
+let push = BMSPushClient.sharedInstance
+           
+push.notificationOptions = notificationOptions
+```
+
+###Enabling Rich Push notification support in iOS 10 (Audio, Video, GIF and Images)
+
+To receive rich push notifications with iOS10, implement ```UNNotificationServiceExtension```.  The extension will intercept the rich push notification and it needs to be handled here.  While sending the notification from the server, all the four fields, alert, title, subtitle, attachmentURL must be specified. 
+
+In the didReceive() method of your service extension, add the following code to retrieve the rich notification content.
+
+```
+override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        self.contentHandler = contentHandler
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+        
+        // Get the custom data from the notification payload
+        if let data = request.content.userInfo["aps"] as? [String: AnyObject] {
+            // Grab the attachment            
+            let url = request.content.userInfo["attachment-url"] as? String
+            if let urlString = url, let fileUrl = URL(string: urlString ) {
+                // Download the attachment
+                URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
+                    if let location = location {
+                        // Move temporary file to remove .tmp extension
+                        let tmpDirectory = NSTemporaryDirectory()
+                        let tmpFile = "file://".appending(tmpDirectory).appending(fileUrl.lastPathComponent)
+                        let tmpUrl = URL(string: tmpFile)!
+                        try! FileManager.default.moveItem(at: location, to: tmpUrl)
+                        
+                        // Add the attachment to the notification content
+                        if let attachment = try? UNNotificationAttachment(identifier: "video", url: tmpUrl, options:nil) {
+                            self.bestAttemptContent?.attachments = [attachment]
+                        }
+                    }
+                    // Serve the notification content
+                    self.contentHandler!(self.bestAttemptContent!)
+                    }.resume()
+            }
+        }
 ```
 
 ##Enable Monitoring.
