@@ -16,7 +16,6 @@
 		568867791CA6889E0049CD8C /* BMSPushUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568867781CA6889E0049CD8C /* BMSPushUtilsTest.swift */; };
 		5688677B1CA688BC0049CD8C /* BMSResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5688677A1CA688BC0049CD8C /* BMSResponseTests.swift */; };
 		5688677F1CA68B0B0049CD8C /* BMSPush.h in Headers */ = {isa = PBXBuildFile; fileRef = 5688677D1CA68B0B0049CD8C /* BMSPush.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431A91C72EAA800AE421C /* AppDelegate.swift */; };
 		56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431AB1C72EAA800AE421C /* ViewController.swift */; };
 		56B431AF1C72EAA800AE421C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B431AD1C72EAA800AE421C /* Main.storyboard */; };
 		56B431B11C72EAA800AE421C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56B431B01C72EAA800AE421C /* Assets.xcassets */; };
@@ -26,6 +25,13 @@
 		56BCCEC81C9029F50026E58C /* BMSPushUrlBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */; };
 		719AD35A3A34721043FAC24E /* Pods_BMSPush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58C35E9BFA9B535E5AE3B2BC /* Pods_BMSPush.framework */; };
 		D13E62AE73154CA41CA325DD /* Pods_BMSPushHostApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D66745AA48F8E34D871917B /* Pods_BMSPushHostApp.framework */; };
+		DF25A1751DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF25A1741DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift */; };
+		DF42EEF01DE6F00600AF2AAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B431A91C72EAA800AE421C /* AppDelegate.swift */; };
+		DFAAA1071DCB10F6002C16D8 /* BMSPushClientOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */; };
+		DFAAA1091DCB47B2002C16D8 /* BMSPushNotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */; };
+		DFAAA10B1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */; };
+		DFE2909E1DFFCDCA00636A6D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE2909D1DFFCDCA00636A6D /* NotificationService.swift */; };
+		DFE290A21DFFCDCA00636A6D /* NotificationInterceptor.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DFE2909B1DFFCDCA00636A6D /* NotificationInterceptor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E768F1F88B9DC080EC149E01 /* Pods_BMSPushTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7BF40A418735A932D502B31 /* Pods_BMSPushTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +57,13 @@
 			remoteGlobalIDString = 561BFE321C6C855300CDB375;
 			remoteInfo = BMSPush;
 		};
+		DFE290A01DFFCDCA00636A6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 561BFE2A1C6C855300CDB375 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DFE2909A1DFFCDCA00636A6D;
+			remoteInfo = NotificationInterceptor;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,6 +76,17 @@
 				56B431C81C72EAFA00AE421C /* BMSPush.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DF8D2CE11DDC5FBD000FB1A4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DFE290A21DFFCDCA00636A6D /* NotificationInterceptor.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -97,6 +121,15 @@
 		58C35E9BFA9B535E5AE3B2BC /* Pods_BMSPush.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BMSPush.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D66745AA48F8E34D871917B /* Pods_BMSPushHostApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BMSPushHostApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79DB4735F0466F8B5D279B69 /* Pods-BMSPushHostApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BMSPushHostApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BMSPushHostApp/Pods-BMSPushHostApp.debug.xcconfig"; sourceTree = "<group>"; };
+		DF25A1741DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSRichPushNotificationOptions.swift; sourceTree = "<group>"; };
+		DF8D2CD01DDC5FBD000FB1A4 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		DF8D2CD21DDC5FBD000FB1A4 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClientOptions.swift; sourceTree = "<group>"; };
+		DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationAction.swift; sourceTree = "<group>"; };
+		DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationActionCategory.swift; sourceTree = "<group>"; };
+		DFE2909B1DFFCDCA00636A6D /* NotificationInterceptor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationInterceptor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFE2909D1DFFCDCA00636A6D /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		DFE2909F1DFFCDCA00636A6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7BF40A418735A932D502B31 /* Pods_BMSPushTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BMSPushTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -134,6 +167,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DFE290981DFFCDCA00636A6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -142,6 +182,7 @@
 			children = (
 				561BFE351C6C855300CDB375 /* Source */,
 				568867641CA687AE0049CD8C /* Tests */,
+				DFE2909C1DFFCDCA00636A6D /* NotificationInterceptor */,
 				561BFE341C6C855300CDB375 /* Products */,
 				F9EE4CA35253C550C7EFCE82 /* Pods */,
 				72D580F6A3C6BDBFDA343952 /* Frameworks */,
@@ -155,6 +196,7 @@
 				56B431A71C72EAA800AE421C /* BMSPushHostApp.app */,
 				56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */,
 				5688676D1CA688420049CD8C /* BMSPushTests.xctest */,
+				DFE2909B1DFFCDCA00636A6D /* NotificationInterceptor.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,6 +209,10 @@
 				561BFE401C6C856900CDB375 /* BMSPushUtils.swift */,
 				561BFE411C6C856900CDB375 /* BMSResponse.swift */,
 				56BCCEC71C9029F50026E58C /* BMSPushUrlBuilder.swift */,
+				DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */,
+				DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */,
+				DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */,
+				DF25A1741DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift */,
 				5688677C1CA68B0B0049CD8C /* Resource */,
 			);
 			path = Source;
@@ -236,8 +282,19 @@
 				58C35E9BFA9B535E5AE3B2BC /* Pods_BMSPush.framework */,
 				5D66745AA48F8E34D871917B /* Pods_BMSPushHostApp.framework */,
 				F7BF40A418735A932D502B31 /* Pods_BMSPushTests.framework */,
+				DF8D2CD01DDC5FBD000FB1A4 /* UserNotifications.framework */,
+				DF8D2CD21DDC5FBD000FB1A4 /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DFE2909C1DFFCDCA00636A6D /* NotificationInterceptor */ = {
+			isa = PBXGroup;
+			children = (
+				DFE2909D1DFFCDCA00636A6D /* NotificationService.swift */,
+				DFE2909F1DFFCDCA00636A6D /* Info.plist */,
+			);
+			path = NotificationInterceptor;
 			sourceTree = "<group>";
 		};
 		F9EE4CA35253C550C7EFCE82 /* Pods */ = {
@@ -319,11 +376,13 @@
 				56B431CB1C72EAFA00AE421C /* Embed Frameworks */,
 				95EBC9C0970BD3DC671BA16E /* [CP] Embed Pods Frameworks */,
 				1304A578C7716DCDB2403CA7 /* [CP] Copy Pods Resources */,
+				DF8D2CE11DDC5FBD000FB1A4 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				56B431CA1C72EAFA00AE421C /* PBXTargetDependency */,
+				DFE290A11DFFCDCA00636A6D /* PBXTargetDependency */,
 			);
 			name = BMSPushHostApp;
 			productName = BMSPushHostApp;
@@ -348,13 +407,30 @@
 			productReference = 56B431BA1C72EAA800AE421C /* BMSPushHostAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		DFE2909A1DFFCDCA00636A6D /* NotificationInterceptor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DFE290A51DFFCDCB00636A6D /* Build configuration list for PBXNativeTarget "NotificationInterceptor" */;
+			buildPhases = (
+				DFE290971DFFCDCA00636A6D /* Sources */,
+				DFE290981DFFCDCA00636A6D /* Frameworks */,
+				DFE290991DFFCDCA00636A6D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationInterceptor;
+			productName = NotificationInterceptor;
+			productReference = DFE2909B1DFFCDCA00636A6D /* NotificationInterceptor.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		561BFE2A1C6C855300CDB375 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "IBM Corp";
 				TargetAttributes = {
@@ -367,10 +443,28 @@
 					};
 					56B431A61C72EAA800AE421C = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = TN6YQNGLXP;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 					56B431B91C72EAA800AE421C = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = TN6YQNGLXP;
 						TestTargetID = 56B431A61C72EAA800AE421C;
+					};
+					DFE2909A1DFFCDCA00636A6D = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = TN6YQNGLXP;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -391,6 +485,7 @@
 				56B431A61C72EAA800AE421C /* BMSPushHostApp */,
 				56B431B91C72EAA800AE421C /* BMSPushHostAppTests */,
 				5688676C1CA688420049CD8C /* BMSPushTests */,
+				DFE2909A1DFFCDCA00636A6D /* NotificationInterceptor */,
 			);
 		};
 /* End PBXProject section */
@@ -421,6 +516,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		56B431B81C72EAA800AE421C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFE290991DFFCDCA00636A6D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -559,9 +661,13 @@
 			files = (
 				561BFE421C6C856900CDB375 /* BMSConstants.swift in Sources */,
 				561BFE451C6C856900CDB375 /* BMSResponse.swift in Sources */,
+				DF25A1751DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift in Sources */,
+				DFAAA1071DCB10F6002C16D8 /* BMSPushClientOptions.swift in Sources */,
 				561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */,
 				561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */,
+				DFAAA1091DCB47B2002C16D8 /* BMSPushNotificationAction.swift in Sources */,
 				56BCCEC81C9029F50026E58C /* BMSPushUrlBuilder.swift in Sources */,
+				DFAAA10B1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,8 +685,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF42EEF01DE6F00600AF2AAE /* AppDelegate.swift in Sources */,
 				56B431AC1C72EAA800AE421C /* ViewController.swift in Sources */,
-				56B431AA1C72EAA800AE421C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +694,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFE290971DFFCDCA00636A6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DFE2909E1DFFCDCA00636A6D /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +722,11 @@
 			isa = PBXTargetDependency;
 			target = 561BFE321C6C855300CDB375 /* BMSPush */;
 			targetProxy = 56B431C91C72EAFA00AE421C /* PBXContainerItemProxy */;
+		};
+		DFE290A11DFFCDCA00636A6D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DFE2909A1DFFCDCA00636A6D /* NotificationInterceptor */;
+			targetProxy = DFE290A01DFFCDCA00636A6D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -735,8 +854,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -760,8 +879,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -810,16 +929,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 79DB4735F0466F8B5D279B69 /* Pods-BMSPushHostApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.Push;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bms.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -828,16 +950,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3CFEB34B0C3A9EC7892C1C24 /* Pods-BMSPushHostApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.Push;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bms.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -846,7 +971,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostAppTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -861,7 +987,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: WorkLight Inc. (TN6YQNGLXP)";
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
 				INFOPLIST_FILE = "Tests/Test Apps/BMSPushHostAppTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -869,6 +996,41 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BMSPushHostApp.app/BMSPushHostApp";
+			};
+			name = Release;
+		};
+		DFE290A31DFFCDCA00636A6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
+				INFOPLIST_FILE = NotificationInterceptor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bms.push.NotificationInterceptor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		DFE290A41DFFCDCA00636A6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				DEVELOPMENT_TEAM = TN6YQNGLXP;
+				INFOPLIST_FILE = NotificationInterceptor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bms.push.NotificationInterceptor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -916,6 +1078,15 @@
 			buildConfigurations = (
 				56B431C31C72EAA800AE421C /* Debug */,
 				56B431C41C72EAA800AE421C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DFE290A51DFFCDCB00636A6D /* Build configuration list for PBXNativeTarget "NotificationInterceptor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFE290A31DFFCDCA00636A6D /* Debug */,
+				DFE290A41DFFCDCA00636A6D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

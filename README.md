@@ -131,22 +131,10 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 
 ###Registering iOS applications and devices
 
-Add this code to registering the app for push notification in APNS,
+Add this code to initialize and register the app for push notification in APNS.
 
 ```
-
-let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-UIApplication.sharedApplication().registerForRemoteNotifications()
-
-//For iOS 10
-
- UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
- { (granted, error) in
-
-    UIApplication.shared.registerForRemoteNotifications()
- }
-
+BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE")
 ```    
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
@@ -160,7 +148,6 @@ After the token is received from APNS, pass the token to Push Notifications as p
  func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
    push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
     if error.isEmpty {
       print( "Response during device registration : \(response)")
@@ -177,7 +164,6 @@ After the token is received from APNS, pass the token to Push Notifications as p
  func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
    push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
         if error.isEmpty {
             print( "Response during device registration : \(response)")
@@ -201,7 +187,6 @@ For `userId` based notification, the register method will accept one more parame
 func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
    let push =  BMSPushClient.sharedInstance
-   push.initializeWithAppGUID(appGUID: "your push App GUID", clientSecret:"your pushApp Client Secret")
    push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: "your userId") { (response, statusCode, error) -> Void in
     if error.isEmpty {
       print( "Response during device registration : \(response)")
@@ -217,7 +202,6 @@ func application (_ application: UIApplication, didRegisterForRemoteNotification
 func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
 
     let push =  BMSPushClient.sharedInstance
-    push.initializeWithAppGUID("your push App GUID", clientSecret:"your pushApp Client Secret")
     push.registerWithDeviceToken(deviceToken, WithUserId: "your userId") { (response, statusCode, error) -> Void in
         if error.isEmpty {
             print( "Response during device registration : \(response)")
@@ -401,6 +385,132 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
     }
 }
 ```
+
+###Enabling interactive push notifications
+
+To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object.  The following is a sample code to enable interactive notifications.
+
+```
+let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+            
+let notificationOptions = BMSPushClientOptions(categoryName: [category])
+            
+let push = BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE", options: notificationOptions)
+           
+```
+
+###Enabling Rich Push notification support in iOS 10 (Audio, Video, GIF and Images)
+
+To receive rich push notifications with iOS10, implement ```UNNotificationServiceExtension```.  The extension will intercept the rich push notification and it needs to be handled here.  While sending the notification from the server, all the four fields, alert, title, subtitle, attachmentURL must be specified. 
+
+In the didReceive() method of your service extension, add the following code to retrieve the rich notification content.
+
+```
+override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+       self.contentHandler = contentHandler
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+        
+        BMSPushRichPushNotificationOptions.didReceive(request, withContentHandler: contentHandler)
+        }
+```
+
+##Enable Monitoring.
+<p>To see the push notification monitoring status for iOS you have add the following code snippets. </p>
+
+<strong>Swift 3</strong>
+```
+// Send notification status when app is opened by clicking the notifications
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+
+     let push =  BMSPushClient.sharedInstance
+     let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+     let data = respJson.data(using: String.Encoding.utf8)
+
+     let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+
+     let messageId:String = jsonResponse.value(forKey: "nid") as! String
+     push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+         print("Send message status to the Push server")
+     }
+}
+
+
+// Send notification status when the app is in background mode.
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+   let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
+
+   self.showAlert(title: "Recieved Push notifications", message: payLoad)
+
+   let push =  BMSPushClient.sharedInstance
+
+   let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+   let data = respJson.data(using: String.Encoding.utf8)
+
+   let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+
+   let messageId:String = jsonResponse.value(forKey: "nid") as! String
+   push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+       completionHandler(UIBackgroundFetchResult.newData)
+   }
+}
+```
+<strong>Swift 2.3</strong>
+
+```
+func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+
+  let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
+  let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
+
+  do {
+      let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+      let nid = responseObject.valueForKey("nid") as! String
+      print(nid)
+
+      let push =  BMSPushClient.sharedInstance
+
+      push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
+
+          print("Send message status to the Push server")
+      })
+
+  } catch let error as NSError {
+      print("error: \(error.localizedDescription)")
+  }
+}
+
+func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+
+  let payLoad = ((((userInfo as NSDictionary).valueForKey("aps") as! NSDictionary).valueForKey("alert") as! NSDictionary).valueForKey("body") as! NSString)
+
+  self.showAlert("Recieved Push notifications", message: payLoad)
+
+
+  let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
+  let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
+
+  do {
+      let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
+      let nid = responseObject.valueForKey("nid") as! String
+      print(nid)
+
+      let push =  BMSPushClient.sharedInstance
+
+      push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
+          completionHandler(UIBackgroundFetchResult.NewData)
+      })
+
+  } catch let error as NSError {
+      print("error: \(error.localizedDescription)")
+  }
+}
+```
+>**Note**: To get the message status when the app is in background you have to send either <strong>MIXED</strong> or <strong>SILENT</strong> push notifications. If the app is force quite you will not get any message delivery status.
 
 ###Learning More
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
