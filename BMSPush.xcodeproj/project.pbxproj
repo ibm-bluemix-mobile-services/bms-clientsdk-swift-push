@@ -124,14 +124,12 @@
 		DF25A1741DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSRichPushNotificationOptions.swift; sourceTree = "<group>"; };
 		DF8D2CD01DDC5FBD000FB1A4 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		DF8D2CD21DDC5FBD000FB1A4 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
-		DFAAA1051DC9E1CD002C16D8 /* BMSPushHostApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BMSPushHostApp.entitlements; sourceTree = "<group>"; };
 		DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClientOptions.swift; sourceTree = "<group>"; };
 		DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationAction.swift; sourceTree = "<group>"; };
 		DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationActionCategory.swift; sourceTree = "<group>"; };
 		DFE2909B1DFFCDCA00636A6D /* NotificationInterceptor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationInterceptor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFE2909D1DFFCDCA00636A6D /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		DFE2909F1DFFCDCA00636A6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DFE290A61DFFCE0600636A6D /* NotificationInterceptor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationInterceptor.entitlements; sourceTree = "<group>"; };
 		F7BF40A418735A932D502B31 /* Pods_BMSPushTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BMSPushTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -182,7 +180,6 @@
 		561BFE291C6C855300CDB375 = {
 			isa = PBXGroup;
 			children = (
-				DFAAA1051DC9E1CD002C16D8 /* BMSPushHostApp.entitlements */,
 				561BFE351C6C855300CDB375 /* Source */,
 				568867641CA687AE0049CD8C /* Tests */,
 				DFE2909C1DFFCDCA00636A6D /* NotificationInterceptor */,
@@ -207,7 +204,6 @@
 		561BFE351C6C855300CDB375 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				DF25A1741DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift */,
 				561BFE3E1C6C856900CDB375 /* BMSConstants.swift */,
 				561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */,
 				561BFE401C6C856900CDB375 /* BMSPushUtils.swift */,
@@ -216,6 +212,7 @@
 				DFAAA1061DCB10F6002C16D8 /* BMSPushClientOptions.swift */,
 				DFAAA1081DCB47B2002C16D8 /* BMSPushNotificationAction.swift */,
 				DFAAA10A1DCB47E0002C16D8 /* BMSPushNotificationActionCategory.swift */,
+				DF25A1741DFEAA390007BBF6 /* BMSRichPushNotificationOptions.swift */,
 				5688677C1CA68B0B0049CD8C /* Resource */,
 			);
 			path = Source;
@@ -294,7 +291,6 @@
 		DFE2909C1DFFCDCA00636A6D /* NotificationInterceptor */ = {
 			isa = PBXGroup;
 			children = (
-				DFE290A61DFFCE0600636A6D /* NotificationInterceptor.entitlements */,
 				DFE2909D1DFFCDCA00636A6D /* NotificationService.swift */,
 				DFE2909F1DFFCDCA00636A6D /* Info.plist */,
 			);
@@ -451,7 +447,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -935,7 +931,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = BMSPushHostApp.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
@@ -957,7 +952,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = BMSPushHostApp.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
