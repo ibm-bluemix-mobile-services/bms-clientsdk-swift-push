@@ -411,32 +411,10 @@ In the didReceive() method of your service extension, add the following code to 
 
 ```
 override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        self.contentHandler = contentHandler
+       self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-        // Get the custom data from the notification payload
-        if let data = request.content.userInfo["aps"] as? [String: AnyObject] {
-            // Grab the attachment            
-            let url = request.content.userInfo["attachment-url"] as? String
-            if let urlString = url, let fileUrl = URL(string: urlString ) {
-                // Download the attachment
-                URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
-                    if let location = location {
-                        // Move temporary file to remove .tmp extension
-                        let tmpDirectory = NSTemporaryDirectory()
-                        let tmpFile = "file://".appending(tmpDirectory).appending(fileUrl.lastPathComponent)
-                        let tmpUrl = URL(string: tmpFile)!
-                        try! FileManager.default.moveItem(at: location, to: tmpUrl)
-                        
-                        // Add the attachment to the notification content
-                        if let attachment = try? UNNotificationAttachment(identifier: "video", url: tmpUrl, options:nil) {
-                            self.bestAttemptContent?.attachments = [attachment]
-                        }
-                    }
-                    // Serve the notification content
-                    self.contentHandler!(self.bestAttemptContent!)
-                    }.resume()
-            }
+        BMSPushRichPushNotificationOptions.didReceive(request, withContentHandler: contentHandler)
         }
 ```
 
