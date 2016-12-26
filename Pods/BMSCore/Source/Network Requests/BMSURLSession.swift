@@ -20,26 +20,27 @@ import BMSAnalyticsAPI
 
 
     
-/// Callback for data tasks created with BMSURLSession.
+/// Callback for data tasks created with `BMSURLSession`.
 public typealias BMSDataTaskCompletionHandler = (Data?, URLResponse?, Error?) -> Void
     
 
     
 /**
-    A wrapper around Swift's `URLSession` API that incorporates
-    Bluemix Mobile Services. Use this API to gather analytics data on your network requests
-    and/or to access backends that are protected by Mobile Client Access.
+    A wrapper around Swift's [URLSession](https://developer.apple.com/reference/foundation/urlsession) API that incorporates
+    Bluemix Mobile Services. Use `BMSURLSession` to gather [Mobile Analytics](https://console.ng.bluemix.net/docs/services/mobileanalytics/mobileanalytics_overview.html) data on your network requests
+    and/or to access backends that are protected by [Mobile Client Access](https://console.ng.bluemix.net/docs/services/mobileaccess/overview.html).
 
-    Currently, `BMSURLSession` only supports `URLSessionDataTask` and `URLSessionUploadTask`.
-
-    For more information, refer to the documentation for `NSURLSession` in the Swift `Foundation` framework.
+    Currently, `BMSURLSession` only supports [URLSessionDataTask](https://developer.apple.com/reference/foundation/urlsessiondatatask) and [URLSessionUploadTask](https://developer.apple.com/reference/foundation/urlsessionuploadtask).
 */
 public struct BMSURLSession {
 
     
     // Determines whether metadata gets recorded for all BMSURLSession network requests
-    // Should only be set to true by passing DeviceEvent.network in the Analytics.initialize() method in the BMSAnalytics framework.
+    // Should only be set to true by passing DeviceEvent.network in the Analytics.initialize() method in the BMSAnalytics framework
     public static var shouldRecordNetworkMetadata: Bool = false
+    
+    // Should only be set to true by the BMSSecurity framework when creating a BMSURLSession request for authenticating with the MCA authorization server
+    public var isBMSAuthorizationRequest: Bool = false
     
     private let configuration: URLSessionConfiguration
     
@@ -117,7 +118,7 @@ public struct BMSURLSession {
     */
     public func dataTask(with request: URLRequest) -> URLSessionDataTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let originalTask = BMSURLSessionTaskType.dataTask
         let parentDelegate = BMSURLSessionDelegate(parentDelegate: delegate, originalTask: originalTask)
@@ -145,7 +146,7 @@ public struct BMSURLSession {
     */
     public func dataTask(with request: URLRequest, completionHandler: @escaping BMSDataTaskCompletionHandler) -> URLSessionDataTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let urlSession = URLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
         let originalTask = BMSURLSessionTaskType.dataTaskWithCompletionHandler(completionHandler)
@@ -172,7 +173,7 @@ public struct BMSURLSession {
     */
     public func uploadTask(with request: URLRequest, from bodyData: Data) -> URLSessionUploadTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let originalTask = BMSURLSessionTaskType.uploadTaskWithData(bodyData)
         let parentDelegate = BMSURLSessionDelegate(parentDelegate: delegate, originalTask: originalTask)
@@ -200,7 +201,7 @@ public struct BMSURLSession {
     */
     public func uploadTask(with request: URLRequest, from bodyData: Data?, completionHandler: @escaping BMSDataTaskCompletionHandler) -> URLSessionUploadTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let urlSession = URLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
         let originalTask = BMSURLSessionTaskType.uploadTaskWithDataAndCompletionHandler(bodyData, completionHandler)
@@ -224,7 +225,7 @@ public struct BMSURLSession {
     */
     public func uploadTask(with request: URLRequest, fromFile fileURL: URL) -> URLSessionUploadTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let originalTask = BMSURLSessionTaskType.uploadTaskWithFile(fileURL)
         let parentDelegate = BMSURLSessionDelegate(parentDelegate: delegate, originalTask: originalTask)
@@ -260,7 +261,7 @@ public struct BMSURLSession {
             BMSURLSession.logger.warn(message: "Cannot retrieve the contents of the file \(fileURL.absoluteString). Error: \(error)")
         }
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let urlSession = URLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
         let originalTask = BMSURLSessionTaskType.uploadTaskWithFileAndCompletionHandler(fileURL, completionHandler)
@@ -275,23 +276,72 @@ public struct BMSURLSession {
     // MARK: - Helpers
     
     // Inject BMSSecurity and BMSAnalytics into the request object by adding headers
-    internal static func addBMSHeaders(to request: URLRequest) -> URLRequest {
+    internal static func addBMSHeaders(to request: URLRequest, onlyIf precondition: Bool) -> URLRequest {
         
         var bmsRequest = request
-        
-        // Security
-        let authManager = BMSClient.sharedInstance.authorizationManager
-        if let authHeader: String = authManager.cachedAuthorizationHeader {
-            bmsRequest.setValue(authHeader, forHTTPHeaderField: "Authorization")
-        }
-        
-        // Analytics
-        bmsRequest.setValue(UUID().uuidString, forHTTPHeaderField: "x-wl-analytics-tracking-id")
-        if let requestMetadata = BaseRequest.requestAnalyticsData {
-            bmsRequest.setValue(requestMetadata, forHTTPHeaderField: "x-mfp-analytics-metadata")
+    
+        // If the request is in the process of authentication with the MCA authorization server, do not attempt to add headers, since this is an intermediary request.
+        if precondition {
+            
+            // Security
+            let authManager = BMSClient.sharedInstance.authorizationManager
+            if let authHeader: String = authManager.cachedAuthorizationHeader {
+                bmsRequest.setValue(authHeader, forHTTPHeaderField: "Authorization")
+            }
+            
+            // Analytics
+            bmsRequest.setValue(UUID().uuidString, forHTTPHeaderField: "x-wl-analytics-tracking-id")
+            if let requestMetadata = BaseRequest.requestAnalyticsData {
+                bmsRequest.setValue(requestMetadata, forHTTPHeaderField: "x-mfp-analytics-metadata")
+            }
         }
         
         return bmsRequest
+    }
+    
+    
+    // Required to hook in challenge handling via AuthorizationManager
+    internal static func generateBmsCompletionHandler(from completionHandler: @escaping BMSDataTaskCompletionHandler, urlSession: URLSession, request: URLRequest, originalTask: BMSURLSessionTaskType, requestBody: Data?) -> BMSDataTaskCompletionHandler {
+        
+        let trackingId = UUID().uuidString
+        let startTime = Int64(Date.timeIntervalSinceReferenceDate * 1000) // milliseconds
+        var requestMetadata = RequestMetadata(url: request.url, startTime: startTime, trackingId: trackingId)
+
+        return { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+            
+            if BMSURLSession.isAuthorizationManagerRequired(for: response) {
+                
+                // If authentication is successful, resend the original request with the "Authorization" header added
+                BMSURLSession.handleAuthorizationChallenge(session: urlSession, request: request, requestMetadata: requestMetadata, originalTask: originalTask, handleTask: { (urlSessionTask) in
+                    
+                    if let taskWithAuthorization = urlSessionTask {
+                        taskWithAuthorization.resume()
+                    }
+                    else {
+                        completionHandler(data, response, error)
+                    }
+                })
+            }
+            // Don't log the request metadata if the response is a redirect
+            else if let response = response as? HTTPURLResponse, response.statusCode >= 300 && response.statusCode < 400 {
+                
+                completionHandler(data, response, error)
+            }
+            else {
+                
+                if BMSURLSession.shouldRecordNetworkMetadata {
+    
+                    requestMetadata.response = response
+                    requestMetadata.bytesReceived = Int64(data?.count ?? 0)
+                    requestMetadata.bytesSent = Int64(requestBody?.count ?? 0)
+                    requestMetadata.endTime = Int64(Date.timeIntervalSinceReferenceDate * 1000) // milliseconds
+        
+                    requestMetadata.recordMetadata()
+                }
+                
+                completionHandler(data, response, error)
+            }
+        }
     }
     
     
@@ -309,92 +359,16 @@ public struct BMSURLSession {
     }
     
     
-    // Required to hook in challenge handling via AuthorizationManager
-    internal static func generateBmsCompletionHandler(from completionHandler: @escaping BMSDataTaskCompletionHandler, urlSession: URLSession, request: URLRequest, originalTask: BMSURLSessionTaskType, requestBody: Data?) -> BMSDataTaskCompletionHandler {
-        
-        // Allows Analytics to track each network request and its associated metadata.
-        let trackingId = UUID().uuidString
-        
-        // The time at which the request is considered to have started.
-        // We start the request timer here so that it doesn't need to get passed around via method parameters.
-        // The request is considered to have begun when the URLSessionTask is created.
-        let startTime = Int64(Date.timeIntervalSinceReferenceDate * 1000) // milliseconds
-        
-        return { (data: Data?, response: URLResponse?, error: Error?) -> Void in
-            
-            if BMSURLSession.isAuthorizationManagerRequired(for: response) {
-                
-                // Resend the original request with the "Authorization" header added
-                BMSURLSession.handleAuthorizationChallenge(session: urlSession, request: request, originalTask: originalTask, handleTask: { (urlSessionTask) in
-                    
-                    if let taskWithAuthorization = urlSessionTask {
-                        taskWithAuthorization.resume()
-                    }
-                    else {
-                        completionHandler(data, response, error)
-                    }
-                })
-            }
-            else {
-                
-                if shouldRecordNetworkMetadata {
-                    
-                    let bytesReceived: Int64 = Int64(data?.count ?? 0)
-                    var bytesSent: Int64 = 0
-                    if requestBody != nil {
-                        bytesSent = Int64(requestBody!.count)
-                    }
-                    
-                    let requestMetadata = getRequestMetadata(response: response, bytesSent: bytesSent, bytesReceived: bytesReceived, trackingId: trackingId, startTime: startTime, url: request.url)
-                    Analytics.log(metadata: requestMetadata)
-                }
-                
-                completionHandler(data, response, error)
-            }
-        }
-    }
-    
-    
-    // Handle the challenge with AuthorizationManager from BMSSecurity.
+    // First, obtain authorization with AuthorizationManager from BMSSecurity.
     // If authentication is successful, a new URLSessionTask is generated.
     // This new task is the same as the original task, but now with the "Authorization" header needed to complete the request successfully.
-    internal static func handleAuthorizationChallenge(session urlSession: URLSession, request: URLRequest, originalTask: BMSURLSessionTaskType, handleTask: @escaping (URLSessionTask?) -> Void){
+    internal static func handleAuthorizationChallenge(session urlSession: URLSession, request: URLRequest, requestMetadata: RequestMetadata, originalTask: BMSURLSessionTaskType, handleTask: @escaping (URLSessionTask?) -> Void){
         
         let authManager = BMSClient.sharedInstance.authorizationManager
         let authCallback: BMSCompletionHandler = {(response: Response?, error:Error?) in
             
             if error == nil && response?.statusCode != nil && (response?.statusCode)! >= 200 && (response?.statusCode)! < 300 {
-                
-                // Resend the original request with the "Authorization" header
-                
-                var request = request
-                
-                let authManager = BMSClient.sharedInstance.authorizationManager
-                if let authHeader: String = authManager.cachedAuthorizationHeader {
-                    request.setValue(authHeader, forHTTPHeaderField: "Authorization")
-                }
-                
-                // Figure out the original URLSessionTask created by the user, and pass it back to the completionHandler
-                switch originalTask {
-                    
-                case .dataTask:
-                    handleTask(urlSession.dataTask(with: request))
-                    
-                case .dataTaskWithCompletionHandler(let completionHandler):
-                    handleTask(urlSession.dataTask(with: request, completionHandler: completionHandler))
-                    
-                case .uploadTaskWithFile(let file):
-                    handleTask(urlSession.uploadTask(with: request, fromFile: file))
-                    
-                case .uploadTaskWithData(let data):
-                    handleTask(urlSession.uploadTask(with: request, from: data))
-                    
-                case .uploadTaskWithFileAndCompletionHandler(let file, let completionHandler):
-                    handleTask(urlSession.uploadTask(with: request, fromFile: file, completionHandler: completionHandler))
-                    
-                case .uploadTaskWithDataAndCompletionHandler(let data, let completionHandler):
-                    handleTask(urlSession.uploadTask(with: request, from: data, completionHandler: completionHandler))
-                }
+                BMSURLSession.resendOriginalRequest(urlSession: urlSession, request: request, requestMetadata: requestMetadata, originalTask: originalTask, handleTask: handleTask)
             }
             else {
                 BMSURLSession.logger.error(message: "Authorization process failed. \nError: \(error). \nResponse: \(response).")
@@ -405,34 +379,65 @@ public struct BMSURLSession {
     }
     
     
-    // Gather response data as JSON to be recorded in an Analytics log
-    internal static func getRequestMetadata(response: URLResponse?, bytesSent: Int64, bytesReceived: Int64, trackingId: String, startTime: Int64, url: URL?) -> [String: Any] {
+    // Resend the original request with the "Authorization" header
+    // For completion handlers, also record request metadata (for delegates, this is already taken care of in BMSURLSessionDelegate)
+    internal static func resendOriginalRequest(urlSession: URLSession, request: URLRequest, requestMetadata: RequestMetadata, originalTask: BMSURLSessionTaskType, handleTask: @escaping (URLSessionTask?) -> Void) {
         
-        let endTime = Int64(Date.timeIntervalSinceReferenceDate * 1000) // milliseconds
-        let roundTripTime = endTime - startTime
+        var request = request
         
-        // Data for analytics logging
-        // NSNumber is used because, for some reason, JSONSerialization fails to convert Int64 to JSON
-        var responseMetadata: [String: Any] = [:]
-        responseMetadata["$category"] = "network"
-        responseMetadata["$trackingid"] = trackingId
-        responseMetadata["$outboundTimestamp"] = NSNumber(value: startTime)
-        responseMetadata["$inboundTimestamp"] = NSNumber(value: endTime)
-        responseMetadata["$roundTripTime"] = NSNumber(value: roundTripTime)
-        responseMetadata["$bytesSent"] = NSNumber(value: bytesSent)
-        responseMetadata["$bytesReceived"] = NSNumber(value: bytesReceived)
-
-        if let urlString = url?.absoluteString {
-            responseMetadata["$path"] = urlString
+        let authManager = BMSClient.sharedInstance.authorizationManager
+        if let authHeader: String = authManager.cachedAuthorizationHeader {
+            request.setValue(authHeader, forHTTPHeaderField: "Authorization")
         }
         
-        if let httpResponse = response as? HTTPURLResponse {
-            responseMetadata["$responseCode"] = httpResponse.statusCode
+        // Gather network metadata for logging (only used with completion handlers, not delegates)
+        func completionHandlerWithMetadata(requestMetadata: RequestMetadata, originalCompletionHandler: @escaping BMSDataTaskCompletionHandler) -> BMSDataTaskCompletionHandler {
+            
+            var requestMetadata = requestMetadata
+            
+            let newCompletionHandler = {(data: Data?, response: URLResponse?, error: Error?) -> Void in
+                
+                if BMSURLSession.shouldRecordNetworkMetadata {
+                    
+                    requestMetadata.bytesReceived = Int64(data?.count ?? 0)
+                    requestMetadata.bytesSent = Int64(request.httpBody?.count ?? 0)
+                    requestMetadata.endTime = Int64(Date.timeIntervalSinceReferenceDate * 1000) // milliseconds
+        
+                    requestMetadata.recordMetadata()
+                }
+                
+                originalCompletionHandler(data, response, error)
+            }
+            
+            return newCompletionHandler
         }
         
-        return responseMetadata
+        // Figure out the original URLSessionTask created by the user, and pass it back to the completionHandler
+        switch originalTask {
+            
+        case .dataTask:
+            handleTask(urlSession.dataTask(with: request))
+            
+        case .dataTaskWithCompletionHandler(let completionHandler):
+            let metadataCompletionHandler = completionHandlerWithMetadata(requestMetadata: requestMetadata, originalCompletionHandler: completionHandler)
+            handleTask(urlSession.dataTask(with: request, completionHandler: metadataCompletionHandler))
+            
+        case .uploadTaskWithFile(let file):
+            handleTask(urlSession.uploadTask(with: request, fromFile: file))
+            
+        case .uploadTaskWithData(let data):
+            handleTask(urlSession.uploadTask(with: request, from: data))
+            
+        case .uploadTaskWithFileAndCompletionHandler(let file, let completionHandler):
+            let metadataCompletionHandler = completionHandlerWithMetadata(requestMetadata: requestMetadata, originalCompletionHandler: completionHandler)
+            handleTask(urlSession.uploadTask(with: request, fromFile: file, completionHandler: metadataCompletionHandler))
+            
+        case .uploadTaskWithDataAndCompletionHandler(let data, let completionHandler):
+            let metadataCompletionHandler = completionHandlerWithMetadata(requestMetadata: requestMetadata, originalCompletionHandler: completionHandler)
+            handleTask(urlSession.uploadTask(with: request, from: data, completionHandler: metadataCompletionHandler))
+        }
     }
-    
+
 }
     
     
@@ -468,7 +473,7 @@ internal enum BMSURLSessionTaskType {
    
 // MARK: BMSURLSession (Swift 2)
     
-/// Callback for data tasks created with BMSURLSession.
+/// Callback for data tasks created with `BMSURLSession`.
 public typealias BMSDataTaskCompletionHandler = (NSData?, NSURLResponse?, NSError?) -> Void
 
 
@@ -479,14 +484,17 @@ public typealias BMSDataTaskCompletionHandler = (NSData?, NSURLResponse?, NSErro
 
     Currently, `BMSURLSession` only supports `NSURLSessionDataTask` and `NSURLSessionUploadTask`.
 
-    For more information, refer to the documentation for `NSURLSession` in the Swift `Foundation` framework.
+    For more information, refer to the documentation for `NSURLSession` in the Swift Foundation framework.
 */
 public struct BMSURLSession {
     
     
     // Determines whether metadata gets recorded for all BMSURLSession network requests
-    // Should only be set to true by passing DeviceEvent.network in the Analytics.initialize() method in the BMSAnalytics framework.
+    // Should only be set to true by passing DeviceEvent.network in the Analytics.initialize() method in the BMSAnalytics framework
     public static var shouldRecordNetworkMetadata: Bool = false
+    
+    // Should only be set to true by the BMSSecurity framework when creating a BMSURLSession request for authenticating with the MCA authorization server
+    public var isBMSAuthorizationRequest: Bool = false
     
     private let configuration: NSURLSessionConfiguration
     
@@ -564,11 +572,10 @@ public struct BMSURLSession {
     */
     public func dataTaskWithRequest(request: NSURLRequest) -> NSURLSessionDataTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let originalTask = BMSURLSessionTaskType.dataTask
         let parentDelegate = BMSURLSessionDelegate(parentDelegate: delegate, originalTask: originalTask)
-        
         let urlSession = NSURLSession(configuration: configuration, delegate: parentDelegate, delegateQueue: delegateQueue)
         
         let dataTask = urlSession.dataTaskWithRequest(bmsRequest)
@@ -593,7 +600,7 @@ public struct BMSURLSession {
     */
     public func dataTaskWithRequest(request: NSURLRequest, completionHandler: BMSDataTaskCompletionHandler) -> NSURLSessionDataTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let urlSession = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
         let originalTask = BMSURLSessionTaskType.dataTaskWithCompletionHandler(completionHandler)
@@ -620,7 +627,7 @@ public struct BMSURLSession {
     */
     public func uploadTaskWithRequest(request: NSURLRequest, fromData bodyData: NSData) -> NSURLSessionUploadTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let originalTask = BMSURLSessionTaskType.uploadTaskWithData(bodyData)
         let parentDelegate = BMSURLSessionDelegate(parentDelegate: delegate, originalTask: originalTask)
@@ -649,7 +656,7 @@ public struct BMSURLSession {
     */
     public func uploadTaskWithRequest(request: NSURLRequest, fromData bodyData: NSData?, completionHandler: BMSDataTaskCompletionHandler) -> NSURLSessionUploadTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let urlSession = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
         let originalTask = BMSURLSessionTaskType.uploadTaskWithDataAndCompletionHandler(bodyData, completionHandler)
@@ -673,7 +680,7 @@ public struct BMSURLSession {
     */
     public func uploadTaskWithRequest(request: NSURLRequest, fromFile fileURL: NSURL) -> NSURLSessionUploadTask {
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let originalTask = BMSURLSessionTaskType.uploadTaskWithFile(fileURL)
         let parentDelegate = BMSURLSessionDelegate(parentDelegate: delegate, originalTask: originalTask)
@@ -707,7 +714,7 @@ public struct BMSURLSession {
             BMSURLSession.logger.warn(message: "Cannot retrieve the contents of the file \(fileURL.absoluteString).")
         }
         
-        let bmsRequest = BMSURLSession.addBMSHeaders(to: request)
+        let bmsRequest = BMSURLSession.addBMSHeaders(to: request, onlyIf: !isBMSAuthorizationRequest)
         
         let urlSession = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
         let originalTask = BMSURLSessionTaskType.uploadTaskWithFileAndCompletionHandler(fileURL, completionHandler)
@@ -722,23 +729,73 @@ public struct BMSURLSession {
     // MARK: - Helpers
     
     // Inject BMSSecurity and BMSAnalytics into the request object by adding headers
-    internal static func addBMSHeaders(to request: NSURLRequest) -> NSURLRequest {
+    internal static func addBMSHeaders(to request: NSURLRequest, onlyIf precondition: Bool) -> NSURLRequest {
         
         let bmsRequest = request.mutableCopy() as! NSMutableURLRequest
         
-        // Security
-        let authManager = BMSClient.sharedInstance.authorizationManager
-        if let authHeader: String = authManager.cachedAuthorizationHeader {
-            bmsRequest.setValue(authHeader, forHTTPHeaderField: "Authorization")
-        }
-        
-        // Analytics
-        bmsRequest.setValue(NSUUID().UUIDString, forHTTPHeaderField: "x-wl-analytics-tracking-id")
-        if let requestMetadata = BaseRequest.requestAnalyticsData {
-            bmsRequest.setValue(requestMetadata, forHTTPHeaderField: "x-mfp-analytics-metadata")
+        // If the request is in the process of authentication with the MCA authorization server, do not attempt to add headers, since this is an intermediary request.
+        if precondition {
+            
+            // Security
+            let authManager = BMSClient.sharedInstance.authorizationManager
+            if let authHeader: String = authManager.cachedAuthorizationHeader {
+                bmsRequest.setValue(authHeader, forHTTPHeaderField: "Authorization")
+            }
+            
+            // Analytics
+            bmsRequest.setValue(NSUUID().UUIDString, forHTTPHeaderField: "x-wl-analytics-tracking-id")
+            if let requestMetadata = BaseRequest.requestAnalyticsData {
+                bmsRequest.setValue(requestMetadata, forHTTPHeaderField: "x-mfp-analytics-metadata")
+            }
         }
         
         return bmsRequest
+    }
+    
+    
+    // Required to hook in challenge handling via AuthorizationManager
+    internal static func generateBmsCompletionHandler(from completionHandler: BMSDataTaskCompletionHandler, urlSession: NSURLSession, request: NSURLRequest, originalTask: BMSURLSessionTaskType, requestBody: NSData?) -> BMSDataTaskCompletionHandler {
+        
+        let trackingId = NSUUID().UUIDString
+        let startTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000) // milliseconds
+        var requestMetadata = RequestMetadata(url: request.URL, startTime: startTime, trackingId: trackingId)
+        
+        return { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            
+            if BMSURLSession.isAuthorizationManagerRequired(response) {
+                
+                // Resend the original request with the "Authorization" header added
+                let originalRequest = request.mutableCopy() as! NSMutableURLRequest
+                BMSURLSession.handleAuthorizationChallenge(session: urlSession, request: originalRequest, requestMetadata: requestMetadata, originalTask: originalTask, handleTask: { (urlSessionTask) in
+                    
+                    if let taskWithAuthorization = urlSessionTask {
+                        taskWithAuthorization.resume()
+                    }
+                    else {
+                        completionHandler(data, response, error)
+                    }
+                })
+            }
+            // Don't log the request metadata if the response is a redirect
+            else if let response = response as? NSHTTPURLResponse where response.statusCode >= 300 && response.statusCode < 400 {
+                
+                completionHandler(data, response, error)
+            }
+            else {
+    
+                if BMSURLSession.shouldRecordNetworkMetadata {
+    
+                    requestMetadata.response = response
+                    requestMetadata.bytesReceived = Int64(data?.length ?? 0)
+                    requestMetadata.bytesSent = Int64(requestBody?.length ?? 0)
+                    requestMetadata.endTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000) // milliseconds
+                    
+                    requestMetadata.recordMetadata()
+                }
+    
+                completionHandler(data, response, error)
+            }
+        }
     }
     
     
@@ -756,44 +813,16 @@ public struct BMSURLSession {
     }
     
     
-    // Handle the challenge with AuthorizationManager from BMSSecurity.
-    // If authentication is successful, a new NSURLSessionTask is generated.
+    // First, obtain authorization with AuthorizationManager from BMSSecurity.
+    // If authentication is successful, a new URLSessionTask is generated.
     // This new task is the same as the original task, but now with the "Authorization" header needed to complete the request successfully.
-    internal static func handleAuthorizationChallenge(session urlSession: NSURLSession, request: NSMutableURLRequest, originalTask: BMSURLSessionTaskType, handleTask: (NSURLSessionTask?) -> Void) {
+    internal static func handleAuthorizationChallenge(session urlSession: NSURLSession, request: NSMutableURLRequest, requestMetadata: RequestMetadata, originalTask: BMSURLSessionTaskType, handleTask: (NSURLSessionTask?) -> Void) {
         
         let authManager = BMSClient.sharedInstance.authorizationManager
         let authCallback: BMSCompletionHandler = {(response: Response?, error:NSError?) in
             
-            if error == nil && response?.statusCode >= 200 && response?.statusCode < 300 {
-                
-                // Resend the original request with the "Authorization" header
-                
-                let authManager = BMSClient.sharedInstance.authorizationManager
-                if let authHeader: String = authManager.cachedAuthorizationHeader {
-                    request.setValue(authHeader, forHTTPHeaderField: "Authorization")
-                }
-                
-                // Figure out the original NSURLSessionTask created by the user, and resend it
-                switch originalTask {
-                    
-                case .dataTask:
-                    handleTask(urlSession.dataTaskWithRequest(request))
-                    
-                case .dataTaskWithCompletionHandler(let completionHandler):
-                    handleTask(urlSession.dataTaskWithRequest(request, completionHandler: completionHandler))
-                    
-                case .uploadTaskWithFile(let file):
-                    handleTask(urlSession.uploadTaskWithRequest(request, fromFile: file))
-                    
-                case .uploadTaskWithData(let data):
-                    handleTask(urlSession.uploadTaskWithRequest(request, fromData: data))
-                    
-                case .uploadTaskWithFileAndCompletionHandler(let file, let completionHandler):
-                    handleTask(urlSession.uploadTaskWithRequest(request, fromFile: file, completionHandler: completionHandler))
-                    
-                case .uploadTaskWithDataAndCompletionHandler(let data, let completionHandler):
-                    handleTask(urlSession.uploadTaskWithRequest(request, fromData: data, completionHandler: completionHandler))
-                }
+            if error == nil && response?.statusCode != nil && (response?.statusCode)! >= 200 && (response?.statusCode)! < 300 {
+                BMSURLSession.resendOriginalRequest(urlSession: urlSession, request: request, requestMetadata: requestMetadata, originalTask: originalTask, handleTask: handleTask)
             }
             else {
                 BMSURLSession.logger.error(message: "Authorization process failed. \nError: \(error). \nResponse: \(response).")
@@ -804,76 +833,63 @@ public struct BMSURLSession {
     }
     
     
-    // Required to hook in challenge handling via AuthorizationManager
-    internal static func generateBmsCompletionHandler(from completionHandler: BMSDataTaskCompletionHandler, urlSession: NSURLSession, request: NSURLRequest, originalTask: BMSURLSessionTaskType, requestBody: NSData?) -> BMSDataTaskCompletionHandler {
+    // Resend the original request with the "Authorization" header
+    // For completion handlers, also record request metadata (for delegates, this is already taken care of in BMSURLSessionDelegate)
+    internal static func resendOriginalRequest(urlSession urlSession: NSURLSession, request: NSMutableURLRequest, requestMetadata: RequestMetadata, originalTask: BMSURLSessionTaskType, handleTask: (NSURLSessionTask?) -> Void) {
         
-        // Allows Analytics to track each network request and its associated metadata.
-        let trackingId = NSUUID().UUIDString
+        var request = request
         
-        // The time at which the request is considered to have started.
-        // We start the request timer here so that it doesn't need to get passed around via method parameters.
-        // The request is considered to have begun when the URLSessionTask is created.
-        let startTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000) // milliseconds
+        let authManager = BMSClient.sharedInstance.authorizationManager
+        if let authHeader: String = authManager.cachedAuthorizationHeader {
+            request.setValue(authHeader, forHTTPHeaderField: "Authorization")
+        }
         
-        return { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        // Gather network metadata for logging (only used with completion handlers, not delegates)
+        func completionHandlerWithMetadata(requestMetadata: RequestMetadata, originalCompletionHandler: BMSDataTaskCompletionHandler) -> BMSDataTaskCompletionHandler {
             
-            if BMSURLSession.isAuthorizationManagerRequired(response) {
-                
-                // Resend the original request with the "Authorization" header added
-                let originalRequest = request.mutableCopy() as! NSMutableURLRequest
-                BMSURLSession.handleAuthorizationChallenge(session: urlSession, request: originalRequest, originalTask: originalTask, handleTask: { (urlSessionTask) in
+            var requestMetadata = requestMetadata
+            
+            let newCompletionHandler = {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+    
+                if BMSURLSession.shouldRecordNetworkMetadata {
+    
+                    requestMetadata.bytesReceived = Int64(data?.length ?? 0)
+                    requestMetadata.bytesSent = Int64(request.HTTPBody?.length ?? 0)
+                    requestMetadata.endTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000) // milliseconds
                     
-                    if let taskWithAuthorization = urlSessionTask {
-                        taskWithAuthorization.resume()
-                    }
-                    else {
-                        completionHandler(data, response, error)
-                    }
-                })
-            }
-            else {
-                
-                if shouldRecordNetworkMetadata {
-                    
-                    let bytesReceived: Int64 = Int64(data?.length ?? 0)
-                    let bytesSent = Int64(requestBody?.length ?? 0)
-                    let requestMetadata = getRequestMetadata(response: response, bytesSent: bytesSent, bytesReceived: bytesReceived, trackingId: trackingId, startTime: startTime, url: request.URL)
-                    
-                    Analytics.log(metadata: requestMetadata)
+                    requestMetadata.recordMetadata()
                 }
-                
-                completionHandler(data, response, error)
+    
+                originalCompletionHandler(data, response, error)
             }
-        }
-    }
-    
-    
-    // Gather response data as JSON to be recorded in an Analytics log
-    internal static func getRequestMetadata(response response: NSURLResponse?, bytesSent: Int64, bytesReceived: Int64, trackingId: String, startTime: Int64, url: NSURL?) -> [String: AnyObject] {
-        
-        let endTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000) // milliseconds
-        let roundTripTime = endTime - startTime
-        
-        // Data for analytics logging
-        // NSNumber is used because, for some reason, NSJSONSerialization fails to convert Int64 to JSON
-        var responseMetadata: [String: AnyObject] = [:]
-        responseMetadata["$category"] = "network"
-        responseMetadata["$trackingid"] = trackingId
-        responseMetadata["$outboundTimestamp"] = NSNumber(longLong: startTime)
-        responseMetadata["$inboundTimestamp"] = NSNumber(longLong: endTime)
-        responseMetadata["$roundTripTime"] = NSNumber(longLong: roundTripTime)
-        responseMetadata["$bytesSent"] = NSNumber(longLong: bytesSent)
-        responseMetadata["$bytesReceived"] = NSNumber(longLong: bytesReceived)
-        
-        if let urlString = url?.absoluteString {
-            responseMetadata["$path"] = urlString
+            
+            return newCompletionHandler
         }
         
-        if let httpResponse = response as? NSHTTPURLResponse {
-            responseMetadata["$responseCode"] = httpResponse.statusCode
+        // Figure out the original URLSessionTask created by the user, and pass it back to the completionHandler
+        switch originalTask {
+            
+        case .dataTask:
+            handleTask(urlSession.dataTaskWithRequest(request))
+            
+        case .dataTaskWithCompletionHandler(let completionHandler):
+            let metadataCompletionHandler = completionHandlerWithMetadata(requestMetadata, originalCompletionHandler: completionHandler)
+           handleTask(urlSession.dataTaskWithRequest(request, completionHandler: metadataCompletionHandler))
+            
+        case .uploadTaskWithFile(let file):
+            handleTask(urlSession.uploadTaskWithRequest(request, fromFile: file))
+            
+        case .uploadTaskWithData(let data):
+            handleTask(urlSession.uploadTaskWithRequest(request, fromData: data))
+            
+        case .uploadTaskWithFileAndCompletionHandler(let file, let completionHandler):
+            let metadataCompletionHandler = completionHandlerWithMetadata(requestMetadata, originalCompletionHandler: completionHandler)
+            handleTask(urlSession.uploadTaskWithRequest(request, fromFile: file, completionHandler: metadataCompletionHandler))
+            
+        case .uploadTaskWithDataAndCompletionHandler(let data, let completionHandler):
+            let metadataCompletionHandler = completionHandlerWithMetadata(requestMetadata, originalCompletionHandler: completionHandler)
+            handleTask(urlSession.uploadTaskWithRequest(request, fromData: data, completionHandler: metadataCompletionHandler))
         }
-        
-        return responseMetadata
     }
 }
     

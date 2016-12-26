@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func registerForPush () {
             
             let myBMSClient = BMSClient.sharedInstance
-            myBMSClient.initialize(bluemixRegion: ".stage1-dev.ng.bluemix.net")
+            myBMSClient.initialize(bluemixRegion: BMSClient.Region.usSouth)
             
             let push =  BMSPushClient.sharedInstance
             
@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
             
             let notifOptions = BMSPushClientOptions(categoryName: [category])
-            push.initializeWithAppGUID(appGUID: "97ea15df-0ca1-4ff0-8c54-fb46259204f8", clientSecret:"a6e5635d-88b8-4cbd-bc00-58f1be61d6c6", options: notifOptions)
+            push.initializeWithAppGUID(appGUID: "YOUR_APP_GUID", clientSecret:"YOUR_APP_CLIENT_SECRET", options: notifOptions)
             
         }
         func unRegisterPush () {
@@ -284,7 +284,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
     
             let notifOptions = BMSPushClientOptions(categoryName: [category])
-             push.initializeWithAppGUID(appGUID: "97ea15df-0ca1-4ff0-8c54-fb46259204f8", clientSecret:"a6e5635d-88b8-4cbd-bc00-58f1be61d6c6", options: notifOptions)
+            push.initializeWithAppGUID(appGUID: "YOUR_APP_GUID", clientSecret:"YOUR_APP_CLIENT_SECRET", options: notifOptions)
     
         }
     

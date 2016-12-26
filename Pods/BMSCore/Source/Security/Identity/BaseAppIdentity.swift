@@ -19,7 +19,7 @@
 
     
 
-/// This class represents the base app identity class, with default methods and keys
+// This class represents the base app identity class, with default methods and keys
 open class BaseAppIdentity: AppIdentity {
     
     
@@ -49,7 +49,11 @@ open class BaseAppIdentity: AppIdentity {
         jsonData[BaseAppIdentity.Key.version] = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
     
-    public init(map: [String:AnyObject]?) {
+    public convenience init(map: [String:AnyObject]?) {
+        self.init(map : map as [String:Any]?)
+    }
+    
+    public init(map: [String:Any]?) {
         guard let json = map as? [String:String] else {
             jsonData = ([:])
             return
@@ -76,7 +80,7 @@ open class BaseAppIdentity: AppIdentity {
     
     
     
-/// This class represents the base app identity class, with default methods and keys
+// This class represents the base app identity class, with default methods and keys
 public class BaseAppIdentity: AppIdentity {
 
     

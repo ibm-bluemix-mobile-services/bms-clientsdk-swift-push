@@ -6,6 +6,7 @@
 //  Copyright © 2016 IBM Corp. All rights reserved.
 //
 
+#if swift(>=3.0)
 import UserNotifications
 
 class NotificationService:BMSPushRichPushNotificationOptions {
@@ -30,3 +31,4 @@ class NotificationService:BMSPushRichPushNotificationOptions {
     }
 
 }
+#endif

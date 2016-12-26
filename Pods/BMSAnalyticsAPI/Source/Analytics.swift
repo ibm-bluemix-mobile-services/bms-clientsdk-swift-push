@@ -22,19 +22,19 @@
 // MARK: DeviceEvent
 
 /**
-    Set of device events that the `Analytics` class will listen for. Whenever an event of the specified type occurs, analytics data for that event will be recorded.
+    The set of device events that the `Analytics` class will listen for. Whenever an event of the specified type occurs, analytics data for that event will be recorded.
 
-    - Note: Register DeviceEvents in the `Analytics.initialize()` method.
+    - Note: Register DeviceEvents in `Analytics.initialize(appName:apiKey:hasUserContext:deviceEvents:)`.
 */
 public enum DeviceEvent {
     
     /// Records the duration of the app's lifecycle from when it enters the foreground to when it goes to the background.
     ///
-    /// - Note: Only available for iOS apps. For watchOS apps, call the `recordApplicationDidBecomeActive()` and `recordApplicationWillResignActive()` methods in the appropriate `ExtensionDelegate` methods.
+    /// - Note: Only available for iOS apps. For watchOS apps, call the `Analytics.recordApplicationDidBecomeActive()` and `Analytics.recordApplicationWillResignActive()` methods in the app's `ExtensionDelegate` methods of the same name.
     case lifecycle
     
     /// Records metadata for network requests sent by the Bluemix Mobile Services SDKs (BMSCore, BMSAnalytics, BMSPush, BMSSecurity, etc.).
-    /// To have metadata recorded for your own custom network requests and sent to the Mobile Analytics Service, create your requests with `BMSURLSession`.
+    /// To have metadata recorded for your own custom network requests and sent to the Mobile Analytics service, create your requests with `BMSURLSession` from the `BMSCore` framework.
     case network
 }
 
@@ -53,18 +53,24 @@ public protocol AnalyticsDelegate {
 // MARK: - Analytics
 
 /**
-    Records analytics data and sends it to the Mobile Analytics Service.
+    Records analytics data and sends it to the [Mobile Analytics service](https://console.ng.bluemix.net/docs/services/mobileanalytics/mobileanalytics_overview.html).
+
+    To subscribe to automated analytics recording, pass the `DeviceEvent` options that you want recorded in `initialize(appName:apiKey:hasUserContext:deviceEvents:)`.
+
+    Custom events can be recorded with `log(metadata:)`. You can also define the current application user with `userIdentity` using, for example, the user's login information.
+
+    When you are ready to send all of the recorded data to the Mobile Analytics service, use `send(completionHandler:)`.
 */
 public class Analytics {
     
     
-    // MARK: Properties (API)
+    // MARK: Properties
     
-    /// Determines whether analytics logs will be persisted to file.
+    /// Determines whether analytics data will be recorded.
     public static var isEnabled: Bool = true
     
     /// Identifies the current application user.
-    /// To reset the userId, set the value to nil.
+    /// To reset the `userIdentity`, set the value to nil.
     public static var userIdentity: String? {
         didSet {
             Analytics.delegate?.userIdentity = userIdentity
@@ -83,14 +89,16 @@ public class Analytics {
     
     
     
-    // MARK: Methods (API)
+    // MARK: Methods
     
     /**
         Record analytics data.
 
-        Analytics logs are added to the log file until the file size is greater than the `maxLogStoreSize` property. At this point, the first half of the stored logs will be deleted to make room for new log data.
+        Analytics logs are added to the log file until the file size is greater than `Logger.maxLogStoreSize`. At this point, the first half of the stored logs will be deleted to make room for new log data.
 
-        When ready, use the `send()` method to send the recorded data to the Mobile Analytics Service.
+        When ready, use `send(completionHandler:)` to send the recorded data to the Mobile Analytics service.
+
+        - Note: Do not supply values for the `file`, `function`, or `line` parameters. These parameters take default values to automatically record the file, function, and line in which this method was called.
 
         - parameter metadata:  The analytics data
     */
@@ -120,19 +128,19 @@ public class Analytics {
 // MARK: DeviceEvent
 
 /**
-    Set of device events that the `Analytics` class will listen for. Whenever an event of the specified type occurs, analytics data for that event will be recorded.
+    The set of device events that the `Analytics` class will listen for. Whenever an event of the specified type occurs, analytics data for that event will be recorded.
 
-    - Note: Register DeviceEvents in the `Analytics.initialize()` method.
+    - Note: Register DeviceEvents in `Analytics.initialize(appName:apiKey:hasUserContext:deviceEvents:)`.
 */
 public enum DeviceEvent {
     
     /// Records the duration of the app's lifecycle from when it enters the foreground to when it goes to the background.
     ///
-    /// - Note: Only available for iOS apps. For watchOS apps, call the `recordApplicationDidBecomeActive()` and `recordApplicationWillResignActive()` methods in the appropriate `ExtensionDelegate` methods.
+    /// - Note: Only available for iOS apps. For watchOS apps, call the `Analytics.recordApplicationDidBecomeActive()` and `Analytics.recordApplicationWillResignActive()` methods in the app's `ExtensionDelegate` methods of the same name.
     case lifecycle
     
     /// Records metadata for network requests sent by the Bluemix Mobile Services SDKs (BMSCore, BMSAnalytics, BMSPush, BMSSecurity, etc.).
-    /// To have metadata recorded for your own custom network requests and sent to the Mobile Analytics Service, create your requests with `BMSURLSession`.
+    /// To have metadata recorded for your own custom network requests and sent to the Mobile Analytics service, create your requests with `BMSURLSession` from the `BMSCore` framework.
     case network
 }
 
@@ -151,18 +159,24 @@ public protocol AnalyticsDelegate {
 // MARK: - Analytics
 
 /**
-    Records analytics data and sends it to the Mobile Analytics Service.
+    Records analytics data and sends it to the [Mobile Analytics service](https://console.ng.bluemix.net/docs/services/mobileanalytics/mobileanalytics_overview.html).
+
+    To subscribe to automated analytics recording, pass the `DeviceEvent` options that you want recorded in `initialize(appName:apiKey:hasUserContext:deviceEvents:)`.
+
+    Custom events can be recorded with `log(metadata:)`. You can also define the current application user with `userIdentity` using, for example, the user's login information.
+
+    When you are ready to send all of the recorded data to the Mobile Analytics service, use `send(completionHandler:)`.
 */
 public class Analytics {
     
     
-    // MARK: Properties (API)
+    // MARK: Properties
     
-    /// Determines whether analytics logs will be persisted to file.
+    /// Determines whether analytics data will be recorded.
     public static var isEnabled: Bool = true
     
     /// Identifies the current application user.
-    /// To reset the userId, set the value to nil.
+    /// To reset the `userIdentity`, set the value to nil.
     public static var userIdentity: String? {
         didSet {
             Analytics.delegate?.userIdentity = userIdentity
@@ -181,17 +195,19 @@ public class Analytics {
     
     
     
-    // MARK: Methods (API)
+    // MARK: Methods
     
     /**
         Record analytics data.
 
-        Analytics logs are added to the log file until the file size is greater than the `maxLogStoreSize` property. At this point, the first half of the stored logs will be deleted to make room for new log data.
+        Analytics logs are added to the log file until the file size is greater than `Logger.maxLogStoreSize`. At this point, the first half of the stored logs will be deleted to make room for new log data.
 
-        When ready, use the `send()` method to send the recorded data to the Mobile Analytics Service.
+        When ready, use `send(completionHandler:)` to send the recorded data to the Mobile Analytics service.
+
+        - Note: Do not supply values for the `file`, `function`, or `line` parameters. These parameters take default values to automatically record the file, function, and line in which this method was called.
 
         - parameter metadata:  The analytics data
-    */
+     */
     public static func log(metadata metadata: [String: AnyObject], file: String = #file, function: String = #function, line: Int = #line) {
     
         Analytics.logger.analytics(metadata: metadata, file: file, function: function, line: line)
