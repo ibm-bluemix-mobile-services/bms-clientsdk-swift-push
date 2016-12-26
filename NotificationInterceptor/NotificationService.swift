@@ -8,7 +8,7 @@
 
 #if swift(>=3.0)
 import UserNotifications
-
+import BMSPush
 class NotificationService:BMSPushRichPushNotificationOptions {
 
     
