@@ -114,7 +114,7 @@ import BMSCore
                 isInitialized = true;
                 
                 if #available(iOS 10.0, *) {
-                    
+                                        
                     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                         if(granted) {
                             UIApplication.shared.registerForRemoteNotifications()
@@ -217,7 +217,7 @@ import BMSCore
                     
                     let categories = NSSet(object: responseCategory)
                     
-                    let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
+                    let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as? Set<UIUserNotificationCategory>)
                     
                     UIApplication.shared.registerUserNotificationSettings(settings)
                     UIApplication.shared.registerForRemoteNotifications()
@@ -309,7 +309,8 @@ import BMSCore
                                 
                                 let method =  HttpMethod.POST
                                 
-                                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
+                                //let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                 
                                 let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
                                 // MARK: Registering for the First Time
@@ -363,7 +364,8 @@ import BMSCore
                                     
                                     let method =  HttpMethod.PUT
                                     
-                                    let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                                     let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
+                                    //let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                     
                                     let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
                                     
@@ -472,7 +474,8 @@ import BMSCore
                             
                             let method =  HttpMethod.POST
                             
-                            let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                            let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
+                          //  let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                             
                             let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\"}".data(using: .utf8)
                             
@@ -527,7 +530,8 @@ import BMSCore
                                 
                                 let method =  HttpMethod.PUT
                                 
-                                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                                 let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
+                                //let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                                
                                 let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\"}".data(using: .utf8)
                                 
@@ -642,7 +646,9 @@ import BMSCore
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
+               // let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
+                //let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                 
                 let mappedArray = tagsArray.flatMap{"\($0)"}.description;
                 
@@ -759,7 +765,8 @@ import BMSCore
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
+                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
+                //let getRequest = BaseRequest(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60)
                 
                 let mappedArray = tagsArray.flatMap{"\($0)"}.description;
                 
@@ -986,19 +993,19 @@ import BMSCore
         
         /// This singleton should be used for all `BMSPushClient` activity.
         public static let sharedInstance = BMSPushClient()
-    
+        
         private var _notificationOptions : BMSPushClientOptions?
-    
+        
         public var notificationOptions:BMSPushClientOptions? {
-        get{
-            return _notificationOptions
-        }
-        set(value){
-            _notificationOptions = value
+            get{
+                return _notificationOptions
+            }
+            set(value){
+                _notificationOptions = value
             }
         }
-    
-    
+        
+        
         // Specifies the bluemix push clientSecret value
         public private(set) var clientSecret: String?
         public private(set) var applicationId: String?
@@ -1007,7 +1014,7 @@ import BMSCore
         public static var overrideServerHost = "";
         
         // MARK: Properties (private)
-    
+        
         /// `BMSClient` object.
         private var bmsClient = BMSClient.sharedInstance
         
@@ -1033,130 +1040,85 @@ import BMSCore
                 self.clientSecret = clientSecret
                 self.applicationId = appGUID
                 isInitialized = true;
-    
-            if #available(iOS 10.0, *) {
-    
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
-            if(granted) {
-                UIApplication.shared.registerForRemoteNotifications()
-            } else {
-                print("Error while registering with APNS server :  \(error?.localizedDescription)")
-                }
-            })
-        } else {
-            // Fallback on earlier versions
-    
-            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-    
-            UIApplication.shared.registerUserNotificationSettings(settings)
-            UIApplication.shared.registerForRemoteNotifications()
-    
-        }
+                
+                let settings = UIUserNotificationSettings(forTypes: [.Alert,.Badge,.Sound], categories: nil)
+                
+                UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+                UIApplication.sharedApplication().registerForRemoteNotifications()
             }
             else{
                 self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
                 print("Error while registration - Client secret is not valid")
             }
         }
-    
-    /**
-     The required intializer for the `BMSPushClient` class.
-     
-     This method will intialize the BMSPushClient with clientSecret based registration and take in notificationOptions.
-     
-     - parameter clientSecret:    The clientSecret of the Push Service
-     - parameter appGUID:    The pushAppGUID of the Push Service
-     - parameter options: The optional push notification options
-     */
-    public func initializeWithAppGUID (appGUID: String, clientSecret: String, options: BMSPushClientOptions) {
-    
-    if validateString(object: clientSecret) {
-        self.clientSecret = clientSecret
-        self.applicationId = appGUID
-        isInitialized = true;
-    
-    if #available(iOS 10.0, *) {
-    
-        let center = UNUserNotificationCenter.current()
-    
-        let category : [BMSPushNotificationActionCategory] = options.category
-    
-        let categoryFirst : BMSPushNotificationActionCategory = category.first!
-    
-        let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
-        let pushCategoryIdentifier : String = categoryFirst.identifier
-    
-        let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
-        let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
-    
-        let replyActionButtonOne = UNNotificationAction(identifier: firstActionButton.identifier, title: firstActionButton.title)
-        let replyActionButtonTwo = UNNotificationAction(identifier: secondActionButton.identifier, title: secondActionButton.title)
-    
-        let responseCategory = UNNotificationCategory(identifier: pushCategoryIdentifier, actions: [replyActionButtonOne, replyActionButtonTwo], intentIdentifiers: [])
-    
-        center.setNotificationCategories([responseCategory])
-    
-        center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
-        if(granted) {
-            UIApplication.shared.registerForRemoteNotifications()
-            } else {
-                print("Error while registering with APNS server :  \(error?.localizedDescription)")
-            }
-        })
-    } else {
-    // Fallback on earlier versions
-    
-        let category : [BMSPushNotificationActionCategory] = options.category
-    
-        let categoryFirst : BMSPushNotificationActionCategory = category.first!
-    
-        let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
-        let pushCategoryIdentifier : String = categoryFirst.identifier
-    
-        let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
-        let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
-    
-        let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
-        replyActionButtonOne.identifier = firstActionButton.identifier
-        replyActionButtonOne.title = firstActionButton.title
-    	replyActionButtonOne.activationMode = firstActionButton.activationMode
-        replyActionButtonOne.isAuthenticationRequired = firstActionButton.authenticationRequired!
-    
-        let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
-        replyActionButtonTwo.identifier = secondActionButton.identifier
-        replyActionButtonTwo.title = secondActionButton.title
-        replyActionButtonTwo.activationMode = secondActionButton.activationMode
-        replyActionButtonTwo.isAuthenticationRequired = secondActionButton.authenticationRequired!
-    
-        let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
-    	responseCategory.identifier = pushCategoryIdentifier
-    
-        let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
-    
-        responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.default)
-        responseCategory.setActions(replyActions, for:UIUserNotificationActionContext.minimal)
-    
-        let categories = NSSet(object: responseCategory)
-    
-        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories as! Set<UIUserNotificationCategory>)
-    
-        UIApplication.shared.registerUserNotificationSettings(settings)
-        UIApplication.shared.registerForRemoteNotifications()
-    
-        }
-    
-    }
-    else{
-        self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
-        print("Error while registration - Client secret is not valid")
-        }
-    }
-    
+        
         /**
          The required intializer for the `BMSPushClient` class.
-     
+         
+         This method will intialize the BMSPushClient with clientSecret based registration and take in notificationOptions.
+         
+         - parameter clientSecret:    The clientSecret of the Push Service
+         - parameter appGUID:    The pushAppGUID of the Push Service
+         - parameter options: The optional push notification options
+         */
+        public func initializeWithAppGUID (appGUID: String, clientSecret: String, options: BMSPushClientOptions) {
+            
+            if validateString(clientSecret) {
+                self.clientSecret = clientSecret
+                self.applicationId = appGUID
+                isInitialized = true;
+              
+                    
+                    let category : [BMSPushNotificationActionCategory] = options.category
+                    
+                    let categoryFirst : BMSPushNotificationActionCategory = category.first!
+                    
+                    let pushNotificationAction : [BMSPushNotificationAction] = categoryFirst.actions
+                    let pushCategoryIdentifier : String = categoryFirst.identifier
+                    
+                    let firstActionButton : BMSPushNotificationAction = pushNotificationAction.first!
+                    let secondActionButton : BMSPushNotificationAction = pushNotificationAction[1]
+                    
+                    let replyActionButtonOne : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+                    replyActionButtonOne.identifier = firstActionButton.identifier
+                    replyActionButtonOne.title = firstActionButton.title
+                    replyActionButtonOne.activationMode = firstActionButton.activationMode
+                    replyActionButtonOne.authenticationRequired = firstActionButton.authenticationRequired!
+                    
+                    let replyActionButtonTwo : UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+                    replyActionButtonTwo.identifier = secondActionButton.identifier
+                    replyActionButtonTwo.title = secondActionButton.title
+                    replyActionButtonTwo.activationMode = secondActionButton.activationMode
+                    replyActionButtonTwo.authenticationRequired = secondActionButton.authenticationRequired!
+                    
+                    let responseCategory : UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
+                    responseCategory.identifier = pushCategoryIdentifier
+                    
+                    let replyActions: [UIUserNotificationAction] = [replyActionButtonOne, replyActionButtonTwo]
+                    
+                    responseCategory.setActions(replyActions, forContext:UIUserNotificationActionContext.Default)
+                    responseCategory.setActions(replyActions, forContext:UIUserNotificationActionContext.Minimal)
+                    
+                    let categories = NSSet(object: responseCategory)
+                
+                let settings = UIUserNotificationSettings(forTypes: [.Alert,.Badge,.Sound], categories: categories as? Set<UIUserNotificationCategory>)
+                    
+                    UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+                    UIApplication.sharedApplication().registerForRemoteNotifications()
+                    
+                
+            }
+            else{
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
+                print("Error while registration - Client secret is not valid")
+            }
+        }
+        
+        /**
+         The required intializer for the `BMSPushClient` class.
+         
          This method will intialize the BMSPushClient.
-     
+         
          - parameter appGUID:    The pushAppGUID of the Push Service
          */
         @available(*, deprecated, message="This method was deprecated , please use initializeWithAppGUID(appGUID:_  clientSecret:_ )")
@@ -1164,19 +1126,19 @@ import BMSCore
             self.applicationId = appGUID;
             isInitialized = true;
         }
-    
-    
+        
+        
         // MARK: Methods (Public)
-    
+        
         //TODO: New method of device registraion with UsrId
-    
+        
         /**
-     
+         
          This Methode used to register the client device to the Bluemix Push service. This is the normal registration, without userId.
-     
+         
          Call this methode after successfully registering for remote push notification in the Apple Push
          Notification Service .
-     
+         
          - Parameter deviceToken: This is the response we get from the push registartion in APNS.
          - Parameter WithUserId: This is the userId value.
          - Parameter completionHandler: The closure that will be called when this request finishes. The response will contain response (String), StatusCode (Int) and error (string).
@@ -1214,7 +1176,7 @@ import BMSCore
                     
                     // MARK: FIrst Action, checking for previuos registration
                     
-                     getRequest.send(completionHandler: { (response, error) -> Void in
+                    getRequest.send(completionHandler: { (response, error) -> Void in
                         
                         if response?.statusCode != nil {
                             
@@ -1230,7 +1192,8 @@ import BMSCore
                                 let headers = urlBuilder.addHeader()
                                 let method =  HttpMethod.POST
                                 
-                                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .UseProtocolCachePolicy)
+                               // let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                 
                                 let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                                 
@@ -1283,8 +1246,9 @@ import BMSCore
                                     let headers = urlBuilder.addHeader()
                                     
                                     let method =  HttpMethod.PUT
-                                    
-                                    let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                    let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .UseProtocolCachePolicy)
+
+                                   // let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                     
                                     let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                                     
@@ -1369,7 +1333,7 @@ import BMSCore
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                 let headers = urlBuilder.addHeader()
-              
+                
                 let method =  HttpMethod.GET
                 
                 self.sendAnalyticsData(LogLevel.debug, logStringData: "Verifying previous device registration.")
@@ -1377,7 +1341,7 @@ import BMSCore
                 
                 // MARK: FIrst Action, checking for previuos registration
                 
-                 getRequest.send(completionHandler: { (response, error)  -> Void in
+                getRequest.send(completionHandler: { (response, error)  -> Void in
                     
                     if response?.statusCode != nil {
                         
@@ -1393,7 +1357,9 @@ import BMSCore
                             let headers = urlBuilder.addHeader()
                             let method =  HttpMethod.POST
                             
-                            let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                            let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .UseProtocolCachePolicy)
+
+                            //let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                             
                             let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\"}".dataUsingEncoding(NSUTF8StringEncoding)
                             
@@ -1446,7 +1412,9 @@ import BMSCore
                                 
                                 let method =  HttpMethod.PUT
                                 
-                                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .UseProtocolCachePolicy)
+
+                               // let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                                 
                                 
                                 let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\"}".dataUsingEncoding(NSUTF8StringEncoding)
@@ -1563,7 +1531,9 @@ import BMSCore
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .UseProtocolCachePolicy)
+
+                //let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                 
                 let mappedArray = tagsArray.flatMap{"\($0)"}.description;
                 
@@ -1623,7 +1593,7 @@ import BMSCore
             let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
             
             let headers = urlBuilder.addHeader()
-           
+            
             let method =  HttpMethod.GET
             
             let getRequest = Request(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
@@ -1678,14 +1648,16 @@ import BMSCore
                 
                 let method =  HttpMethod.POST
                 
-                let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
+                let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .UseProtocolCachePolicy)
+
+                //let getRequest = BaseRequest(url: resourceURL, headers: headers, queryParameters: nil, method: method, timeout: 60)
                 
                 let data1 = tagsArray.flatMap{"\($0)"}.description;
                 
                 let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(data1), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".dataUsingEncoding(NSUTF8StringEncoding)
                 
                 getRequest.send(requestBody: data, completionHandler: { (response, error) -> Void in
-
+                    
                     
                     if response?.statusCode != nil {
                         
@@ -1756,7 +1728,7 @@ import BMSCore
                 }
             })
         }
-    
+        
         public func sendMessageDeliveryStatus (messageId:String, completionHandler: (response:String?, statusCode:Int?, error:String) -> Void) {
             
             self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
@@ -1812,23 +1784,23 @@ import BMSCore
                 print("Failed to update the message status.  The response is: Status should be either SEEN or OPEN")
             }
         }
-    
+        
         // MARK: Methods (Internal)
-    
+        
         //Begin Logger implementation
-    
+        
         // Setting Log info
         internal func sendAnalyticsData (logType:LogLevel, logStringData:String){
             var devId = String()
             let authManager  = BMSClient.sharedInstance.authorizationManager
             devId = authManager.deviceIdentity.ID!
             let testLogger = Logger.logger(name:devId)
-    
+            
             if (logType == LogLevel.debug){
-    
+                
                 Logger.logLevelFilter = LogLevel.debug
                 testLogger.debug(message: logStringData)
-    
+                
             } else if (logType == LogLevel.error){
                 
                 Logger.logLevelFilter = LogLevel.error

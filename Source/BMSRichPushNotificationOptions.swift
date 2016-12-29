@@ -12,7 +12,7 @@ import Foundation
 #if swift(>=3.0)
     import UserNotifications
     import UserNotificationsUI
-#endif
+
 
 @available(iOS 10.0, *)
 open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
@@ -44,3 +44,4 @@ open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
         }
     }
 }
+#endif
