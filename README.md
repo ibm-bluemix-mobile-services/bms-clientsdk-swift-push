@@ -513,6 +513,29 @@ func application(application: UIApplication, didReceiveRemoteNotification userIn
 ```
 >**Note**: To get the message status when the app is in background you have to send either <strong>MIXED</strong> or <strong>SILENT</strong> push notifications. If the app is force quite you will not get any message delivery status.
 
+###Open Url by clicking push notifications.
+
+To open a url by clicking the push notification you can send a `url` firld inside the payload.
+```
+{
+  "message": {
+    "alert": "Notification alert message",
+    "url":"https://console.ng.bliuemix.net"
+  }
+}
+```
+
+In your applications, go to `AppDelegate` file and inside `didFinishLaunchingWithOptions` check the value for `url`
+
+```
+let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
+        
+if remoteNotif != nil {
+    let urlField = (remoteNotif?.value(forKey: "url") as! String)
+    application.open(URL(string: urlField)!, options: [:], completionHandler: nil)
+}
+```
+
 ###Learning More
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
 
