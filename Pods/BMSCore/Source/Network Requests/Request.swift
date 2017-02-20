@@ -22,7 +22,7 @@
 /**
     Sends HTTP network requests.
 
-    For more information on `Request`, see the documentation for `BaseRequest`.
+    `Request` is functionally equivalent to `BaseRequest`. For more information on how to use `Request`, see the documentation for `BaseRequest`.
 */
 open class Request: BaseRequest {
     
@@ -47,7 +47,7 @@ open class Request: BaseRequest {
 /**
     Sends HTTP network requests.
 
-    For more information on `Request`, see the documentation for `BaseRequest`.
+    `Request` is functionally equivalent to `BaseRequest`. For more information on how to use `Request`, see the documentation for `BaseRequest`.
 */
 public class Request: BaseRequest {
 
