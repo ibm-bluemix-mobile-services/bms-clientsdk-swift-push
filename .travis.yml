@@ -1,15 +1,32 @@
 language: objective-c
+
 matrix:
   include:
     - osx_image: xcode7.3
-    - osx_image: xcode8
+    - osx_image: xcode8.2
+
+before_install:
+  - rvm install 2.4.0
+
 install:
-  - gem install cocoapods --pre
-before_script:
-  - rm -rf ~/Library/Developer/Xcode/DerivedData
+  - gem install slather
+  - gem install cocoapods
+
 script:
   - pod update
   - pod lib lint --allow-warnings
   - carthage update
-  - xcodebuild -workspace BMSPush.xcworkspace -scheme 'BMSPush' clean build CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
-  - xcodebuild -workspace BMSPush.xcworkspace test -scheme 'BMSPushTests' -destination 'platform=iOS Simulator,name=iPhone 6s'
+  - xcodebuild clean build -workspace BMSPush.xcworkspace -scheme BMSPush CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
+  # For Xcode 7, test with iOS 8.1
+  - if [[ "${TRAVIS_JOB_NUMBER}" = *".1"* ]]; then
+      xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=8.1';
+    fi
+  # For Xcode 8, test with iOS 10.1
+  - if [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
+      xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' -enableCodeCoverage YES;
+    fi
+
+after_success:
+  - if [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
+      slather;
+    fi
