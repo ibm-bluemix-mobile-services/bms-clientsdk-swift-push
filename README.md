@@ -536,12 +536,13 @@ To send `DeviceId` please use `BMSPushClientOptions` class method,
 let notifOptions = BMSPushClientOptions(categoryName: [.....], withDeviceId: "Your DeviceId")
 
 ```
->**Note**: Remember to keep it <strong>unique</strong> for each device.
+>**Note**: Remember to keep custom DeviceId <strong>unique</strong> for each device.
 
 ### Samples & videos
 
-Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
-Video Tutorials Available here - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
+* Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
+
+* Video Tutorials Available here - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
 
 ### Learning More
 
