@@ -144,9 +144,7 @@ internal class BMSPushUtils: NSObject {
     
     class func sendLoggerData () {
         
-        var devId = String()
-        let authManager  = BMSClient.sharedInstance.authorizationManager
-        devId = authManager.deviceIdentity.ID!
+        let devId = BMSPushClient.sharedInstance.getDeviceID()
         let testLogger = Logger.logger(name: devId)
         Logger.logLevelFilter = LogLevel.debug
         testLogger.debug(message: loggerMessage)

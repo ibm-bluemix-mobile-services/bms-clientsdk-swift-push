@@ -112,6 +112,8 @@ public class BMSPushClient: NSObject {
             self.clientSecret = clientSecret
             self.applicationId = appGUID
             isInitialized = true;
+            self.bluemixDeviceId = ""
+
             
             if #available(iOS 10.0, *) {
                                     
@@ -910,7 +912,7 @@ public class BMSPushClient: NSObject {
     
     internal func getDeviceID() -> String{
         var devId = String()
-        if (self.bluemixDeviceId?.isEmpty)! {
+        if ((self.bluemixDeviceId == nil) || (self.bluemixDeviceId?.isEmpty)!) {
             // Generate new ID
             let authManager  = BMSClient.sharedInstance.authorizationManager
             devId = authManager.deviceIdentity.ID!
@@ -1798,7 +1800,7 @@ public class BMSPushClient: NSObject {
     
     internal func getDeviceID() -> String{
         var devId = String()
-        if (self.bluemixDeviceId?.isEmpty)! {
+        if ((self.bluemixDeviceId == nil) || (self.bluemixDeviceId?.isEmpty)!) {
             // Generate new ID
             let authManager  = BMSClient.sharedInstance.authorizationManager
             devId = authManager.deviceIdentity.ID!
