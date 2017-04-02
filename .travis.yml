@@ -25,7 +25,11 @@ script:
   - if [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
       xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' -enableCodeCoverage YES;
     fi
-
+  # When merging or pushing to the master branch, release a new version and publish the API documentation
+  - if [ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ "${TRAVIS_BRANCH}" = "master" ] && [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
+      bash scripts/release.sh;
+      bash scripts/publish-docs.sh;
+    fi
 after_success:
   - if [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
       slather;
