@@ -156,7 +156,10 @@ import BMSCore
         private func convertStringToDictionary(text: String) -> [String:AnyObject]? {
             if let data = text.data(using: String.Encoding.utf8) {
                 
-                return try! JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                guard let result = try? JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject] else {
+                    return nil
+                }
+                return result
             }
             return nil
         }
