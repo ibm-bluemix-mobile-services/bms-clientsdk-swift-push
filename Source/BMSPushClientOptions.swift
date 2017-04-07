@@ -34,6 +34,14 @@ public class BMSPushClientOptions : NSObject {
     // MARK: Initializers
     
     /**
+     Initialze Method .
+     */
+    public override init() {
+        self.category = []
+        self.deviceId = ""
+    }
+    
+    /**
      Initialze Method -  Deprecated.
      
      - parameter categoryName: An array of `BMSPushNotificationActionCategory`.
@@ -45,14 +53,22 @@ public class BMSPushClientOptions : NSObject {
     }
     
     /**
-     Initialze Method
+     set DeviceId Method
+     
+     - parameter withDeviceId:  (Optional) The DeviceId for applications.
+     */
+    public func setDeviceId(deviceId:String){
+        self.deviceId = deviceId
+        
+    }
+    
+    /**
+     set Interactive Notification Categories Method
      
      - parameter categoryName: An array of `BMSPushNotificationActionCategory`.
-     - parameter withDeviceId:            (Optional) The DeviceId for applications.
      */
-    public init(categoryName category: [BMSPushNotificationActionCategory], withDeviceId:String) {
+    public func  setInteractiveNotificationCategories(categoryName category: [BMSPushNotificationActionCategory]){
         self.category = category
-        self.deviceId = withDeviceId
     }
 }
 
@@ -75,6 +91,13 @@ public class BMSPushClientOptions : NSObject {
     // MARK: Initializers
 
     /**
+     Initialze Method.
+     */
+    public init () {
+        self.category = []
+        self.deviceId = ""
+    }
+    /**
      Initialze Method -  Deprecated.
      - parameter categoryName: An array of `BMSPushNotificationActionCategory`.
      */
@@ -85,14 +108,21 @@ public class BMSPushClientOptions : NSObject {
     }
 
     /**
-     Initialze Method.
+     set DeviceId Method
+     
+     - parameter withDeviceId:  (Optional) The DeviceId for applications.
+     */
+    public func setDeviceId(deviceId:String){
+        self.deviceId = deviceId
+    }
+    
+    /**
+     set Interactive Notification Categories Method
      
      - parameter categoryName: An array of `BMSPushNotificationActionCategory`.
-     - parameter withDeviceId:            (Optional) The DeviceId for applications.
      */
-    public init(categoryName category: [BMSPushNotificationActionCategory], withDeviceId:String) {
+    public func  setInteractiveNotificationCategories(categoryName category: [BMSPushNotificationActionCategory]){
         self.category = category
-        self.deviceId = withDeviceId
     }
 }
 #endif
