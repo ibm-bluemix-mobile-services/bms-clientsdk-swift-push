@@ -644,14 +644,14 @@ public class BMSPushClient: NSObject {
                         
                     }else{
                         self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error code is: \(status) and error is: \(response?.responseText)")
-                        completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,"Error while retrieving available tags - Error code is: \(status) and error is: \(response?.responseText)")
+                        completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,"Error while subscribing to tags - Error code is: \(status) and error is: \(response?.responseText)")
                     }
                     
                 } else if let responseError = error {
                     
 
                     self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error is: \(responseError.localizedDescription)")
-                    completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,"Error while retrieving available tags - Error is: \(responseError.localizedDescription)")
+                    completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,"Error while subscribing to tags - Error is: \(responseError.localizedDescription)")
                 }
             })
             
@@ -761,7 +761,7 @@ public class BMSPushClient: NSObject {
                     let unSubscriptionResponse = NSMutableDictionary()
                     
                     self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unsubscribing from tags - Error is: \(responseError.localizedDescription)")
-                    completionHandler(unSubscriptionResponse, IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,"Error while retrieving available tags - Error is: \(responseError.localizedDescription)")
+                    completionHandler(unSubscriptionResponse, IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,"Error while unsubscribing from tags - Error is: \(responseError.localizedDescription)")
                 }
             })
         } else {
@@ -1519,12 +1519,12 @@ public class BMSPushClient: NSObject {
                         completionHandler(response: subscriptionResponse, statusCode: status, error: "")
                     }else{
                         self.sendAnalyticsData(LogLevel.error, logStringData: "Error while subscribing to tags - Error code is: \(status) and error is: \(response?.responseText)")
-                        completionHandler(response: [:], statusCode: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,error: "Error while retrieving available tags - Error code is: \(status) and error is: \(response?.responseText)")
+                        completionHandler(response: [:], statusCode: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,error: "Error while subscribing to tags - Error code is: \(status) and error is: \(response?.responseText)")
                     }
                 } else if let responseError = error {
                     
                     self.sendAnalyticsData(LogLevel.error, logStringData: "Error while subscribing to tags - Error is: \(responseError.description)")
-                    completionHandler(response: [:], statusCode: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
+                    completionHandler(response: [:], statusCode: IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue,error: "Error while subscribing to tags - Error is: \(responseError.description)")
                     
                 }
             })
@@ -1636,7 +1636,7 @@ public class BMSPushClient: NSObject {
                     let unSubscriptionResponse = NSMutableDictionary()
                     
                     self.sendAnalyticsData(LogLevel.error, logStringData: "Error while unsubscribing from tags - Error is: \(responseError.description)")
-                    completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,error: "Error while retrieving available tags - Error is: \(responseError.description)")
+                    completionHandler(response: unSubscriptionResponse, statusCode: IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue,error: "Error while unsubscribing from tags - Error is: \(responseError.description)")
                 }
             })
         } else {
