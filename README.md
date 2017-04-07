@@ -390,7 +390,8 @@ let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle:
 
 let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
 
-let notificationOptions = BMSPushClientOptions(categoryName: [category])
+let notificationOptions = BMSPushClientOptions()
+notifOptions.setInteractiveNotificationCategories(categoryName: [category])
 
 let push = BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE", options: notificationOptions)
 
@@ -533,8 +534,8 @@ if remoteNotif != nil {
 To send `DeviceId` please use `BMSPushClientOptions` class method,
 
 ```
-let notifOptions = BMSPushClientOptions(categoryName: [.....], withDeviceId: "Your DeviceId")
-
+let notifOptions = BMSPushClientOptions()
+notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
 ```
 >**Note**: Remember to keep custom DeviceId <strong>unique</strong> for each device.
 
