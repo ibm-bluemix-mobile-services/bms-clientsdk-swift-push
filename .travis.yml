@@ -11,6 +11,7 @@ before_install:
 install:
   - gem install slather
   - gem install cocoapods
+  - gem install jazzy
 
 script:
   - pod update
