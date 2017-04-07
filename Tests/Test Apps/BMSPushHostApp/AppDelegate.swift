@@ -52,9 +52,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
             let categorySecond = BMSPushNotificationActionCategory(identifierName: "category1", buttonActions: [actionOne, actionTwo])
             let categoryThird = BMSPushNotificationActionCategory(identifierName: "category2", buttonActions: [actionOne, actionTwo,actionThree,actionFour,actionFive])
-
-            let notifOptions = BMSPushClientOptions(categoryName: [category,categorySecond,categoryThird], withDeviceId: "YOUR_DEVICE_ID")
             
+            let notifOptions = BMSPushClientOptions()
+            notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
+            notifOptions.setInteractiveNotificationCategories(categoryName: [category,categorySecond,categoryThird])
             push.initializeWithAppGUID(appGUID: "YOUR_APP_GUID", clientSecret:"YOUR_APP_CLIENT_SECRET", options: notifOptions)
             
         }
