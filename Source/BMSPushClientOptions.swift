@@ -93,7 +93,7 @@ public class BMSPushClientOptions : NSObject {
     /**
      Initialze Method.
      */
-    public init () {
+    public override init () {
         self.category = []
         self.deviceId = ""
     }
@@ -112,7 +112,7 @@ public class BMSPushClientOptions : NSObject {
      
      - parameter withDeviceId:  (Optional) The DeviceId for applications.
      */
-    public func setDeviceId(deviceId:String){
+    public func setDeviceIdValue(deviceId:String){
         self.deviceId = deviceId
     }
     
