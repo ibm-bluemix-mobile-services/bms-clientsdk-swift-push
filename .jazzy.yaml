@@ -1,0 +1,21 @@
+module: BMSPush
+author: IBM
+github_url: https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push
+
+skip_undocumented: true
+clean: true
+
+custom_categories:
+  - name: Client
+    children:
+    - BMSPushClient
+
+  - name: Options
+    children:
+    - BMSPushClientOptions
+    - BMSPushNotificationAction
+    - BMSPushNotificationActionCategory
+
+  - name: iOS 10 Rich Push
+    children:
+    - BMSPushRichPushNotificationOptions

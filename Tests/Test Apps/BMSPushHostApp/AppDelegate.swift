@@ -43,9 +43,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
             
-            let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+            let actionThree = BMSPushNotificationAction(identifierName: "Third", buttonTitle: "Delete", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
             
-            let notifOptions = BMSPushClientOptions(categoryName: [category])
+            let actionFour = BMSPushNotificationAction(identifierName: "Fourth", buttonTitle: "View", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+            let actionFive = BMSPushNotificationAction(identifierName: "Fifth", buttonTitle: "Later", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+            let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+            let categorySecond = BMSPushNotificationActionCategory(identifierName: "category1", buttonActions: [actionOne, actionTwo])
+            let categoryThird = BMSPushNotificationActionCategory(identifierName: "category2", buttonActions: [actionOne, actionTwo,actionThree,actionFour,actionFive])
+            
+            let notifOptions = BMSPushClientOptions()
+            notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
+            notifOptions.setInteractiveNotificationCategories(categoryName: [category,categorySecond,categoryThird])
             push.initializeWithAppGUID(appGUID: "YOUR_APP_GUID", clientSecret:"YOUR_APP_CLIENT_SECRET", options: notifOptions)
             
         }
