@@ -382,7 +382,7 @@ public class BMSPushClient: NSObject {
                         else{
                             
                             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                            completionHandler(responseText, status, "")
+                            completionHandler("", status, responseText)
                         }
                     }
                     else if let responseError = error {
@@ -539,7 +539,7 @@ public class BMSPushClient: NSObject {
                     }else{
                         
                         self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                        completionHandler(responseText, status, "")
+                        completionHandler("", status, responseText)
                     }
                 }
                 else if let responseError = error {
@@ -1247,7 +1247,7 @@ public class BMSPushClient: NSObject {
                         }else{
                             
                             self.sendAnalyticsData(LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                            completionHandler(response: responseText, statusCode: status, error: "")
+                            completionHandler(response: "", statusCode: status, error: responseText)
                         }
                         
                     }
@@ -1411,7 +1411,7 @@ public class BMSPushClient: NSObject {
                     }else{
                         
                         self.sendAnalyticsData(LogLevel.error, logStringData: "Error while verifying previous registration - Error is: \(error!.localizedDescription)")
-                        completionHandler(response: responseText, statusCode: status, error: "")
+                        completionHandler(response:"" , statusCode: status, error: responseText)
                     }
                     
                 }
