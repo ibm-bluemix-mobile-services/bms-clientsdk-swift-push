@@ -39,4 +39,11 @@ class BMSPushUtilsTest: XCTestCase {
         BMSPushUtils.sendLoggerData()
     }
     
+    func testGetNotifReg () {
+        
+        if (BMSPushUtils.getPushSettingValue()){
+            print("Success")
+        }
+    }
+    
 }

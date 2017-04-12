@@ -24,9 +24,52 @@ class BMSPushUrlBuilderTest: XCTestCase {
         let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
      
         let headers = urlBuilder.addHeader()
-        if headers.isEmpty {
-            XCTFail("Empty Header")
-        } else{
+        if !(headers.isEmpty) {
+            print("Success!!")
+        }
+    }
+    
+    func testAddHeader1() {
+    
+        BMSClient.sharedInstance.initialize(bluemixRegion: ".stage1.ng.bluemix.net")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        
+        let headers = urlBuilder.addHeader()
+        if !(headers.isEmpty) {
+            print("Success!!")
+        }
+    }
+    
+    func testAddHeader2() {
+        
+        BMSClient.sharedInstance.initialize(bluemixRegion: ".stage1-dev.ng.bluemix.net")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        
+        let headers = urlBuilder.addHeader()
+        if !(headers.isEmpty) {
+            print("Success!!")
+        }
+    }
+    
+    func testAddHeader3() {
+        
+        BMSClient.sharedInstance.initialize(bluemixRegion: ".stage1-test.ng.bluemix.net")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        
+        let headers = urlBuilder.addHeader()
+        if !(headers.isEmpty) {
+            print("Success!!")
+        }
+    }
+    
+    func testAddHeader4() {
+        
+        BMSPushClient.overrideServerHost = "192.0.0.2:9080"
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        
+        let headers = urlBuilder.addHeader()
+        if !(headers.isEmpty) {
             print("Success!!")
         }
     }
@@ -40,9 +83,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         #else
             let subDeviceURL = urlBuilder.getSubscribedDevicesUrl("testDevice")
         #endif
-        if subDeviceURL.isEmpty {
-            XCTFail("Empty subDeviceURL")
-        } else{
+        if !(subDeviceURL.isEmpty) {
             print("Success!!")
         }
     }
@@ -52,9 +93,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
      
         let getDeviceURL = urlBuilder.getDevicesUrl()
-        if getDeviceURL.isEmpty {
-            XCTFail("Empty DeviceURL")
-        } else{
+        if !(getDeviceURL.isEmpty) {
             print("Success!!")
         }
     }
@@ -64,9 +103,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
      
         let getTagsUrl = urlBuilder.getTagsUrl()
-        if getTagsUrl.isEmpty {
-            XCTFail("Empty TagsUrl")
-        } else{
+        if !(getTagsUrl.isEmpty) {
             print("Success!!")
         }
     }
@@ -76,9 +113,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
      
         let getSubscriptionsUrl = urlBuilder.getSubscriptionsUrl()
-        if getSubscriptionsUrl.isEmpty {
-            XCTFail("Empty SubscriptionsUrl")
-        } else{
+        if !(getSubscriptionsUrl.isEmpty) {
             print("Success!!")
         }
     }
@@ -91,9 +126,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         #else
             let getAvailableSubscriptionsUrl = urlBuilder.getAvailableSubscriptionsUrl("testDevice")
         #endif
-        if getAvailableSubscriptionsUrl.isEmpty {
-            XCTFail("Empty AvailableSubscriptionsUrl")
-        } else{
+        if !(getAvailableSubscriptionsUrl.isEmpty) {
             print("Success!!")
         }
     }
@@ -103,9 +136,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
      
         let getUnSubscribetagsUrl = urlBuilder.getUnSubscribetagsUrl()
-        if getUnSubscribetagsUrl.isEmpty {
-            XCTFail("Empty UnSubscribetagsUrl")
-        } else{
+        if !(getUnSubscribetagsUrl.isEmpty) {
             print("Success!!")
         }
     }
@@ -118,9 +149,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         #else
             let getUnregisterUrl = urlBuilder.getUnregisterUrl("testDevice")
         #endif
-        if getUnregisterUrl.isEmpty {
-            XCTFail("Empty UnregisterUrl")
-        } else{
+        if !(getUnregisterUrl.isEmpty) {
             print("Success!!")
         }
     }
@@ -133,9 +162,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         #else
             let getSendMessageDeliveryStatus = urlBuilder.getSendMessageDeliveryStatus("testMessageId")
         #endif
-        if getSendMessageDeliveryStatus.isEmpty {
-            XCTFail("Empty SendMessageDeliveryStatus")
-        } else{
+        if !(getSendMessageDeliveryStatus.isEmpty) {
             print("Success!!")
         }
     }

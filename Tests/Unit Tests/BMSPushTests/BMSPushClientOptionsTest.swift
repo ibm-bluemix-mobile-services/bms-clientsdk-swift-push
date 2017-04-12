@@ -54,4 +54,27 @@ class BMSPushClientOptionsTest: XCTestCase {
         XCTAssertEqual(notifOptions2.deviceId, "")
     }
     
+    func testInit2(){
+        let notifOptions = BMSPushClientOptions(categoryName: [])
+        
+        XCTAssertEqual(notifOptions.category, [])
+        
+        
+        #if swift(>=3.0)
+            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            
+            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+        #else
+            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background)
+            
+            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background)
+        #endif
+        
+        
+        let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
+        
+        let notifOptions2 = BMSPushClientOptions(categoryName: [category])
+        XCTAssertEqual(notifOptions2.category, [category])
+    }
+    
 }
