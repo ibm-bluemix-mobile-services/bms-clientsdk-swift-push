@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1427F0481E9E1AB0008F2075 /* BMSPushClientOptionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1427F0441E9E1AB0008F2075 /* BMSPushClientOptionsTest.swift */; };
+		1427F0491E9E1AB0008F2075 /* BMSPushNotificationActionCategoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1427F0451E9E1AB0008F2075 /* BMSPushNotificationActionCategoryTest.swift */; };
+		1427F04A1E9E1AB0008F2075 /* BMSPushNotificationActionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1427F0461E9E1AB0008F2075 /* BMSPushNotificationActionTest.swift */; };
+		1427F04B1E9E1AB0008F2075 /* BMSPushUrlBuilderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1427F0471E9E1AB0008F2075 /* BMSPushUrlBuilderTest.swift */; };
 		561BFE421C6C856900CDB375 /* BMSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3E1C6C856900CDB375 /* BMSConstants.swift */; };
 		561BFE431C6C856900CDB375 /* BMSPushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE3F1C6C856900CDB375 /* BMSPushClient.swift */; };
 		561BFE441C6C856900CDB375 /* BMSPushUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561BFE401C6C856900CDB375 /* BMSPushUtils.swift */; };
@@ -93,6 +97,10 @@
 
 /* Begin PBXFileReference section */
 		0BA0402EB2FC54DADFEE427D /* Pods-BMSPush.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BMSPush.release.xcconfig"; path = "Pods/Target Support Files/Pods-BMSPush/Pods-BMSPush.release.xcconfig"; sourceTree = "<group>"; };
+		1427F0441E9E1AB0008F2075 /* BMSPushClientOptionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushClientOptionsTest.swift; sourceTree = "<group>"; };
+		1427F0451E9E1AB0008F2075 /* BMSPushNotificationActionCategoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationActionCategoryTest.swift; sourceTree = "<group>"; };
+		1427F0461E9E1AB0008F2075 /* BMSPushNotificationActionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushNotificationActionTest.swift; sourceTree = "<group>"; };
+		1427F0471E9E1AB0008F2075 /* BMSPushUrlBuilderTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BMSPushUrlBuilderTest.swift; sourceTree = "<group>"; };
 		230A0DE9568AD76D64902066 /* Pods-BMSPushTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BMSPushTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BMSPushTests/Pods-BMSPushTests.debug.xcconfig"; sourceTree = "<group>"; };
 		297A1D876BA93AC9F8940AFC /* Pods-BMSPushTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BMSPushTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BMSPushTests/Pods-BMSPushTests.release.xcconfig"; sourceTree = "<group>"; };
 		3CFEB34B0C3A9EC7892C1C24 /* Pods-BMSPushHostApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BMSPushHostApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-BMSPushHostApp/Pods-BMSPushHostApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -246,6 +254,10 @@
 		5688676E1CA688420049CD8C /* BMSPushTests */ = {
 			isa = PBXGroup;
 			children = (
+				1427F0441E9E1AB0008F2075 /* BMSPushClientOptionsTest.swift */,
+				1427F0451E9E1AB0008F2075 /* BMSPushNotificationActionCategoryTest.swift */,
+				1427F0461E9E1AB0008F2075 /* BMSPushNotificationActionTest.swift */,
+				1427F0471E9E1AB0008F2075 /* BMSPushUrlBuilderTest.swift */,
 				5688676F1CA688420049CD8C /* BMSPushTests.swift */,
 				568867711CA688420049CD8C /* Info.plist */,
 				568867781CA6889E0049CD8C /* BMSPushUtilsTest.swift */,
@@ -676,7 +688,11 @@
 			files = (
 				568867791CA6889E0049CD8C /* BMSPushUtilsTest.swift in Sources */,
 				5688677B1CA688BC0049CD8C /* BMSResponseTests.swift in Sources */,
+				1427F0481E9E1AB0008F2075 /* BMSPushClientOptionsTest.swift in Sources */,
+				1427F04B1E9E1AB0008F2075 /* BMSPushUrlBuilderTest.swift in Sources */,
+				1427F04A1E9E1AB0008F2075 /* BMSPushNotificationActionTest.swift in Sources */,
 				568867701CA688420049CD8C /* BMSPushTests.swift in Sources */,
+				1427F0491E9E1AB0008F2075 /* BMSPushNotificationActionCategoryTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

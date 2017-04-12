@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = 'BMSPush'
-  s.version      = '3.2.0'
+  s.version      = '3.2.1'
   s.summary      = 'Swift client side Push SDK for IBM Bluemix Push notifications services'
   s.homepage     = 'https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push'
   s.license      = 'Apache License, Version 2.0'
