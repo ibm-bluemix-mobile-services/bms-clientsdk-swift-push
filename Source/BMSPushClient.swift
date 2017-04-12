@@ -634,7 +634,7 @@ public class BMSPushClient: NSObject {
                 if response?.statusCode != nil {
                     
                     let status = response?.statusCode ?? 0
-                    if (status == 201){
+                    if (status == 207){
                         let responseText = response?.responseText ?? ""
                         
                         self.sendAnalyticsData(logType: LogLevel.info, logStringData: "Successfully subscribed to tags - Response is: \(responseText)")
@@ -1510,7 +1510,7 @@ public class BMSPushClient: NSObject {
                 if response?.statusCode != nil {
                     
                     let status = response?.statusCode ?? 0
-                    if (status == 201){
+                    if (status == 207){
                         let responseText = response?.responseText ?? ""
                         
                         self.sendAnalyticsData(LogLevel.info, logStringData: "Successfully subscribed to tags - Response is: \(responseText)")
