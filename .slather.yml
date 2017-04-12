@@ -4,3 +4,5 @@ workspace: BMSPush.xcworkspace
 scheme: BMSPush
 ignore:
   - Tests/*
+  - Source/BMSRichPushNotificationOptions.swift
+  - Source/BMSPushClient.swift
