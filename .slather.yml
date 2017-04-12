@@ -2,3 +2,5 @@ coverage_service: coveralls
 xcodeproj: BMSPush.xcodeproj
 workspace: BMSPush.xcworkspace
 scheme: BMSPush
+ignore:
+  - Tests/*
