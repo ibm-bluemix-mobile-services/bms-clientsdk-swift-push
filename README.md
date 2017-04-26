@@ -43,7 +43,7 @@ Before starting to configure iOS SDK follow the [Bluemix Push service setup guid
   - [Custom Sound](#custom-sound)
 - [Enable Monitoring](#enable-monitoring)
 - [Open Url by clicking push notifications](#open-url-by-clicking-push-notifications)
-- [Samples & videos](#samples-&-videos)
+- [Samples & videos](#samples--videos)
 
 ## Requirements
 
