@@ -9,7 +9,7 @@ Bluemix Push Notifications iOS SDK
 [![CocoaPods](https://img.shields.io/cocoapods/dt/BMSPush.svg)](https://cocoapods.org/pods/BMSPush)
 
 
-Before starting to configure iOS SDK follow the <a href="https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate" target="_blank">Bluemix Push service setup guide</a>
+Before starting to configure iOS SDK follow the [Bluemix Push service setup guide](https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate)
 
 ## Contents
 
@@ -18,7 +18,7 @@ Before starting to configure iOS SDK follow the <a href="https://console.ng.blue
   - [Cocoapods](#cocoapods)
   - [Carthage](#carthage)
 - [Setup Client Application](setup-client-application)
-  - [Reference the SDK in your code](reference-the-sdk-in-your-code)
+  - [Include the SDK in your code](#include-the-sdk-in-your-code)
   - [Initialize](#initialize)
     - [Initializing the Core SDK](#initializing-the-core-sdk)
     - [Initializing the Push SDK](#initializing-the-push-sdk)
@@ -33,10 +33,14 @@ Before starting to configure iOS SDK follow the <a href="https://console.ng.blue
     - [Retrieve Subscribed tags](#retrieve-subscribed-tags)
     - [Unsubscribing from tags](#unsubscribing-from-tags)
   - [Notification Options](#notification-options)
+    - [Silent Notification](#silent-notification)
     - [Enable Interactive push notifications](#enable-interactive-push-notifications)
     - [Handling Interactive push notifications](#handling-interactive-push-notifications)
     - [Adding custom DeviceId for registration](#ddding-custom-deviceid-for-registration)
   - [Enabling iOS 10 Rich Push notification](#enabling-ios-10-rich-push-notification)
+- [iOS Badge and Custom Notification Sound](#ios-badge-and-custom-notification-sound)
+  - [iOS Badge](#ios-badge)
+  - [Custom Sound](#custom-sound)
 - [Enable Monitoring](#enable-monitoring)
 - [Open Url by clicking push notifications](#open-url-by-clicking-push-notifications)
 - [Samples & videos](#samples-&-videos)
@@ -107,7 +111,7 @@ For apps built with Swift 2.3, use the command `carthage update --toolchain com.
 
  Follow the steps to enable iOS applications to receive push notifications
 
-### Reference the SDK in your code.
+### Include the SDK in your code.
 
  Add the `import` statements in your `.swift` file.
 
@@ -435,6 +439,28 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
 
 ### Notification Options
 
+#### Silent Notification
+
+Silent notifications do not appear on the device screen. These notifications are received by the application in the background, which wakes up the application for up to 30 seconds to perform the specified background task. A user might not be aware of the notification arrival.
+
+To handle the silent push notifications use the `didReceiveRemoteNotification_fetchCompletionHandler` method.
+
+```
+func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+   let contentAPS = userInfo["aps"] as [NSObject : AnyObject]
+   if let contentAvailable = contentAPS["content-available"] as? Int {
+       //silent or mixed push
+       if contentAvailable == 1 {
+           completionHandler(UIBackgroundFetchResult.NewData)
+       } else {
+           completionHandler(UIBackgroundFetchResult.NoData)
+       }
+   } else {
+//Default notification
+       completionHandler(UIBackgroundFetchResult.NoData)
+   }
+}
+```
 #### Enable Interactive push notifications
 
 To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object.  The following is a sample code to enable interactive notifications.
@@ -497,6 +523,16 @@ override func didReceive(_ request: UNNotificationRequest, withContentHandler co
         BMSPushRichPushNotificationOptions.didReceive(request, withContentHandler: contentHandler)
   }
 ```
+
+## iOS Badge and Custom Notification Sound
+
+### iOS Badge
+
+For iOS devices, the number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0.
+
+### Custom Sound
+
+ Enter a string to point to the sound file in your mobile app. In the payload, specify the string name of the sound file to use.
 
 ## Enable Monitoring
 
