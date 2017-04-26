@@ -9,7 +9,7 @@ Bluemix Push Notifications iOS SDK
 [![CocoaPods](https://img.shields.io/cocoapods/dt/BMSPush.svg)](https://cocoapods.org/pods/BMSPush)
 
 
-Before starting to configure iOS SDK follow the [Bluemix Push service setup guide](https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate" target="_blank)
+Before starting to configure iOS SDK follow the <a href="https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate" target="_blank">Bluemix Push service setup guide</a>
 
 ## Contents
 
