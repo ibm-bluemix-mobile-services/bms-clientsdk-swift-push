@@ -27,7 +27,7 @@ The [Bluemix Push Notifications service](https://console.ng.bluemix.net/catalog/
     - [Register With UserId](#register-with-userid)
     - [Unregistering the Device from Push Notification](#unregistering-the-device-from-push-notification)
     - [Unregistering the Device from UserId](#unregistering-the-device-from-userid)
-  - [Push Notification service tags](#bluemix-tags)
+  - [Push Notification service tags](#push-notification-service-tags)
     - [Retrieve Available tags](#retrieve-available-tags)
     - [Subscribe to Available tags](#subscribe-to-available-tags)
     - [Retrieve Subscribed tags](#retrieve-subscribed-tags)
