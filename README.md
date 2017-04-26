@@ -85,7 +85,8 @@ Before running the `pod install` command, make sure to use Cocoapods version [1.
 For apps built with Swift 3.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore) do not convert BMSPush, BMSCore or BMSAnalyticsAPI
 
 This will installs your dependencies and creates a new Xcode workspace.
-***Note:*** Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
+
+>**Note**: Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
 
 ```
 MyApp.xcworkspace
@@ -133,7 +134,7 @@ BMSClient.sharedInstance.initialize(bluemixRegion: "Location where your app Host
 
 - Specifies the location where the application is hosted. You can use following values
   * `BMSClient.Region.usSouth`
-  * `BMSClient.Region.unitedKingdom` 
+  * `BMSClient.Region.unitedKingdom`
   * `BMSClient.Region.sydney`
 
 #### Initializing the Push SDK
