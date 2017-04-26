@@ -86,11 +86,8 @@ For apps built with Swift 3.0, you may receive a prompt saying "Convert to Curre
 
 This will installs your dependencies and creates a new Xcode workspace.
 
->**Note**: Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
+>**Note**: Ensure that you always open the new Xcode workspace, instead of the original Xcode project file: <strong>MyApp.xcworkspace</strong>.
 
-```
-MyApp.xcworkspace
-```
 
 ### Carthage
 To install BMSPush using Carthage, add it to your Cartfile:
