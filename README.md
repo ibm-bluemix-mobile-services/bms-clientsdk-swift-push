@@ -17,7 +17,7 @@ Before starting to configure iOS SDK follow the [Bluemix Push service setup guid
 - [Installation](#installation)
   - [Cocoapods](#cocoapods)
   - [Carthage](#carthage)
-- [Setup Client Application](setup-client-application)
+- [Setup Client Application](#setup-client-application)
   - [Include the SDK in your code](#include-the-sdk-in-your-code)
   - [Initialize](#initialize)
     - [Initializing the Core SDK](#initializing-the-core-sdk)
