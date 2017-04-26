@@ -9,7 +9,7 @@ Bluemix Push Notifications iOS SDK
 [![CocoaPods](https://img.shields.io/cocoapods/dt/BMSPush.svg)](https://cocoapods.org/pods/BMSPush)
 
 
-Before starting to configure iOS SDK follow the [Bluemix Push service setup guide](https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate)
+The [Bluemix Push Notifications service](https://console.ng.bluemix.net/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The SDK enables iOS apps to receive push notifications sent from the service. Before starting to configure iOS SDK follow the [Bluemix Push service setup guide](https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate)
 
 ## Contents
 
@@ -116,8 +116,8 @@ For apps built with Swift 2.3, use the command `carthage update --toolchain com.
  Add the `import` statements in your `.swift` file.
 
 ```
-import BMSPush
 import BMSCore
+import BMSPush
 ```
 ### Initialize
 
@@ -126,16 +126,7 @@ import BMSCore
   Initialize the `BMSCore` SDK following way,
 
 ```
-let myBMSClient = BMSClient.sharedInstance
-
-//Swift3
-
-myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
-
-//Swift 2.3 or Older
-
-myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
-
+BMSClient.sharedInstance.initialize(bluemixRegion: "Location where your app Hosted")
 ```
 
 ##### bluemixRegion
@@ -147,16 +138,7 @@ myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
  Initialize the `BMSPushClient`  following way,
 
 ```
-let push =  BMSPushClient.sharedInstance
-
-//Swift 3
-
-push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
-
-//Swift Older
-
-push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push client secret")
-
+BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
 ```
 
 ##### appGUID
