@@ -14,6 +14,32 @@ Before starting to configure iOS SDK follow the [Bluemix Push service setup guid
 ## Contents
 
 - [Requirements](#requirements)
+- [Installation](#installation)
+  - [Cocoapods](#cocoapods)
+  - [Carthage](#carthage)
+- [Setup Client Application](setup-client-application)
+  - [Reference the SDK in your code](reference-the-sdk-in-your-code)
+  - [Initialize](#initialize)
+    - [Initializing the Core SDK](#initializing-the-core-sdk)
+    - [Initializing the Push SDK](#initializing-the-push-sdk)
+  - [Register to Push Service](#register-to-push-ervice)
+    - [Register Without UserId](#register-without-userid)
+    - [Register With UserId](#register-with-userid)
+    - [Unregistering the Device from Push Notification](#unregistering-the-device-from-push-notification)
+    - [Unregistering the Device from UserId](#unregistering-the-device-from-userid)
+  - [Bluemix tags](#bluemix-tags)
+    - [Retrieve Available tags](#retrieve-available-tags)
+    - [Subscribe to Available tags](#subscribe-to-available-tags)
+    - [Retrieve Subscribed tags](#retrieve-subscribed-tags)
+    - [Unsubscribing from tags](#unsubscribing-from-tags)
+  - [Notification Options](#notification-options)
+    - [Enable Interactive push notifications](#enable-interactive-push-notifications)
+    - [Handling Interactive push notifications](#handling-interactive-push-notifications)
+    - [Adding custom DeviceId for registration](#ddding-custom-deviceid-for-registration)
+  - [Enabling iOS 10 Rich Push notification](#enabling-ios-10-rich-push-notification)
+- [Enable Monitoring](#enable-monitoring)
+- [Open Url by clicking push notifications](#open-url-by-clicking-push-notifications)
+- [Samples & videos](#samples-&-videos)
 
 ## Requirements
 
@@ -76,15 +102,24 @@ To complete the integration, follow the instructions [here](https://github.com/C
 
 For apps built with Swift 2.3, use the command `carthage update --toolchain com.apple.dt.toolchain.Swift_2_3.` Otherwise, use `carthage update`
 
-## Enabling iOS applications to receive push notifications
+
+## Setup Client Application
+
+ Follow the steps to enable iOS applications to receive push notifications
 
 ### Reference the SDK in your code.
+
+ Add the `import` statements in your `.swift` file.
 
 ```
 import BMSPush
 import BMSCore
 ```
-### Initializing the Core SDK
+### Initialize
+
+#### Initializing the Core SDK
+
+  Initialize the `BMSCore` SDK following way,
 
 ```
 let myBMSClient = BMSClient.sharedInstance
@@ -103,9 +138,10 @@ myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
 
 - Specifies the location where the app hosted. You can use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney`.
 
-### Initializing the Push SDK
+#### Initializing the Push SDK
 
- initialize the `BMSPushClient`  using the following code.
+ Initialize the `BMSPushClient`  following way,
+
 ```
 let push =  BMSPushClient.sharedInstance
 
@@ -129,10 +165,15 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
 
-After the token is received from APNS, pass the token to Push Notifications as part of the `didRegisterForRemoteNotificationsWithDeviceToken` method.
+### Register to Push Service
+
+ After the token is received from APNS, pass the token to Push Notifications as part of the `didRegisterForRemoteNotificationsWithDeviceToken` method.
+
+#### Register Without UserId
+
+ To register without userId use the following pattern,
 
 ```
-
 //Swift3
 
  func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
@@ -166,10 +207,9 @@ After the token is received from APNS, pass the token to Push Notifications as p
 }
 ```
 
-### Registering iOS applications and devices with userId
+#### Register Without UserId
 
 For `userId` based notification, the register method will accept one more parameter - `userId`
-
 
 ```
 //Swift3
@@ -211,140 +251,8 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 >**Note**: If userId is provided the client secret value must be provided.
 
 
-### Retrieve Available Tags and subscribe for Tags based Notifications
+#### Unregistering the Device from Push Notification
 
-##### Retrieve Available tags
-
-The `retrieveAvailableTagsWithCompletionHandler` API returns the list of available tags to which the device
-can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
-that are sent for that tag.Call the push service to get subscriptions for a tag.
-
-Copy the following code snippets into your Swift mobile application to get a list of available tags to which the
-device can subscribe.
-
-```
-
-//Swift3
-
-push.retrieveAvailableTagsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
-
-  if error.isEmpty {
-    print( "Response during retrieve tags : \(response)")
-    print( "status code during retrieve tags : \(statusCode)")
-  }else{
-    print( "Error during retrieve tags \(error) ")
-    Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-  }
-}
-
-//Swift2.3 and Older
-
-push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) -> Void in
-
-    if error.isEmpty {
-        print( "Response during retrieve tags : \(response)")
-        print( "status code during retrieve tags : \(statusCode)")
-    }else{
-        print( "Error during retrieve tags \(error) ")
-        Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-    }
-}
-```
-##### Subscribe to Available tags
-
-```
-
-//Swift3
-
- push.subscribeToTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
-
-   if error.isEmpty {
-       print( "Response during Subscribing to tags : \(response?.description)")     
-       print( "status code during Subscribing tags : \(statusCode)")
-     }else{
-       print( "Error during subscribing tags \(error) ")
-       Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-     }
- }
-
-//Swift2.3 and Older
-
-push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -> Void in
-
-    if error.isEmpty {
-        print( "Response during Subscribing to tags : \(response?.description)")
-        print( "status code during Subscribing tags : \(statusCode)")
-    }else {
-        print( "Error during subscribing tags \(error) ")
-        Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-    }
-}
-```
-
-##### Retrieve Subscribed tags
-
-```
-
-//Swift3
- push.retrieveSubscriptionsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
-
-   if error.isEmpty {                                     
-     print( "Response during retrieving subscribed tags : \(response?.description)")
-     print( "status code during retrieving subscribed tags : \(statusCode)")
-   }else{
-     print( "Error during retrieving subscribed tags \(error) ")
-     Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-   }
- }
-
-//Swift2.3 and Older
-push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
-
-    if error.isEmpty {
-        print( "Response during retrieving subscribed tags : \(response?.description)")
-        print( "status code during retrieving subscribed tags : \(statusCode)")
-    }else {
-        print( "Error during retrieving subscribed tags \(error) ")
-        Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-    }
-}
-```
-### Unsubscribing from tags based notifications
-
-Use the following code snippets to allow your devices to get unsubscribe
-from a tag.
-
-```
-
-//Swift3
-push.unsubscribeFromTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
-
-  if error.isEmpty {
-    print( "Response during unsubscribed tags : \(response?.description)")
-    print( "status code during unsubscribed tags : \(statusCode)")
-  }else{
-    print( "Error during  unsubscribed tags \(error) ")
-  }
-}
-
-//Swift2.3 and Older
-
-push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -> Void in
-
-    if error.isEmpty {
-
-        print( "Response during unsubscribed tags : \(response?.description)")
-
-        print( "status code during unsubscribed tags : \(statusCode)")
-    }
-    else {
-        print( "Error during  unsubscribed tags \(error) ")
-
-        print( "Error during unsubscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-    }
-}
-```
-### Unregistering the Device from Bluemix Push Notification
 
 Use the following code snippets to Unregister the device from Bluemix Push Notification
 
@@ -376,7 +284,158 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
 }
 ```
 
-### Enabling interactive push notifications
+#### Unregistering the Device from UserId
+
+ To unregister from the `UserId` based registration you have to call the registration method [without userId](#register-without-userid).
+
+
+### Bluemix tags
+
+#### Retrieve Available tags
+
+ The `retrieveAvailableTagsWithCompletionHandler` API returns the list of available tags to which the device
+can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
+that are sent for that tag.Call the push service to get subscriptions for a tag.
+
+Use the following code snippets into your Swift mobile application to get a list of available tags to which the
+device can subscribe.
+
+```
+
+//Swift3
+
+push.retrieveAvailableTagsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
+
+  if error.isEmpty {
+    print( "Response during retrieve tags : \(response)")
+    print( "status code during retrieve tags : \(statusCode)")
+  }else{
+    print( "Error during retrieve tags \(error) ")
+    Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+  }
+}
+
+//Swift2.3 and Older
+
+push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) -> Void in
+
+    if error.isEmpty {
+        print( "Response during retrieve tags : \(response)")
+        print( "status code during retrieve tags : \(statusCode)")
+    }else{
+        print( "Error during retrieve tags \(error) ")
+        Print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+```
+
+#### Subscribe to Available tags
+
+The `subscribeToTags` API will subscribe the iOS device for the list of given tags. After the device is subscribed to a particular tag, the device can receive any push notifications
+that are sent for that tag.
+
+Use the following code snippets into your Swift mobile application to subscribe a list of tags.
+
+```
+//Swift3
+
+ push.subscribeToTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
+
+   if error.isEmpty {
+       print( "Response during Subscribing to tags : \(response?.description)")     
+       print( "status code during Subscribing tags : \(statusCode)")
+     }else{
+       print( "Error during subscribing tags \(error) ")
+       Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+     }
+ }
+
+//Swift2.3 and Older
+
+push.subscribeToTags(response, completionHandler: { (response, statusCode, error) -> Void in
+
+    if error.isEmpty {
+        print( "Response during Subscribing to tags : \(response?.description)")
+        print( "status code during Subscribing tags : \(statusCode)")
+    }else {
+        print( "Error during subscribing tags \(error) ")
+        Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+```
+
+#### Retrieve Subscribed tags
+
+The `retrieveSubscriptionsWithCompletionHandler` API will return the list of tags to which the device is subscribed.
+
+Use the following code snippets into your Swift mobile application to get the  subscription list.
+
+```
+
+//Swift3
+ push.retrieveSubscriptionsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
+
+   if error.isEmpty {                                     
+     print( "Response during retrieving subscribed tags : \(response?.description)")
+     print( "status code during retrieving subscribed tags : \(statusCode)")
+   }else{
+     print( "Error during retrieving subscribed tags \(error) ")
+     Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+   }
+ }
+
+//Swift2.3 and Older
+push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
+
+    if error.isEmpty {
+        print( "Response during retrieving subscribed tags : \(response?.description)")
+        print( "status code during retrieving subscribed tags : \(statusCode)")
+    }else {
+        print( "Error during retrieving subscribed tags \(error) ")
+        Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+```
+#### Unsubscribing from tags
+
+The `unsubscribeFromTags` API will remove the device subscription from the list tags.
+
+Use the following code snippets to allow your devices to get unsubscribe from a tag.
+
+```
+
+//Swift3
+push.unsubscribeFromTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
+
+  if error.isEmpty {
+    print( "Response during unsubscribed tags : \(response?.description)")
+    print( "status code during unsubscribed tags : \(statusCode)")
+  }else{
+    print( "Error during  unsubscribed tags \(error) ")
+  }
+}
+
+//Swift2.3 and Older
+
+push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -> Void in
+
+    if error.isEmpty {
+
+        print( "Response during unsubscribed tags : \(response?.description)")
+
+        print( "status code during unsubscribed tags : \(statusCode)")
+    }
+    else {
+        print( "Error during  unsubscribed tags \(error) ")
+
+        print( "Error during unsubscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+    }
+}
+```
+
+### Notification Options
+
+#### Enable Interactive push notifications
 
 To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object.  The following is a sample code to enable interactive notifications.
 
@@ -393,10 +452,40 @@ notifOptions.setInteractiveNotificationCategories(categoryName: [category])
 let push = BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "APP-GUID-HERE", clientSecret:"CLIENT-SECRET-HERE", options: notificationOptions)
 
 ```
+#### Handling Interactive push notifications
+Implement the new callback method on AppDelegate.swift,
 
-### Enabling Rich Push notification support in iOS 10 (Audio, Video, GIF and Images)
+```
+func userNotificationCenter(_ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void) {
+         switch response.actionIdentifier {
+         case "FIRST":
+           print("FIRST")
+         case "SECOND":
+           print("SECOND")  
+         default:
+           print("Unknown action")
+         }
+     completionHandler
+ }
+```
+This new callback method is invoked when user clicks the action button. The implementation of this method must perform tasks associated with the specified identifier and execute the block in the completionHandler parameter.
 
-To receive rich push notifications with iOS10, implement ```UNNotificationServiceExtension```.  The extension will intercept the rich push notification and it needs to be handled here.  While sending the notification from the server, all the four fields, alert, title, subtitle, attachmentURL must be specified.
+#### Adding custom DeviceId for registration
+
+To send `DeviceId` use the `setDeviceId` method of `BMSPushClientOptions` class.
+
+```
+let notifOptions = BMSPushClientOptions()
+notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
+```
+>**Note**: Remember to keep custom DeviceId <strong>unique</strong> for each device.
+
+
+### Enabling iOS 10 Rich Push notification
+
+ To receive rich push notifications with iOS10, implement <strong>UNNotificationServiceExtension</strong>.  The extension will intercept the rich push notification and it needs to be handled here.  While sending the notification from the server, all the four fields, alert, title, subtitle, attachmentURL must be specified.
 
 In the didReceive() method of your service extension, add the following code to retrieve the rich notification content.
 
@@ -406,11 +495,12 @@ override func didReceive(_ request: UNNotificationRequest, withContentHandler co
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
 
         BMSPushRichPushNotificationOptions.didReceive(request, withContentHandler: contentHandler)
-        }
+  }
 ```
 
-## Enable Monitoring.
-<p>To see the push notification monitoring status for iOS you have add the following code snippets. </p>
+## Enable Monitoring
+
+ To see the push notification monitoring status for iOS you have add the following code snippets.
 
 <strong>Swift 3</strong>
 ```
@@ -450,6 +540,7 @@ func application(_ application: UIApplication, didReceiveRemoteNotification user
    }
 }
 ```
+
 <strong>Swift 2.3</strong>
 
 ```
@@ -501,11 +592,14 @@ func application(application: UIApplication, didReceiveRemoteNotification userIn
   }
 }
 ```
+
 >**Note**: To get the message status when the app is in background you have to send either <strong>MIXED</strong> or <strong>SILENT</strong> push notifications. If the app is force quite you will not get any message delivery status.
 
-### Open Url by clicking push notifications.
 
-To open a url by clicking the push notification you can send a `url` firld inside the payload.
+## Open Url by clicking push notifications
+
+To open a url by clicking the push notification you can send a `url` field inside the payload.
+
 ```
 {
   "message": {
@@ -526,17 +620,8 @@ if remoteNotif != nil {
 }
 ```
 
-### Adding custom DeviceId for registration
 
-To send `DeviceId` please use `BMSPushClientOptions` class method,
-
-```
-let notifOptions = BMSPushClientOptions()
-notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
-```
->**Note**: Remember to keep custom DeviceId <strong>unique</strong> for each device.
-
-### Samples & videos
+## Samples & videos
 
 * Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
 
