@@ -27,7 +27,7 @@ The [Bluemix Push Notifications service](https://console.ng.bluemix.net/catalog/
     - [Register With UserId](#register-with-userid)
     - [Unregistering the Device from Push Notification](#unregistering-the-device-from-push-notification)
     - [Unregistering the Device from UserId](#unregistering-the-device-from-userid)
-  - [Bluemix tags](#bluemix-tags)
+  - [Push Notification service tags](#bluemix-tags)
     - [Retrieve Available tags](#retrieve-available-tags)
     - [Subscribe to Available tags](#subscribe-to-available-tags)
     - [Retrieve Subscribed tags](#retrieve-subscribed-tags)
@@ -131,11 +131,14 @@ BMSClient.sharedInstance.initialize(bluemixRegion: "Location where your app Host
 
 ##### bluemixRegion
 
-- Specifies the location where the app hosted. You can use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney`.
+- Specifies the location where the application is hosted. You can use following values
+  * `BMSClient.Region.usSouth`
+  * `BMSClient.Region.unitedKingdom` 
+  * `BMSClient.Region.sydney`
 
 #### Initializing the Push SDK
 
- Initialize the `BMSPushClient`  following way,
+ Initialize the `BMSPushClient` :
 
 ```
 BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
@@ -143,25 +146,23 @@ BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "your push appGUID",
 
 ##### appGUID
 
-- The Push app GUID value.
+- The Push service instance Id value. Refer TODO
 
 ##### clientSecret
 
-- The Push client secret value.
+- The Push service instance client secret value. Refer TODO
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
 
 ### Register to Push Service
 
- After the token is received from APNS, pass the token to Push Notifications as part of the `didRegisterForRemoteNotificationsWithDeviceToken` method.
+ After the token is received from Apple Push Notification service(APNs), pass the token to Push Notifications service instance as part of the `didRegisterForRemoteNotificationsWithDeviceToken` method.
 
 #### Register Without UserId
 
- To register without userId use the following pattern,
+ To register without userId use the following pattern
 
 ```
-//Swift3
-
  func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
    let push =  BMSPushClient.sharedInstance
@@ -174,32 +175,13 @@ BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID: "your push appGUID",
       Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
     }  
  }
-
-
- //Swift2.3 and Older
-
- func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
-
-   let push =  BMSPushClient.sharedInstance
-   push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
-        if error.isEmpty {
-            print( "Response during device registration : \(response)")
-            print( "status code during device registration : \(statusCode)")
-        }else{
-            print( "Error during device registration \(error) ")
-            Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
-        }
-    }
-}
 ```
 
-#### Register Without UserId
+#### Register With UserId
 
-For `userId` based notification, the register method will accept one more parameter - `userId`
+The `userId` can be specified while registering the device with Push Notifications service. The register method will accept one more parameter - `userId`
 
 ```
-//Swift3
-
 func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
    let push =  BMSPushClient.sharedInstance
@@ -212,27 +194,11 @@ func application (_ application: UIApplication, didRegisterForRemoteNotification
       Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
     }  
 }
-
-//Swift2.3 and Older
-
-func application (application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
-
-    let push =  BMSPushClient.sharedInstance
-    push.registerWithDeviceToken(deviceToken, WithUserId: "your userId") { (response, statusCode, error) -> Void in
-        if error.isEmpty {
-            print( "Response during device registration : \(response)")
-            print( "status code during device registration : \(statusCode)")
-        }else{
-            print( "Error during device registration \(error) ")
-            Print( "Error during device registration \n  - status code: \(statusCode) \n Error :\(error) \n")
-        }
-    }
-}
 ```
 
 ##### WithUserId
 
-- The User Id value you want to register in the push service
+- The user identifier value you want to register the device in the push service instance.
 
 >**Note**: If userId is provided the client secret value must be provided.
 
@@ -240,7 +206,7 @@ func application (application: UIApplication, didRegisterForRemoteNotificationsW
 #### Unregistering the Device from Push Notification
 
 
-Use the following code snippets to Unregister the device from Bluemix Push Notification
+Use the following code snippets to unregister the device from push notification service instance
 
 ```
 
@@ -275,15 +241,15 @@ push.unregisterDevice({ (response, statusCode, error) -> Void in
  To unregister from the `UserId` based registration you have to call the registration method [without userId](#register-without-userid).
 
 
-### Bluemix tags
+### Push Notification service tags
 
 #### Retrieve Available tags
 
- The `retrieveAvailableTagsWithCompletionHandler` API returns the list of available tags to which the device
-can subscribe. After the device is subscribed to a particular tag, the device can receive any push notifications
-that are sent for that tag.Call the push service to get subscriptions for a tag.
+ The `retrieveAvailableTagsWithCompletionHandler` API returns the list of tags to which the device
+can subscribe. After the device is subscribes to a particular tag, the device can receive notifications
+that are sent for that tag.
 
-Use the following code snippets into your Swift mobile application to get a list of available tags to which the
+Use the following code snippets into your Swift mobile application to get a list of tags to which the
 device can subscribe.
 
 ```
@@ -315,7 +281,7 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) 
 }
 ```
 
-#### Subscribe to Available tags
+#### Subscribe to tags
 
 The `subscribeToTags` API will subscribe the iOS device for the list of given tags. After the device is subscribed to a particular tag, the device can receive any push notifications
 that are sent for that tag.
@@ -332,7 +298,7 @@ Use the following code snippets into your Swift mobile application to subscribe 
        print( "status code during Subscribing tags : \(statusCode)")
      }else{
        print( "Error during subscribing tags \(error) ")
-       Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+       print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
      }
  }
 
@@ -343,9 +309,9 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
     if error.isEmpty {
         print( "Response during Subscribing to tags : \(response?.description)")
         print( "status code during Subscribing tags : \(statusCode)")
-    }else {
+    } else {
         print( "Error during subscribing tags \(error) ")
-        Print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+        print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
 ```
@@ -364,9 +330,9 @@ Use the following code snippets into your Swift mobile application to get the  s
    if error.isEmpty {                                     
      print( "Response during retrieving subscribed tags : \(response?.description)")
      print( "status code during retrieving subscribed tags : \(statusCode)")
-   }else{
+   } else{
      print( "Error during retrieving subscribed tags \(error) ")
-     Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+     print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
    }
  }
 
@@ -378,7 +344,7 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
         print( "status code during retrieving subscribed tags : \(statusCode)")
     }else {
         print( "Error during retrieving subscribed tags \(error) ")
-        Print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
+        print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
 ```
@@ -386,7 +352,7 @@ push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) 
 
 The `unsubscribeFromTags` API will remove the device subscription from the list tags.
 
-Use the following code snippets to allow your devices to get unsubscribe from a tag.
+Use the following code snippets to unsubsribe from tags
 
 ```
 
@@ -408,12 +374,10 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
     if error.isEmpty {
 
         print( "Response during unsubscribed tags : \(response?.description)")
-
         print( "status code during unsubscribed tags : \(statusCode)")
     }
     else {
         print( "Error during  unsubscribed tags \(error) ")
-
         print( "Error during unsubscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
     }
 }
