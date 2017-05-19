@@ -104,7 +104,9 @@ myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
 
 ##### bluemixRegion
 
-- Specifies the location where the app hosted. You can use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney`.
+- Specifies the location where the app hosted. You can either use one of three values - `BMSClient.Region.usSouth`, `BMSClient.Region.unitedKingdom` and `BMSClient.Region.sydney` OR specify the region manually .
+
+>**Note**:  If you are using dedicated service please use `overrideServerHost` and add `bluemixRegion` any value.
 
 ### Initializing the Push SDK
 
