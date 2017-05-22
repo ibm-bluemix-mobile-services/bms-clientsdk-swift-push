@@ -50,6 +50,7 @@ open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
                         
                         // Add the attachment to the notification content
                         if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options:nil) {
+
                             bestAttemptContent?.attachments = [attachment]
                         }
                     }
