@@ -36,7 +36,7 @@ open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
         var bestAttemptContent: UNMutableNotificationContent?
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-       if let urlString = request.content.userInfo["attachment-url"] as? String {
+       if let urlString = request.content.userInfo["attachment-url"] as? String, urlString != "" {
             
             if let fileUrl = URL(string: urlString ) {
                 // Download the attachment
