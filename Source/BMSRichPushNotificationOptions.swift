@@ -49,7 +49,8 @@ open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
                         try! FileManager.default.moveItem(at: location, to: tmpUrl)
                         
                         // Add the attachment to the notification content
-                        if let attachment = try? UNNotificationAttachment(identifier: "video", url: tmpUrl, options:nil) {
+                        if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options:nil) {
+
                             bestAttemptContent?.attachments = [attachment]
                         }
                     }
