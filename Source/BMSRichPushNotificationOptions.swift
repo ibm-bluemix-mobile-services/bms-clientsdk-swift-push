@@ -58,7 +58,7 @@ open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
                     }.resume()
             }
             
-        }else{
+        } else {
              contentHandler(bestAttemptContent!)
         }
     }
