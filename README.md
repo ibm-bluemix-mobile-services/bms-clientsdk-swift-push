@@ -24,23 +24,23 @@ Ensure that you go through [Bluemix Push Notifications service documentation](ht
 - [Push Notification service tags](#push-notification-service-tags)
   - [Retrieve tags](#retrieve-tags)
   - [Subscribe to tags](#subscribe-to-tags)
-  - [Retrieve Subscribed tags](#retrieve-subscribed-tags)
+  - [Retrieve subscribed tags](#retrieve-subscribed-tags)
   - [Unsubscribing from tags](#unsubscribing-from-tags)
 - [Receiving push notifications on iOS devices](#receiving-push-notifications-on-ios-devices)
-- [Notification Options](#notification-options)
+- [Notification options](#notification-options)
   - [Silent notification](#silent-notification)
   - [Interactive notifications](#interactive-notifications)
   - [Handling interactive push notifications](#handling-interactive-push-notifications)
-  - [Adding custom DeviceId for registration](#ddding-custom-deviceid-for-registration)
-  - [Enabling iOS 10 Rich Push notification](#enabling-ios-10-rich-push-notification)
+  - [Adding custom DeviceId for registration](#adding-custom-deviceid-for-registration)
+  - [Enabling rich media notifications](#enabling-rich-media-notifications)
 - [Advanced options](#advanced-options)
-  - [iOS Badge](#ios-badge)
-  - [Custom Sound](#custom-sound)
+  - [iOS badge](#ios-badge)
+  - [Custom sound](#custom-sound)
 - [Enable monitoring](#enable-monitoring)
 - [Open URL by clicking push notifications](#open-url-by-clicking-push-notifications)
-- [Samples and Videos](#samples-and-videos)
+- [Samples and videos](#samples-and-videos)
 
-## Requirements
+## Prerequisites
 
 * iOS 8.0 or later
 * Xcode 7.3, 8.0 or later
@@ -373,11 +373,11 @@ notificationOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
 >**Note**: Remember to keep custom Device Identifier <strong>unique</strong> for each device.
 
 
-### Enabling iOS 10 Rich push notification
+### Enabling rich media notifications
 
-To receive rich push notifications with iOS 10, implement <strong>UNNotificationServiceExtension</strong>.  The extension will intercept and handle the rich push notification.
+Rich media notifications are supported on iOS 10 or later. To receive rich media notifications, implement <strong>UNNotificationServiceExtension</strong>. The extension will intercept and handle the rich media notification.
 
-In the `didReceive()` method of your service extension, add the following code to retrieve the Rich push notification content.
+In the `didReceive()` method of your service extension, add the following code to retrieve the rich push notification content.
 
 ```
 override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
@@ -389,11 +389,11 @@ override func didReceive(_ request: UNNotificationRequest, withContentHandler co
 
 ## Advanced options
 
-### iOS Badge
+### iOS badge
 
 For iOS devices, the number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0.
 
-### Custom Sound
+### Custom sound
 
 Add a sound file to your iOS application. 
 
@@ -471,7 +471,7 @@ To see the notification monitoring status for iOS, you have to add the following
 
 >**Note**: To get the message status when the app is in background, you have to send either **MIXED** or **SILENT** push notifications. No message delivery status would be received if the app was exited forcefully. 
 
-## Open Url by clicking push notifications
+## Open URL by clicking push notifications
 
 To open a url by clicking the push notification, you can send a `url` field inside the payload.
 	
@@ -494,13 +494,13 @@ let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotificatio
 }
 ```
 
-## Samples and Videos
+## Samples and videos
 
 * For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
 
 * For video tutorials visit - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
 
-### Learning More
+### Learning more
 
 * Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
 
@@ -516,7 +516,7 @@ let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotificatio
 
 
 =======================
-Copyright 2016 IBM Corp.
+Copyright 2017 IBM Corp.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
