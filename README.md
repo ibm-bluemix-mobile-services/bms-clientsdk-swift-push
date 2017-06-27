@@ -509,7 +509,7 @@ let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotificatio
 ### Connect with Bluemix
 
 [Twitter](https://twitter.com/ibmbluemix) |
-[YouTube](https://www.youtube.com/playlist?list=PLzpeuWUENMK2d3L5qCITo2GQEt-7r0oqm) |
+[YouTube](https://www.youtube.com/watch?v=AVPoBWScRQc) |
 [Blog](https://developer.ibm.com/bluemix/blog/) |
 [Facebook](https://www.facebook.com/ibmbluemix) |
 [Meetup](http://www.meetup.com/bluemix/)
