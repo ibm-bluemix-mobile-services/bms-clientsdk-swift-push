@@ -111,6 +111,8 @@ public class BMSPushClient: NSObject {
 
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(value: appGUID, key: "appGUID")
+            BMSPushUtils.saveValueToNSUserDefaults(value: clientSecret, key: "clientSecret")
             isInitialized = true;
             self.bluemixDeviceId = ""
 
@@ -152,6 +154,8 @@ public class BMSPushClient: NSObject {
 
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(value: appGUID, key: "appGUID")
+            BMSPushUtils.saveValueToNSUserDefaults(value: clientSecret, key: "clientSecret")
             isInitialized = true;
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
@@ -265,7 +269,17 @@ public class BMSPushClient: NSObject {
                 for i in 0..<deviceToken.count {
                     token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
                 }
-                let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+                
+                if(self.applicationId == "" || self.clientSecret == ""){
+                    
+                    self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Error is: push is not initialized")
+                    completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - Error is: push is not initialized")
+                    return
+                    
+                }
+                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
                 let headers = urlBuilder.addHeader()
@@ -424,8 +438,18 @@ public class BMSPushClient: NSObject {
             for i in 0..<deviceToken.count {
                 token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
             }
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+            
+            if(self.applicationId == "" || self.clientSecret == ""){
+                
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while  registration - Error is: push is not initialized")
+                completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - Error is: push is not initialized")
+                return
+                
+            }
 
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
             
             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devID: devId)
             let headers = urlBuilder.addHeader()
@@ -565,7 +589,18 @@ public class BMSPushClient: NSObject {
     public func retrieveAvailableTagsWithCompletionHandler (completionHandler: @escaping(_ response:NSMutableArray?, _ statusCode:Int?, _ error:String) -> Void){
 
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving available tags - Error is: push is not initialized")
+            completionHandler([], IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue , "Error while retrieving available tags - Error is: push is not initialized")
+            return
+            
+        }
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         
         let resourceURL:String = urlBuilder.getTagsUrl()
         
@@ -616,7 +651,19 @@ public class BMSPushClient: NSObject {
         if tagsArray.count != 0 {
             
             let devId = self.getDeviceID()
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+            
+            if(self.applicationId == "" || self.clientSecret == ""){
+                
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error is: push is not initialized")
+                completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue , "Error while subscribing to tags - Error is: push is not initialized")
+                return
+                
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
             let resourceURL:String = urlBuilder.getSubscriptionsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -679,7 +726,18 @@ public class BMSPushClient: NSObject {
         
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving subscriptions - Error is: push is not initialized")
+            completionHandler([], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue , "Error while retrieving subscriptions - Error is: push is not initialized")
+            return
+            
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(deviceId: devId)
         
         let headers = urlBuilder.addHeader()
@@ -731,7 +789,18 @@ public class BMSPushClient: NSObject {
 
             let devId = self.getDeviceID()
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+            
+            if(self.applicationId == "" || self.clientSecret == ""){
+                
+                self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unsubscribing from tags - Error is: push is not initialized")
+                completionHandler([:], IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Error while unsubscribing from tags - Error is: push is not initialized")
+                return
+                
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
             let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -784,7 +853,18 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering unregisterDevice.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unregistering device - Error is: push is not initialized")
+            completionHandler("", IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Error while unregistering device - Error is: push is not initialized")
+            return
+            
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getUnregisterUrl(deviceId: devId)
         
         let headers = urlBuilder.addHeader()
@@ -822,7 +902,18 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: "appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: "clientSecret")
+        
+        if(self.applicationId == "" || self.clientSecret == ""){
+            
+            self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status - Error is: push is not initialized")
+            completionHandler("", IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Failed to update the message status - Error is: push is not initialized")
+            return
+            
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId: messageId)
         
         let headers = urlBuilder.addHeader()
@@ -1028,6 +1119,8 @@ public class BMSPushClient: NSObject {
         if validateString(clientSecret) {
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(appGUID, key: "appGUID")
+            BMSPushUtils.saveValueToNSUserDefaults(clientSecret, key: "clientSecret")
             isInitialized = true;
             
             let settings = UIUserNotificationSettings(forTypes: [.Alert,.Badge,.Sound], categories: nil)
@@ -1055,6 +1148,8 @@ public class BMSPushClient: NSObject {
         if validateString(clientSecret) {
             self.clientSecret = clientSecret
             self.applicationId = appGUID
+            BMSPushUtils.saveValueToNSUserDefaults(appGUID, key: "appGUID")
+            BMSPushUtils.saveValueToNSUserDefaults(clientSecret, key: "clientSecret")
             isInitialized = true;
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
@@ -1125,13 +1220,24 @@ public class BMSPushClient: NSObject {
                 let devId = self.getDeviceID()
                 BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
                 
+                self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+                
+                if (self.applicationId == "" || self.clientSecret == "") {
+                    
+                    self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device registration - Error is: push is not initialized")
+                    completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: push is not initialized")
+    
+                }
+                
+                
                 var token:String = deviceToken.description
                 token = token.stringByReplacingOccurrencesOfString("<", withString: "")
                 token = token.stringByReplacingOccurrencesOfString(">", withString: "")
                 token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
                 
                 
-                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+                let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
                 
                 let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
                 let headers = urlBuilder.addHeader()
@@ -1289,12 +1395,21 @@ public class BMSPushClient: NSObject {
             let devId = self.getDeviceID()
             BMSPushUtils.saveValueToNSUserDefaults(devId, key: "deviceId")
             
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+            
+            if (self.applicationId == "" || self.clientSecret == "") {
+                
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error during device registration - Error is: push is not initialized")
+                completionHandler(response: "", statusCode: IMFPushErrorvalues.IMFPushRegistrationError.rawValue, error: "Error during device registration - Error is: push is not initialized")
+            }
+            
             var token:String = deviceToken.description
             token = token.stringByReplacingOccurrencesOfString("<", withString: "")
             token = token.stringByReplacingOccurrencesOfString(">", withString: "")
             token = token.stringByReplacingOccurrencesOfString(" ", withString: "").stringByTrimmingCharactersInSet(NSCharacterSet.symbolCharacterSet())
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
             
             let resourceURL:String = urlBuilder.getSubscribedDevicesUrl(devId)
             let headers = urlBuilder.addHeader()
@@ -1440,7 +1555,16 @@ public class BMSPushClient: NSObject {
         
         
         self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
-        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+        
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while retrieving available tags  - Error is: push is not initialized")
+            completionHandler(response:[], statusCode: IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue, error: "Error while retrieving available tags  - Error is: push is not initialized")
+        }
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
         
         let resourceURL:String = urlBuilder.getTagsUrl()
         
@@ -1492,7 +1616,16 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+            
+            if (self.applicationId == "" || self.clientSecret == "") {
+                
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while subscribing to tags  - Error is: push is not initialized")
+                completionHandler(response:[:], statusCode: IMFPushErrorvalues.IMFPushErrorEmptyTagArray.rawValue, error: "Error while subscribing to tags  - Error is: push is not initialized")
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
             let resourceURL:String = urlBuilder.getSubscriptionsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -1552,7 +1685,16 @@ public class BMSPushClient: NSObject {
         
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while retrieving subscriptions  - Error is: push is not initialized")
+            completionHandler(response:[], statusCode: IMFPushErrorvalues.IMFPushRetrieveSubscriptionError.rawValue, error: "Error while retrieving subscriptions  - Error is: push is not initialized")
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
         let resourceURL:String = urlBuilder.getAvailableSubscriptionsUrl(devId)
         
         let headers = urlBuilder.addHeader()
@@ -1606,7 +1748,16 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+            
+            if (self.applicationId == "" || self.clientSecret == "") {
+                
+                self.sendAnalyticsData(LogLevel.error, logStringData: "Error while unsubscribing from tags  - Error is: push is not initialized")
+                completionHandler(response:[:], statusCode: IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue, error: "Error while unsubscribing from tags  - Error is: push is not initialized")
+            }
+            
+            let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
             let resourceURL:String = urlBuilder.getUnSubscribetagsUrl()
             
             let headers = urlBuilder.addHeader()
@@ -1659,7 +1810,16 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering unregisterDevice.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Error while unregistering device  - Error is: push is not initialized")
+            completionHandler(response:"", statusCode: IMFPushErrorvalues.BMSPushUnregitrationError.rawValue, error: "Error while unregistering device  - Error is: push is not initialized")
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!, clientSecret: self.clientSecret!)
         let resourceURL:String = urlBuilder.getUnregisterUrl(devId)
         
         let headers = urlBuilder.addHeader()
@@ -1696,7 +1856,16 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
         let devId = self.getDeviceID()
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: applicationId!,clientSecret:clientSecret!)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults("appGUID")
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults("clientSecret")
+        
+        if (self.applicationId == "" || self.clientSecret == "") {
+            
+            self.sendAnalyticsData(LogLevel.error, logStringData: "Failed to update the message status  - Error is: push is not initialized")
+            completionHandler(response:"", statusCode: 502, error: "Failed to update the message status  - Error is: push is not initialized")
+        }
+        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: self.applicationId!,clientSecret:self.clientSecret!)
         let resourceURL:String = urlBuilder.getSendMessageDeliveryStatus(messageId)
         
         let headers = urlBuilder.addHeader()
