@@ -25,21 +25,21 @@ internal class BMSPushUtils: NSObject {
     
     static var loggerMessage:String = ""
     
-    class func saveValueToNSUserDefaults (value:String, key:String){
+    class func saveValueToNSUserDefaults (value:String, key:String) {
         UserDefaults.standard.set(value, forKey: key)
         UserDefaults.standard.synchronize()
         loggerMessage = ("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
         self.sendLoggerData()
     }
     
-    class func getValueToNSUserDefaults (key:String) -> String{
+    class func getValueToNSUserDefaults (key:String) -> String {
         var value = ""
         if(UserDefaults.standard.value(forKey: key) != nil){
             value = UserDefaults.standard.value(forKey: key) as! String
         }
         loggerMessage = ("Getting value for NSUserDefaults Key: \(key) and Value: \(value)")
         self.sendLoggerData()
-        return value;
+        return value
     }
     
     class func getPushSettingValue() -> Bool {
@@ -104,7 +104,7 @@ internal class BMSPushUtils: NSObject {
     
     static var loggerMessage:String = ""
     
-    class func saveValueToNSUserDefaults (value:String, key:String){
+    class func saveValueToNSUserDefaults (value:String, key:String) {
         
         NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -114,7 +114,7 @@ internal class BMSPushUtils: NSObject {
     
     class func getValueToNSUserDefaults (key:String) -> String{
         var value = ""
-        if(NSUserDefaults.standardUserDefaults().valueForKey(key) != nil){
+        if(NSUserDefaults.standardUserDefaults().valueForKey(key) != nil) {
             value = NSUserDefaults.standardUserDefaults().stringForKey(key)!
         }
         loggerMessage = ("Getting value for NSUserDefaults Key: \(key) and Value: \(value)")
