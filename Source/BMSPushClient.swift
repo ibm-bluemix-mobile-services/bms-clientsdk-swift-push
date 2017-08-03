@@ -22,6 +22,9 @@ import BMSCore
 import UserNotifications
 import UserNotificationsUI
 
+public protocol BMSPushObserver{
+    func onChangePermission(status:Bool);
+}
 public enum IMFPushErrorvalues: Int {
     
     /// - IMFPushErrorInternalError: Denotes the Internal Server Error occured.
@@ -95,6 +98,8 @@ public class BMSPushClient: NSObject {
     
     private var isInitialized = false;
     
+    public var delegate:BMSPushObserver?
+    
     // MARK: Initializers
     
     /**
@@ -122,20 +127,23 @@ public class BMSPushClient: NSObject {
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
                         UIApplication.shared.registerForRemoteNotifications()
+                        self.delegate?.onChangePermission(status: true)
                     } else {
                         print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        self.delegate?.onChangePermission(status: false)
                     }
                 })
             } else {
                 // Fallback on earlier versions
                 let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
                 UIApplication.shared.registerUserNotificationSettings(settings)
-                UIApplication.shared.registerForRemoteNotifications()
+                self.checkStatusChange()
             }
         }
         else{
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
             print("Error while registration - Client secret is not valid")
+            self.delegate?.onChangePermission(status: false)
         }
     }
     
@@ -191,8 +199,10 @@ public class BMSPushClient: NSObject {
                 center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
                         UIApplication.shared.registerForRemoteNotifications()
+                        self.delegate?.onChangePermission(status: true)
                     } else {
                         print("Error while registering with APNS server :  \(error?.localizedDescription)")
+                        self.delegate?.onChangePermission(status: false)
                     }
                 })
             } else {
@@ -234,13 +244,15 @@ public class BMSPushClient: NSObject {
                     let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: notifCategory)
                     UIApplication.shared.registerUserNotificationSettings(settings)
                 }
-                UIApplication.shared.registerForRemoteNotifications()
+                self.checkStatusChange()
+                
             }
             
         }
         else{
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
             print("Error while registration - Client secret is not valid")
+            self.delegate?.onChangePermission(status: false)
         }
     }
     
@@ -1012,6 +1024,40 @@ public class BMSPushClient: NSObject {
         }
         
         return devId
+    }
+    internal func checkStatusChange(){
+        
+        if(UserDefaults.standard.object(forKey: "isFirstTry") != nil){
+            let notificationType = UIApplication.shared.currentUserNotificationSettings?.types
+            if notificationType?.rawValue == 0 {
+                print("Push Disabled")
+                self.delegate?.onChangePermission(status: false)
+            } else {
+                print("Push Enabled")
+                self.delegate?.onChangePermission(status: true)
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }else{
+            UserDefaults.standard.set(true, forKey: "isFirstTry")
+            UserDefaults.standard.synchronize()
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { (notifiction) in
+                
+                let when = DispatchTime.now() + 1
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    let notificationType = UIApplication.shared.currentUserNotificationSettings?.types
+                    if notificationType?.rawValue == 0 {
+                        print("Push Disabled")
+                        self.delegate?.onChangePermission(status: false)
+                    } else {
+                        print("Push Enabled")
+                        self.delegate?.onChangePermission(status: true)
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
+                }
+                
+            }
+            
+        }
     }
     
 }
