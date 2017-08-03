@@ -286,22 +286,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
             // Override point for customization after application launch.
             return true
         }
-        
+        func onChangePermission(status: Bool) {
+            print("Notification came : " + "this is enabled: \(status)" as NSString)
+        }
+    
         func registerForPush () {
             
             let myBMSClient = BMSClient.sharedInstance
             myBMSClient.initialize(bluemixRegion: BMSClient.Region.usSouth)
     
             let push =  BMSPushClient.sharedInstance
+            push.delegate = self
     
-            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background)
     
-            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
+            let actionTwo = BMSPushNotificationAction(identifierName: "SECOND", buttonTitle: "Reject", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background)
     
             let category = BMSPushNotificationActionCategory(identifierName: "category", buttonActions: [actionOne, actionTwo])
     
             let notifOptions = BMSPushClientOptions(categoryName: [category])
-            push.initializeWithAppGUID(appGUID: "YOUR_APP_GUID", clientSecret:"YOUR_APP_CLIENT_SECRET", options: notifOptions)
+            push.initializeWithAppGUID("YOUR_APP_GUID", clientSecret:"YOUR_APP_CLIENT_SECRET", options: notifOptions)
     
         }
     

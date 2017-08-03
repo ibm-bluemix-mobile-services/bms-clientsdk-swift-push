@@ -15,6 +15,9 @@
 import UIKit
 import BMSCore
 
+public protocol BMSPushObserver{
+    func onChangePermission(status:Bool);
+}
 // MARK: - Swift 3
 
 #if swift(>=3.0)
@@ -22,9 +25,7 @@ import BMSCore
 import UserNotifications
 import UserNotificationsUI
 
-public protocol BMSPushObserver{
-    func onChangePermission(status:Bool);
-}
+
 public enum IMFPushErrorvalues: Int {
     
     /// - IMFPushErrorInternalError: Denotes the Internal Server Error occured.
@@ -1027,7 +1028,7 @@ public class BMSPushClient: NSObject {
     }
     internal func checkStatusChange(){
         
-        if(UserDefaults.standard.object(forKey: BMSPUSH_APP_INSTALL) != nil){
+        if(UserDefaults.standard.object(forKey: BMSPUSH_APP_INSTALL) != nil) {
             let notificationType = UIApplication.shared.currentUserNotificationSettings?.types
             if notificationType?.rawValue == 0 {
                 print("Push Disabled")
@@ -1037,7 +1038,7 @@ public class BMSPushClient: NSObject {
                 self.delegate?.onChangePermission(status: true)
                 UIApplication.shared.registerForRemoteNotifications()
             }
-        }else{
+        } else {
             UserDefaults.standard.set(true, forKey: BMSPUSH_APP_INSTALL)
             UserDefaults.standard.synchronize()
             NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { (notifiction) in
@@ -1150,6 +1151,8 @@ public class BMSPushClient: NSObject {
     
     private var isInitialized = false;
     
+    public var delegate:BMSPushObserver?
+    
     // MARK: Initializers
     
     /**
@@ -1172,7 +1175,7 @@ public class BMSPushClient: NSObject {
             let settings = UIUserNotificationSettings(forTypes: [.Alert,.Badge,.Sound], categories: nil)
             
             UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-            UIApplication.sharedApplication().registerForRemoteNotifications()
+            self.checkStatusChange()
         }
         else{
             self.sendAnalyticsData(LogLevel.error, logStringData: "Error while registration - Client secret is not valid")
@@ -1235,8 +1238,7 @@ public class BMSPushClient: NSObject {
                 let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: notifCategory)
                 UIApplication.sharedApplication().registerUserNotificationSettings(settings)
             }
-            UIApplication.sharedApplication().registerForRemoteNotifications()
-            
+            self.checkStatusChange()
             
         }
         else{
@@ -2024,6 +2026,42 @@ public class BMSPushClient: NSObject {
         }
         
         return devId
+    }
+    
+    internal func checkStatusChange(){
+        
+        if(NSUserDefaults.standardUserDefaults().objectForKey(BMSPUSH_APP_INSTALL) != nil) {
+            
+            let notificationType = UIApplication.sharedApplication().currentUserNotificationSettings()?.types
+            if notificationType?.rawValue == 0 {
+                print("Disabled")
+                self.delegate?.onChangePermission(false)
+            } else {
+                print("Enabled")
+                self.delegate?.onChangePermission( true)
+                UIApplication.sharedApplication().registerForRemoteNotifications()
+            }
+        } else {
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: BMSPUSH_APP_INSTALL)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
+            NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidBecomeActiveNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { (notification) in
+                
+                sleep(1)
+                let notificationType = UIApplication.sharedApplication().currentUserNotificationSettings()?.types
+                if notificationType?.rawValue == 0 {
+                    print("Disabled")
+                    self.delegate?.onChangePermission(false)
+                } else {
+                    print("Enabled")
+                    self.delegate?.onChangePermission( true)
+                    UIApplication.sharedApplication().registerForRemoteNotifications()
+                }
+                
+            })
+            
+        }
     }
     
 }
