@@ -134,7 +134,7 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
 
-### BMSPushObserver for initialize callback
+### BMSPushObserver for initialize callback (Only in Swift 3)
 
  To get the `initializeWithAppGUID(..)` callback , use the following,
 
