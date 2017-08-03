@@ -134,22 +134,22 @@ push.initializeWithAppGUID(appGUID:"your push appGUID", clientSecret:"your push 
 
 >**Note**: If you are using Xcode8 beta, add `yourApp.entitlements`. To do this, go to Targets -> Capabilities and enable Push Notifications capability.
 
-### BMSPushObserver for initialize callback (Only in Swift 3)
+### BMSPushObserver for initialize callback
 
- To get the `initializeWithAppGUID(..)` callback , use the following,
+ To get the `initializeWithAppGUID(..)` callback , use the following;
 
  1. Add the `BMSPushObserver` `protocol` in your AppDelegate
 
-   ```
+    ```
      class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver
-   ```
- 2. set the delegate for  `BMSPushObserver`
+    ```
+ 2. Set the delegate for  `BMSPushObserver`
 
-  ```
-  let push =  BMSPushClient.sharedInstance
-  push.delegate = self
-  ```
- 3. Implement the `BMSPushObserver` function,
+    ```
+    let push =  BMSPushClient.sharedInstance
+    push.delegate = self
+    ```
+ 3. Implement the `BMSPushObserver` function
 
    ```
    func onChangePermission(status: Bool) {
