@@ -21,7 +21,7 @@ import UserNotifications
 import UserNotificationsUI
 #endif
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
     
     var window: UIWindow?
     
@@ -31,6 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            
             return true
         }
+    
+        func onChangePermission(status: Bool) {
+            
+            print("Push Notification is enabled:  \(status)" as NSString)
+            
+        }
         
         func registerForPush () {
             
@@ -38,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             myBMSClient.initialize(bluemixRegion: BMSClient.Region.usSouth)
             
             let push =  BMSPushClient.sharedInstance
+            push.delegate = self
             
             let actionOne = BMSPushNotificationAction(identifierName: "FIRST", buttonTitle: "Accept", isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background)
             
