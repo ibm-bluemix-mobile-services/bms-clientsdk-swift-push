@@ -56,6 +56,7 @@ internal struct BMSURLSessionUtility {
         let trackingId = UUID().uuidString
         let startTime = Int64(Date.timeIntervalSinceReferenceDate * 1000) // milliseconds
         var requestMetadata = RequestMetadata(url: request.url, startTime: startTime, trackingId: trackingId)
+        requestMetadata.requestMethod = request.httpMethod
         
         return { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             
@@ -108,7 +109,7 @@ internal struct BMSURLSessionUtility {
         
         // Client-side issues eligible for retries
         let errorCodesForRetries: [Int] = [NSURLErrorTimedOut, NSURLErrorCannotConnectToHost, NSURLErrorNetworkConnectionLost]
-        if let error = error as? NSError,
+        if let error = error as NSError?,
             errorCodesForRetries.contains(error.code) {
             
             // If the device is running iOS, we should make sure that it has a network connection before resending the request
@@ -182,7 +183,7 @@ internal struct BMSURLSessionUtility {
                 originalTask.prepareForResending(urlSession: urlSession, request: request, requestMetadata: requestMetadata).resume()
             }
             else {
-                BMSURLSession.logger.error(message: "Authorization process failed. \nError: \(error). \nResponse: \(response).")
+                BMSURLSession.logger.error(message: "Authorization process failed. \nError: \(String(describing: error)). \nResponse: \(response?.responseText ?? "No response").")
                 handleFailure()
             }
         }
@@ -322,6 +323,7 @@ internal struct BMSURLSessionUtility {
         let trackingId = NSUUID().UUIDString
         let startTime = Int64(NSDate.timeIntervalSinceReferenceDate() * 1000) // milliseconds
         var requestMetadata = RequestMetadata(url: request.URL, startTime: startTime, trackingId: trackingId)
+        requestMetadata.requestMethod = request.HTTPMethod
         
         return { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
             
