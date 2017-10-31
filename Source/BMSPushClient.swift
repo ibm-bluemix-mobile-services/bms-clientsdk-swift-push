@@ -127,7 +127,9 @@ public class BMSPushClient: NSObject {
                                     
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
-                        UIApplication.shared.registerForRemoteNotifications()
+                        DispatchQueue.main.async {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
                         self.delegate?.onChangePermission(status: true)
                     } else {
                         print("Error while registering with APNS server :  \(String(describing: error))")
@@ -1043,7 +1045,9 @@ public class BMSPushClient: NSObject {
             } else {
                 print("Push Enabled")
                 self.delegate?.onChangePermission(status: true)
-                UIApplication.shared.registerForRemoteNotifications()
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
             }
         } else {
             UserDefaults.standard.set(true, forKey: BMSPUSH_APP_INSTALL)
