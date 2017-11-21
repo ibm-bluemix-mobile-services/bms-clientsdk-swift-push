@@ -1,4 +1,4 @@
-Bluemix Push Notifications iOS SDK
+IBM Cloud Push Notifications iOS SDK
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
@@ -9,9 +9,9 @@ Bluemix Push Notifications iOS SDK
 [![CocoaPods](https://img.shields.io/cocoapods/dt/BMSPush.svg)](https://cocoapods.org/pods/BMSPush)
 
 
-The [Bluemix Push Notifications service](https://console.ng.bluemix.net/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The SDK enables iOS apps to receive push notifications sent from the service. 
+The [IBM Cloud Push Notifications service](https://console.ng.bluemix.net/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The SDK enables iOS apps to receive push notifications sent from the service. 
 
-Ensure that you go through [Bluemix Push Notifications service documentation](https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate) before you start.
+Ensure that you go through [IBM Cloud Push Notifications service documentation](https://console.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate) before you start.
 
 ## Contents
 
@@ -50,11 +50,11 @@ Ensure that you go through [Bluemix Push Notifications service documentation](ht
 
 ## Installation
 
-The `Bluemix Push Notifications iOS SDK` is available through [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage). 
+The `IBM Cloud Push Notifications iOS SDK` is available through [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage). 
 
 ### Cocoapods
 
-If your project does not have a `Podfile` yet, use the `pod init` command to create one. To install `Bluemix Push Notifications iOS SDK` using Cocoapods, add the following to your Podfile:
+If your project does not have a `Podfile` yet, use the `pod init` command to create one. To install `IBM Cloud Push Notifications iOS SDK` using Cocoapods, add the following to your Podfile:
 
 ```
 use_frameworks!
@@ -498,15 +498,15 @@ let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotificatio
 
 * For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
 
-* For video tutorials visit - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
+* For video tutorials visit - [IBM Cloud Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
 
 ### Learning more
 
-* Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
+* Visit the **[IBM Cloud Developers Community](https://developer.ibm.com/bluemix/)**.
 
 * [Getting started with IBM MobileFirst Platform for iOS](https://www.ng.bluemix.net/docs/mobile/index.html)
 
-### Connect with Bluemix
+### Connect with IBM Cloud
 
 [Twitter](https://twitter.com/ibmbluemix) |
 [YouTube](https://www.youtube.com/watch?v=AVPoBWScRQc) |
