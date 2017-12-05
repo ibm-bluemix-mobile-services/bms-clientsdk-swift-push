@@ -32,35 +32,18 @@ public extension Response {
      This will use the public property `responseText` in the `Response` Class.
      */
     public func subscriptions() -> NSMutableArray {
-        
-        
-        // let finalSubscription = NSMutableDictionary()
-        
+                
         let subscription = NSMutableArray()
         
         if  let  subscriptionDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
             
-            if let subscriptionArray:NSArray = subscriptionDictionary.object(forKey: IMFPUSH_SUBSCRIPTIONS) as? NSArray {
+            if let subscriptionArray:[[String:String]] = subscriptionDictionary.object(forKey: IMFPUSH_SUBSCRIPTIONS) as? [[String:String]] {
                 
-                
-                var subscriptionResponsDic:NSDictionary?
-                
-                for  i in 0..<subscriptionArray.count {
-                    
-                    subscriptionResponsDic = subscriptionArray.object(at: i) as? NSDictionary
-                    
-                    subscription.add((subscriptionResponsDic?.object(forKey: IMFPUSH_TAGNAME))!)
-                }
+                let subscriptions = subscriptionArray.map{($0)[IMFPUSH_TAGNAME]!}
+                subscription.addObjects(from: subscriptions)
             }
-            
-            
-            //finalSubscription.setObject(subscription, forKey: IMFPUSH_SUBSCRIPTIONS)
         }
-        
-        
-        
         return subscription;
-        
     }
     
     /**
@@ -138,17 +121,9 @@ public extension Response {
         
         if let tagsDictionary:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
             
-            if let tag:NSArray = tagsDictionary.object(forKey: IMFPUSH_TAGS) as? NSArray {
-                
-                var tagResponseDic:NSDictionary?
-                
-                for  i in 0..<tag.count {
-                    
-                    tagResponseDic = tag.object(at: i) as? NSDictionary
-                    
-                    tags.add((tagResponseDic?.object(forKey: IMFPUSH_NAME))!)
-                    
-                }
+             if let tag:[[String:String]] = tagsDictionary.object(forKey: IMFPUSH_TAGS) as? [[String:String]] {
+               let tagsArray = tag.map{($0)[IMFPUSH_NAME]!}
+               tags.addObjects(from: tagsArray)
             }
         }
         return tags;

@@ -704,7 +704,7 @@ public class BMSPushClient: NSObject {
             
             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
             
-            let mappedArray = tagsArray.flatMap{"\($0)"}.description;
+            let mappedArray = tagsArray.map{"\($0)"}.description;
             
             let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(mappedArray), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".data(using: .utf8)
             
@@ -841,7 +841,7 @@ public class BMSPushClient: NSObject {
             
             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
-            let mappedArray = tagsArray.flatMap{"\($0)"}.description;
+            let mappedArray = tagsArray.map{"\($0)"}.description;
             
             let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(mappedArray), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".data(using: .utf8)
             
