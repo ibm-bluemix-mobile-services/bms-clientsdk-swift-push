@@ -1,4 +1,4 @@
-IBM Bluemix Mobile Services - Client SDK Swift Push
+IBM Cloud Mobile Services - Client SDK Swift Push
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
@@ -9,7 +9,7 @@ IBM Bluemix Mobile Services - Client SDK Swift Push
 [![CocoaPods](https://img.shields.io/cocoapods/dt/BMSPush.svg)](https://cocoapods.org/pods/BMSPush)
 
 
-This is the Push component of the Swift SDK for [IBM Bluemix Mobile Services](https://console.ng.bluemix.net/docs/mobile/index.html).
+This is the Push component of the Swift SDK for [IBM Cloud Mobile Services](https://console.ng.net/docs/mobile/index.html).
 
 
 ## Contents
@@ -27,7 +27,7 @@ This package contains the Push components of the Swift SDK.
 
 ## Installation
 
-The Bluemix Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
+The IBM Cloud Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
 
 ### Cocoapods
 To install BMSPush using Cocoapods, add it to your Podfile:
@@ -335,9 +335,9 @@ push.unsubscribeFromTags(response, completionHandler: { (response, statusCode, e
     }
 }
 ```
-### Unregistering the Device from Bluemix Push Notification
+### Unregistering the Device from IBM Cloud Push Notification
 
-Use the following code snippets to Unregister the device from Bluemix Push Notification
+Use the following code snippets to Unregister the device from IBM Cloud Push Notification
 
 ```
 
@@ -531,15 +531,15 @@ notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
 
 * Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
 
-* Video Tutorials Available here - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
+* Video Tutorials Available here - [IBM Cloud Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
 
 ### Learning More
 
-* Visit the **[Bluemix Developers Community](https://developer.ibm.com/bluemix/)**.
+* Visit the **[IBM Cloud Developers Community](https://developer.ibm.com/bluemix/)**.
 
 * [Getting started with IBM MobileFirst Platform for iOS](https://www.ng.bluemix.net/docs/mobile/index.html)
 
-### Connect with Bluemix
+### Connect with IBM Cloud
 
 [Twitter](https://twitter.com/ibmbluemix) |
 [YouTube](https://www.youtube.com/playlist?list=PLzpeuWUENMK2d3L5qCITo2GQEt-7r0oqm) |
