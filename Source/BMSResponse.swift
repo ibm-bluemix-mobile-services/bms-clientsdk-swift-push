@@ -14,7 +14,7 @@
 import UIKit
 import BMSCore
 
-// MARK: - Swift 3
+// MARK: - Swift 3 & Swift 4
 
 #if swift(>=3.0)
 

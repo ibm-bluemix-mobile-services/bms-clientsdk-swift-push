@@ -18,7 +18,7 @@ import BMSCore
 public protocol BMSPushObserver{
     func onChangePermission(status:Bool);
 }
-// MARK: - Swift 3
+// MARK: - Swift 3 & Swift 4
 
 #if swift(>=3.0)
 
