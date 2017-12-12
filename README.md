@@ -22,7 +22,7 @@ This package contains the Push components of the Swift SDK.
 
 * iOS 8.0+
 * Xcode 7.3, 8.0
-* Swift 2.3 - 3.0
+* Swift 2.3 - 4.0
 * Cocoapods or Carthage
 
 ## Installation
@@ -51,11 +51,11 @@ pod install
 
 Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
-#### Swift 3.0
+#### Swift 3/ Swift 4
 
 Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
-For apps built with Swift 3.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore) do not convert BMSPush, BMSCore or BMSAnalyticsAPI
+For apps built with Swift 3.0/Swift 4.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore) do not convert BMSPush, BMSCore or BMSAnalyticsAPI
 
 This will installs your dependencies and creates a new Xcode workspace.
 ***Note:*** Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
@@ -92,7 +92,7 @@ import BMSCore
 ```
 let myBMSClient = BMSClient.sharedInstance
 
-//Swift3
+//Swift 3/Swift 4.0
 
 myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
 
@@ -114,7 +114,7 @@ myBMSClient.initialize(bluemixRegion: "Location where your app Hosted")
 ```
 let push =  BMSPushClient.sharedInstance
 
-//Swift 3
+//Swift 3/ Swift 4.0
 
 push.initializeWithAppGUID(appGUID: "your push appGUID", clientSecret:"your push client secret")
 
@@ -163,7 +163,7 @@ For `userId` based notification, the register method will accept one more parame
 
 
 ```
-//Swift3
+//Swift3/Swift 4.0
 
 func application (_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
 
@@ -215,7 +215,7 @@ device can subscribe.
 
 ```
 
-//Swift3
+//Swift3/Swift 4.0
 
 push.retrieveAvailableTagsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
 
@@ -245,7 +245,7 @@ push.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) 
 
 ```
 
-//Swift3
+//Swift3/Swift 4.0
 
  push.subscribeToTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
 
@@ -276,7 +276,7 @@ push.subscribeToTags(response, completionHandler: { (response, statusCode, error
 
 ```
 
-//Swift3
+//Swift3/Swift 4.0
  push.retrieveSubscriptionsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
 
    if error.isEmpty {                                     
@@ -307,7 +307,7 @@ from a tag.
 
 ```
 
-//Swift3
+//Swift3/Swift 4.0
 push.unsubscribeFromTags(tagsArray: response!, completionHandler: { (response, statusCode, error) -> Void in
 
   if error.isEmpty {
@@ -341,7 +341,7 @@ Use the following code snippets to Unregister the device from IBM Cloud Push Not
 
 ```
 
-//Swift3
+//Swift3/Swift 4.0
 
 push.unregisterDevice(completionHandler: { (response, statusCode, error) -> Void in
 
@@ -403,7 +403,7 @@ override func didReceive(_ request: UNNotificationRequest, withContentHandler co
 ## Enable Monitoring.
 <p>To see the push notification monitoring status for iOS you have add the following code snippets. </p>
 
-<strong>Swift 3</strong>
+<strong>Swift 3/Swift 4.0</strong>
 ```
 // Send notification status when app is opened by clicking the notifications
 func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
