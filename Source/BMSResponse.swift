@@ -39,7 +39,7 @@ public extension Response {
             
             if let subscriptionArray:[[String:String]] = subscriptionDictionary.object(forKey: IMFPUSH_SUBSCRIPTIONS) as? [[String:String]] {
                 
-                let subscriptions = subscriptionArray.map{($0)[IMFPUSH_TAGNAME]!}
+                let subscriptions = subscriptionArray.map {($0)[IMFPUSH_TAGNAME]!}
                 subscription.addObjects(from: subscriptions)
             }
         }
@@ -122,7 +122,7 @@ public extension Response {
         if let tagsDictionary:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
             
              if let tag:[[String:String]] = tagsDictionary.object(forKey: IMFPUSH_TAGS) as? [[String:String]] {
-               let tagsArray = tag.map{($0)[IMFPUSH_NAME]!}
+               let tagsArray = tag.map {($0)[IMFPUSH_NAME]!}
                tags.addObjects(from: tagsArray)
             }
         }
