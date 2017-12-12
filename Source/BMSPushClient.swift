@@ -18,7 +18,7 @@ import BMSCore
 public protocol BMSPushObserver{
     func onChangePermission(status:Bool);
 }
-// MARK: - Swift 3
+// MARK: - Swift 3 & Swift 4
 
 #if swift(>=3.0)
 
@@ -127,7 +127,13 @@ public class BMSPushClient: NSObject {
                                     
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
-                        UIApplication.shared.registerForRemoteNotifications()
+                        #if swift(>=4.0)
+                            DispatchQueue.main.async {
+                                UIApplication.shared.registerForRemoteNotifications()
+                            }
+                        #else
+                            UIApplication.shared.registerForRemoteNotifications()
+                        #endif
                         self.delegate?.onChangePermission(status: true)
                     } else {
                         print("Error while registering with APNS server :  \(String(describing: error))")
@@ -206,7 +212,13 @@ public class BMSPushClient: NSObject {
                 
                 center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted, error) in
                     if(granted) {
-                        UIApplication.shared.registerForRemoteNotifications()
+                        #if swift(>=4.0)
+                            DispatchQueue.main.async {
+                                UIApplication.shared.registerForRemoteNotifications()
+                            }
+                        #else
+                            UIApplication.shared.registerForRemoteNotifications()
+                        #endif
                         self.delegate?.onChangePermission(status: true)
                     } else {
                         print("Error while registering with APNS server :  \(String(describing: error))")
@@ -692,7 +704,7 @@ public class BMSPushClient: NSObject {
             
             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
             
-            let mappedArray = tagsArray.flatMap{"\($0)"}.description;
+            let mappedArray = tagsArray.map{"\($0)"}.description;
             
             let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(mappedArray), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".data(using: .utf8)
             
@@ -829,7 +841,7 @@ public class BMSPushClient: NSObject {
             
             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
-            let mappedArray = tagsArray.flatMap{"\($0)"}.description;
+            let mappedArray = tagsArray.map{"\($0)"}.description;
             
             let data =  "{\"\(IMFPUSH_TAGNAMES)\":\(mappedArray), \"\(IMFPUSH_DEVICE_ID)\":\"\(devId)\"}".data(using: .utf8)
             
@@ -1043,7 +1055,13 @@ public class BMSPushClient: NSObject {
             } else {
                 print("Push Enabled")
                 self.delegate?.onChangePermission(status: true)
-                UIApplication.shared.registerForRemoteNotifications()
+                #if swift(>=4.0)
+                    DispatchQueue.main.async {
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
+                #else
+                    UIApplication.shared.registerForRemoteNotifications()
+                #endif
             }
         } else {
             UserDefaults.standard.set(true, forKey: BMSPUSH_APP_INSTALL)
@@ -1059,7 +1077,13 @@ public class BMSPushClient: NSObject {
                     } else {
                         print("Push Enabled")
                         self.delegate?.onChangePermission(status: true)
-                        UIApplication.shared.registerForRemoteNotifications()
+                        #if swift(>=4.0)
+                            DispatchQueue.main.async {
+                                UIApplication.shared.registerForRemoteNotifications()
+                            }
+                        #else
+                            UIApplication.shared.registerForRemoteNotifications()
+                        #endif
                     }
                 }
                 
