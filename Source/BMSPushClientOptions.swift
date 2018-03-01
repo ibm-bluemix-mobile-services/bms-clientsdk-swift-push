@@ -81,7 +81,7 @@ public class BMSPushClientOptions : NSObject {
      
      - parameter pushVaribales: a [String:String] values.
      */
-    public func  setPushVariables(pushVaribales variables: [String:String]){
+    public func  setPushVariables(pushVaribales variables: [String:String]) {
         self.pushvaribales = variables
     }
 }

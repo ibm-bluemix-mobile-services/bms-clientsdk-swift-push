@@ -11,19 +11,16 @@ import UserNotifications
 
 @available(iOS 10.0, *)
 class BMSLocalPushNotification: NSObject {
-    
+
     // Optional array of attachments.
     open var attachments: String?
-    
-    
+
     // The application badge number. nil means no change. 0 to hide.
     open var badge: NSNumber?
-    
-    
+
     // The body of the notification. Use -[NSString localizedUserNotificationStringForKey:arguments:] to provide a string that will be localized at the time that the notification is presented.
     open var body: String
-    
-    
+
     // The identifier for a registered UNNotificationCategory that will be used to determine the appropriate actions to display for the notification.
     open var categoryIdentifier: String?
     
@@ -55,7 +52,7 @@ class BMSLocalPushNotification: NSObject {
         self.userInfo = userInfoValue
     }
     
-    public func showBMSPushNotification(){
+    public func showBMSPushNotification() {
         
         let notification = UNMutableNotificationContent()
         let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
@@ -106,7 +103,9 @@ class BMSLocalPushNotification: NSObject {
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }
     }
+    
 }
+
 @available(iOS 10.0, *)
 extension UNNotificationAttachment {
     
@@ -125,8 +124,7 @@ extension UNNotificationAttachment {
         } catch let error {
             print("error \(error)")
         }
-        
         return nil
     }
+    
 }
-

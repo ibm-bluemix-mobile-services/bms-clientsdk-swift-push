@@ -45,8 +45,8 @@ internal class BMSPushUtils: NSObject {
     class func getPushOptionsNSUserDefaults (key:String) -> String {
         var value = ""
         if(UserDefaults.standard.value(forKey: key) != nil){
-            let dataValue = UserDefaults.standard.value(forKey: key) as! [String: String]
-            let jsonData = try! JSONSerialization.data(withJSONObject: dataValue, options: .prettyPrinted)
+            let dataValue = UserDefaults.standard.value(forKey: key) as? [String: String]
+            let jsonData = try! JSONSerialization.data(withJSONObject: dataValue!, options: .prettyPrinted)
             value = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
         }
         loggerMessage = ("Getting value for NSUserDefaults Key: \(key) and Value: \(value)")
@@ -99,27 +99,27 @@ internal class BMSPushUtils: NSObject {
         let regex = "\\{\\{.*?\\}\\}"
         var text = body
         
-        guard let gg = UserDefaults.standard.value(forKey: IMFPUSH_VARIABLES) as? [String: String] else { return text }
+        guard let optionVaribales = UserDefaults.standard.value(forKey: IMFPUSH_VARIABLES) as? [String: String] else { return text }
         
         do {
             let regex = try NSRegularExpression(pattern: regex)
             
             let results = regex.matches(in: text,
                                         range: NSRange(text.startIndex..., in: text))
-            let add = results.flatMap {
+            let resultMap = results.flatMap {
                 Range($0.range, in: text).map {
-                    String(text[$0]);
+                    String(text[$0])
                 }
             }
             
-            for val in add {
+            for val in resultMap {
                 var temp = val
                 temp = temp.replacingOccurrences(of: "{{", with: "", options: NSString.CompareOptions.literal, range: nil)
                 temp = temp.replacingOccurrences(of: "}}", with: "", options: NSString.CompareOptions.literal, range: nil)
                 temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
                 
-                if let gad = gg[temp] {
-                    text = text.replacingOccurrences(of: val , with: gad)
+                if let templateValue = optionVaribales[temp] {
+                    text = text.replacingOccurrences(of: val , with: templateValue)
                 }
             }
             return text

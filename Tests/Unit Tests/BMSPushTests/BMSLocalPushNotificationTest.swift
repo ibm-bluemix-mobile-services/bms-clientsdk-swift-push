@@ -10,7 +10,7 @@ import XCTest
 @testable import BMSPush
 
 class BMSLocalPushNotificationTest: XCTestCase {
-    
+
     func testInit() {
         
         if #available(iOS 10.0, *) {
