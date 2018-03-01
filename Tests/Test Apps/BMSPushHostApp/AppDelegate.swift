@@ -62,6 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
             
             let notifOptions = BMSPushClientOptions()
             notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
+            let variables = ["username":"ananth","accountNumber":"3564758697057869"]
+            notifOptions.setPushVariables(pushVaribales: variables)
             notifOptions.setInteractiveNotificationCategories(categoryName: [category,categorySecond,categoryThird])
             push.initializeWithAppGUID(appGUID: "YOUR_APP_GUID", clientSecret:"YOUR_APP_CLIENT_SECRET", options: notifOptions)
             
