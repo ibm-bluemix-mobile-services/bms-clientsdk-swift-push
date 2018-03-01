@@ -23,8 +23,7 @@ class BMSLocalPushNotification: NSObject {
 
     // The identifier for a registered UNNotificationCategory that will be used to determine the appropriate actions to display for the notification.
     open var categoryIdentifier: String?
-    
-    
+
     // The sound that will be played for the notification.
     open var sound: String?
     
