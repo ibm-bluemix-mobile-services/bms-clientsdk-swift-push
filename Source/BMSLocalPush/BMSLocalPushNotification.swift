@@ -65,14 +65,13 @@ class BMSLocalPushNotification: NSObject {
         if self.categoryIdentifier != "" {
             notification.categoryIdentifier = self.categoryIdentifier!
         }
-        
         if self.sound != nil {
             notification.sound = UNNotificationSound(named: self.sound!)
         }
         if self.userInfo != nil, self.userInfo?.count != 0 {
             notification.userInfo = self.userInfo!
         }
-        
+
         if self.attachments != nil, self.attachments?.count != 0 {
             if let fileUrl = URL(string: self.attachments! ) {
                 // Download the attachment
@@ -92,7 +91,7 @@ class BMSLocalPushNotification: NSObject {
                             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
                         }
                     }
-                    }.resume()
+                }.resume()
             }
         } else {
             let request = UNNotificationRequest(identifier: "BMSLocalPushNotification", content: notification, trigger: notificationTrigger)
@@ -101,4 +100,3 @@ class BMSLocalPushNotification: NSObject {
     }
 
 }
-
