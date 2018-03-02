@@ -26,21 +26,18 @@ class BMSLocalPushNotification: NSObject {
 
     // The sound that will be played for the notification.
     open var sound: String?
-    
-    
+
     // The subtitle of the notification. Use -[NSString localizedUserNotificationStringForKey:arguments:] to provide a string that will be localized at the time that the notification is presented.
     open var subtitle: String?
-    
-    
+
     // The title of the notification. Use -[NSString localizedUserNotificationStringForKey:arguments:] to provide a string that will be localized at the time that the notification is presented.
     open var title: String?
-    
-    
+
     // Apps can set the userInfo for locally scheduled notification requests. The contents of the push payload will be set as the userInfo for remote notifications.
     open var userInfo: [AnyHashable : Any]?
-    
+
     public init(body bodyValue: String, title titleVlaue: String? = "", subtitle subtitleVlaue: String? = "", sound soundValue: String? = "", badge badgeVlaue: NSNumber? = 0, categoryIdentifier categoryIdentifierValue: String? = "", attachments attachmentsValue: String? = "", userInfo userInfoValue:[AnyHashable : Any]? = nil ) {
-        
+
         self.attachments = attachmentsValue
         self.badge = badgeVlaue
         self.body = bodyValue
@@ -50,9 +47,9 @@ class BMSLocalPushNotification: NSObject {
         self.title = titleVlaue
         self.userInfo = userInfoValue
     }
-    
+
     public func showBMSPushNotification() {
-        
+
         let notification = UNMutableNotificationContent()
         let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         notification.body = self.body
@@ -102,12 +99,12 @@ class BMSLocalPushNotification: NSObject {
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }
     }
-    
+
 }
 
 @available(iOS 10.0, *)
 extension UNNotificationAttachment {
-    
+
     /// Save the image to disk
     static func create(imageFileIdentifier: String, data: NSData, options: [NSObject : AnyObject]?) -> UNNotificationAttachment? {
         let fileManager = FileManager.default
@@ -125,5 +122,5 @@ extension UNNotificationAttachment {
         }
         return nil
     }
-    
+
 }

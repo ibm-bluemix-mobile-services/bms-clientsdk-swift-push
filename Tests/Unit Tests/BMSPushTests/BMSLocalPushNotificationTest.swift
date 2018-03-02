@@ -26,7 +26,7 @@ class BMSLocalPushNotificationTest: XCTestCase {
             // Fallback on earlier versions
         }
     }
-    
+
     func testFail() {
 
         if #available(iOS 10.0, *) {
@@ -41,8 +41,6 @@ class BMSLocalPushNotificationTest: XCTestCase {
         } else {
             // Fallback on earlier versions
         }
-        
-        
     }
-    
+
 }
