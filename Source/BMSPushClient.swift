@@ -175,8 +175,7 @@ public class BMSPushClient: NSObject {
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
             self.notificationOptions = options
-            UserDefaults.standard.set(options.pushvaribales, forKey: IMFPUSH_VARIABLES)
-            UserDefaults.standard.synchronize()
+            BMSPushUtils.saveValueToNSUserDefaults(value: options.pushvaribales, key: IMFPUSH_VARIABLES)
 
             if #available(iOS 10.0, *) {
                 
@@ -304,8 +303,8 @@ public class BMSPushClient: NSObject {
                 for i in 0..<deviceToken.count {
                     token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
                 }
-                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
                 
                 if(self.applicationId == "" || self.clientSecret == ""){
                     
@@ -486,8 +485,8 @@ public class BMSPushClient: NSObject {
             for i in 0..<deviceToken.count {
                 token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
             }
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
             
             if(self.applicationId == "" || self.clientSecret == ""){
                 
@@ -650,8 +649,8 @@ public class BMSPushClient: NSObject {
 
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -712,8 +711,8 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
             
             if(self.applicationId == "" || self.clientSecret == ""){
                 
@@ -786,8 +785,8 @@ public class BMSPushClient: NSObject {
         
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -849,8 +848,8 @@ public class BMSPushClient: NSObject {
 
             let devId = self.getDeviceID()
             
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
             
             if(self.applicationId == "" || self.clientSecret == ""){
                 
@@ -913,8 +912,8 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering unregisterDevice.")
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -962,8 +961,8 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -1167,8 +1166,7 @@ public class BMSPushClient: NSObject {
                 #endif
             }
         } else {
-            UserDefaults.standard.set(true, forKey: BMSPUSH_APP_INSTALL)
-            UserDefaults.standard.synchronize()
+            BMSPushUtils.saveValueToNSUserDefaults(value: true, key: BMSPUSH_APP_INSTALL)
             NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { (notifiction) in
                 
                 let when = DispatchTime.now() + 1

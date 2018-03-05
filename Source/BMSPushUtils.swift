@@ -21,28 +21,28 @@ import BMSCore
 /**
      Utils class for `BMSPush`
  */
-internal class BMSPushUtils: NSObject {
+open class BMSPushUtils: NSObject {
     
     static var loggerMessage:String = ""
     
-    class func saveValueToNSUserDefaults (value:String, key:String) {
+    @objc dynamic open class func saveValueToNSUserDefaults (value:Any, key:String) {
         UserDefaults.standard.set(value, forKey: key)
         UserDefaults.standard.synchronize()
         loggerMessage = ("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
         self.sendLoggerData()
     }
     
-    class func getValueToNSUserDefaults (key:String) -> String {
-        var value = ""
+    @objc dynamic open class func getValueToNSUserDefaults (key:String) -> Any {
+        var value:Any = ""
         if(UserDefaults.standard.value(forKey: key) != nil){
-            value = UserDefaults.standard.value(forKey: key) as! String
+            value = UserDefaults.standard.value(forKey: key) ?? ""
         }
         loggerMessage = ("Getting value for NSUserDefaults Key: \(key) and Value: \(value)")
         self.sendLoggerData()
         return value
     }
     
-    class func getPushOptionsNSUserDefaults (key:String) -> String {
+    @objc dynamic open class func getPushOptionsNSUserDefaults (key:String) -> String {
         var value = ""
         if(UserDefaults.standard.value(forKey: key) != nil){
             let dataValue = UserDefaults.standard.value(forKey: key) as? [String: String]
