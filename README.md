@@ -536,7 +536,7 @@ notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
    ```swift
     
     let variables = [
-          "username":"ananth",
+          "username":"testname",
           "accountNumber":"3564758697057869"
           ]
     let notifOptions = BMSPushClientOptions()
