@@ -542,7 +542,7 @@ notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
     let notifOptions = BMSPushClientOptions()
     notifOptions.setPushVariables(pushVaribales: variables)
    ```
-2. Pass the `BMSPushClientOptions` in the `initializeWithAppGUID()` method. While registerign the device IBM Cloud Push Notifications SDK will pass these variables to IBM Cloud Push Notifications service. 
+2. Pass the `BMSPushClientOptions` in the `initializeWithAppGUID()` method. While registering the device IBM Cloud Push Notifications iOS SDK will pass these variables to IBM Cloud Push Notifications service. 
 
 3. In the `application:didReceiveRemoteNotification:fetchCompletionHandler ()` add the following to handle the template based push notifications,
 
