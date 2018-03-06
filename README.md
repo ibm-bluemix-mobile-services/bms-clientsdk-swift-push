@@ -527,6 +527,45 @@ notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
 ```
 >**Note**: Remember to keep custom DeviceId <strong>unique</strong> for each device.
 
+### Parameterize Push Notifications
+
+ To enable the Parameterize IBM Cloud Push Notifications, do the following ,
+
+ 1. Add the variables key vaue pair in the `BMSPushClientOptions`
+
+   ```swift
+    
+    let variables = [
+          "username":"testname",
+          "accountNumber":"3564758697057869"
+          ]
+    let notifOptions = BMSPushClientOptions()
+    notifOptions.setPushVariables(pushVaribales: variables)
+   ```
+2. Pass the `BMSPushClientOptions` in the `initializeWithAppGUID()` method. While registering the device IBM Cloud Push Notifications iOS SDK will pass these variables to IBM Cloud Push Notifications service. 
+
+3. In the `application:didReceiveRemoteNotification:fetchCompletionHandler ()` add the following to handle the template based push notifications,
+
+    ```Swift
+        let push =  BMSPushClient.sharedInstance
+        push.didReciveBMSPushNotification(userInfo: userInfo) { (res, error) in
+            completionHandler(UIBackgroundFetchResult.newData)
+        }
+    ```
+
+4. While sending push notification add the varibale key in `{{}}`
+
+  ```Swift
+
+    {
+        "message": {
+            "alert": "hello {{username}} , balance on your account {{accountNumber}} is $1200"
+        }
+    }
+
+  ```
+>**Note**: If the app is force killed , the Template based notifications may not appear in the device.
+
 ### Samples & videos
 
 * Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-swift-hellopush)
