@@ -529,7 +529,7 @@ notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
 
 ### Parameterize Push Notifications
 
- To enable the Parameterized IBM Cloud Push Notifications, do the following ,
+ To enable the Parameterize IBM Cloud Push Notifications, do the following ,
 
  1. Add the variables key vaue pair in the `BMSPushClientOptions`
 
