@@ -527,9 +527,9 @@ notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
 ```
 >**Note**: Remember to keep custom DeviceId <strong>unique</strong> for each device.
 
-### Template based Push Notifications (This feature needs iOS10 and above)
+### Parameterize Push Notifications
 
- To enable the template based IBM Cloud Push Notifications, do the following ,
+ To enable the Parameterize IBM Cloud Push Notifications, do the following ,
 
  1. Add the variables key vaue pair in the `BMSPushClientOptions`
 
