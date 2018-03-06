@@ -7,6 +7,7 @@
 //
 
 import UIKit
+#if swift(>=3.0)
 import UserNotifications
 
 @available(iOS 10.0, *)
@@ -98,3 +99,4 @@ class BMSLocalPushNotification: NSObject {
     }
 
 }
+#endif
