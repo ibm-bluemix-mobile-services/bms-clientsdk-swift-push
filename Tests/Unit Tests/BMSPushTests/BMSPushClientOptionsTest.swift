@@ -21,8 +21,11 @@ class BMSPushClientOptionsTest: XCTestCase {
     func testInit(){
         let notifOptions = BMSPushClientOptions()
         notifOptions.setInteractiveNotificationCategories(categoryName: [])
+        let variables = ["username":"ananth","accountNumber":"3564758697057869"]
         #if swift(>=3.0)
            notifOptions.setDeviceId(deviceId: "testDeviceId")
+           notifOptions.setPushVariables(pushVaribales: variables)
+           XCTAssertEqual(notifOptions.pushvaribales, variables)
         #else
             notifOptions.setDeviceIdValue("testDeviceId")
         #endif
