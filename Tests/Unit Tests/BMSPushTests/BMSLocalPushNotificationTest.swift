@@ -10,7 +10,9 @@ import XCTest
 @testable import BMSPush
 
 class BMSLocalPushNotificationTest: XCTestCase {
-#if swift(>=3.0)
+
+    #if swift(>=3.0)
+
     func testInit() {
 
         if #available(iOS 10.0, *) {
@@ -42,5 +44,7 @@ class BMSLocalPushNotificationTest: XCTestCase {
             // Fallback on earlier versions
         }
     }
+
 #endif
+
 }
