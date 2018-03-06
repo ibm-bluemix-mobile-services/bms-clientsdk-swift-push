@@ -21,21 +21,33 @@ import BMSCore
 /**
      Utils class for `BMSPush`
  */
-internal class BMSPushUtils: NSObject {
+open class BMSPushUtils: NSObject {
     
     static var loggerMessage:String = ""
     
-    class func saveValueToNSUserDefaults (value:String, key:String) {
+    @objc dynamic open class func saveValueToNSUserDefaults (value:Any, key:String) {
         UserDefaults.standard.set(value, forKey: key)
         UserDefaults.standard.synchronize()
         loggerMessage = ("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
         self.sendLoggerData()
     }
     
-    class func getValueToNSUserDefaults (key:String) -> String {
+    @objc dynamic open class func getValueToNSUserDefaults (key:String) -> Any {
+        var value:Any = ""
+        if(UserDefaults.standard.value(forKey: key) != nil){
+            value = UserDefaults.standard.value(forKey: key) ?? ""
+        }
+        loggerMessage = ("Getting value for NSUserDefaults Key: \(key) and Value: \(value)")
+        self.sendLoggerData()
+        return value
+    }
+    
+    @objc dynamic open class func getPushOptionsNSUserDefaults (key:String) -> String {
         var value = ""
         if(UserDefaults.standard.value(forKey: key) != nil){
-            value = UserDefaults.standard.value(forKey: key) as! String
+            let dataValue = UserDefaults.standard.value(forKey: key) as? [String: String]
+            let jsonData = try! JSONSerialization.data(withJSONObject: dataValue!, options: .prettyPrinted)
+            value = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
         }
         loggerMessage = ("Getting value for NSUserDefaults Key: \(key) and Value: \(value)")
         self.sendLoggerData()
@@ -80,6 +92,41 @@ internal class BMSPushUtils: NSObject {
         Logger.logLevelFilter = LogLevel.info
         testLogger.info(message: loggerMessage)
         
+    }
+    
+    class func checkTemplateNotifications(_ body:String) -> String {
+        
+        let regex = "\\{\\{.*?\\}\\}"
+        var text = body
+        
+        guard let optionVaribales = UserDefaults.standard.value(forKey: IMFPUSH_VARIABLES) as? [String: String] else { return text }
+        
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            
+            let results = regex.matches(in: text,
+                                        range: NSRange(text.startIndex..., in: text))
+            let resultMap = results.flatMap {
+                Range($0.range, in: text).map {
+                    String(text[$0])
+                }
+            }
+            
+            for val in resultMap {
+                var temp = val
+                temp = temp.replacingOccurrences(of: "{{", with: "", options: NSString.CompareOptions.literal, range: nil)
+                temp = temp.replacingOccurrences(of: "}}", with: "", options: NSString.CompareOptions.literal, range: nil)
+                temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
+                
+                if let templateValue = optionVaribales[temp] {
+                    text = text.replacingOccurrences(of: val , with: templateValue)
+                }
+            }
+            return text
+            
+        } catch {
+            return text
+        }
     }
 }
 

@@ -80,7 +80,7 @@ public class BMSPushClient: NSObject {
 
     private var _notificationOptions : BMSPushClientOptions?
     
-    public var notificationOptions:BMSPushClientOptions? {
+    private var notificationOptions:BMSPushClientOptions? {
         get{
             return _notificationOptions
         }
@@ -174,6 +174,8 @@ public class BMSPushClient: NSObject {
             isInitialized = true;
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
+            self.notificationOptions = options
+            BMSPushUtils.saveValueToNSUserDefaults(value: options.pushvaribales, key: IMFPUSH_VARIABLES)
 
             if #available(iOS 10.0, *) {
                 
@@ -301,8 +303,8 @@ public class BMSPushClient: NSObject {
                 for i in 0..<deviceToken.count {
                     token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
                 }
-                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
                 
                 if(self.applicationId == "" || self.clientSecret == ""){
                     
@@ -342,7 +344,14 @@ public class BMSPushClient: NSObject {
                             
                             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
-                            let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
+                            var data:Data?
+                            let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                            if(varibales.isEmpty) {
+                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
+                            } else {
+                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                            }
+                            
                             // MARK: Registering for the First Time
                             
                              getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
@@ -394,7 +403,13 @@ public class BMSPushClient: NSObject {
                                 
                                  let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
-                                let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
+                                var data:Data?
+                                let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                                if(varibales.isEmpty) {
+                                    data =   "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
+                                } else {
+                                    data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                                }
                                 
                                 
                                 getRequest.send(requestBody: data!, completionHandler: { (response, error) -> Void in
@@ -470,8 +485,8 @@ public class BMSPushClient: NSObject {
             for i in 0..<deviceToken.count {
                 token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
             }
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
             
             if(self.applicationId == "" || self.clientSecret == ""){
                 
@@ -510,7 +525,13 @@ public class BMSPushClient: NSObject {
                         
                         let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
-                        let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\"}".data(using: .utf8)
+                        let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                        var data:Data?
+                        if(varibales.isEmpty) {
+                            data =   "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\"}".data(using: .utf8)
+                        } else {
+                            data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                        }
                         
                         
                         // MARK: Registering for the First Time
@@ -563,7 +584,13 @@ public class BMSPushClient: NSObject {
                             
                              let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
-                            let data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\"}".data(using: .utf8)
+                            var data:Data?
+                            let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                            if(varibales.isEmpty) {
+                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\"}".data(using: .utf8)
+                            } else {
+                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                            }
                             
                             getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
                                 
@@ -622,8 +649,8 @@ public class BMSPushClient: NSObject {
 
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -684,8 +711,8 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
             
             if(self.applicationId == "" || self.clientSecret == ""){
                 
@@ -758,8 +785,8 @@ public class BMSPushClient: NSObject {
         
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -821,8 +848,8 @@ public class BMSPushClient: NSObject {
 
             let devId = self.getDeviceID()
             
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
             
             if(self.applicationId == "" || self.clientSecret == ""){
                 
@@ -885,8 +912,8 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering unregisterDevice.")
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -934,8 +961,8 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID)
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET)
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
         
         if(self.applicationId == "" || self.clientSecret == ""){
             
@@ -980,7 +1007,7 @@ public class BMSPushClient: NSObject {
                     print("Successfully updated the message status.  The response is: "+responseText)
                     completionHandler(responseText,200,"")
                     
-                } else if let responseError = error{
+                } else if let responseError = error {
                     
                     self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status.  The response is:  \(responseError.localizedDescription)")
                     print("Failed to update the message status.  The response is: "+responseError.localizedDescription)
@@ -990,6 +1017,81 @@ public class BMSPushClient: NSObject {
         } else{
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status.  The response is:  Status should be either SEEN or OPEN")
             print("Failed to update the message status.  The response is: Status should be either SEEN or OPEN")
+        }
+    }
+    
+    public func didReciveBMSPushNotification (userInfo: [AnyHashable : Any], completionHandler: @escaping (_ response:String?, _ error:String) -> Void) {
+        
+        
+        //let payload = userInfo as NSDictionary
+        
+        
+        guard let hasTemplate = userInfo["has-template"] as? Int  else {
+            completionHandler("", "Not a template based push Notification")
+            return  }
+        
+        if hasTemplate == 1 {
+            
+            let payload = userInfo as NSDictionary
+            var additionalPaylaod: [AnyHashable : Any] = [:]
+            var alertBody: String = ""
+            var title: String = ""
+            var subTitle: String = ""
+            var categoryIdentifier: String = ""
+            var sound: String = ""
+            var attachmentURL:String = ""
+            var badge:NSNumber = 0
+            
+            if let additionalJson = payload.value(forKey: "payload") as? [AnyHashable : Any], additionalJson.count != 0 {
+                additionalPaylaod = additionalJson
+            }
+            
+            guard let templateAps = payload.value(forKey: "template") as? NSDictionary, templateAps.count > 0 else {
+                completionHandler("", "Get Template Json - Failed to get template based push notification")
+                return
+            }
+            
+            guard  let alertJson = templateAps.value(forKey: "alert") as? NSDictionary else {
+                completionHandler("", "Get Alert Body - Failed to get template based push notification")
+                return
+            }
+            
+            if let message = alertJson.value(forKey: "body") as? String {
+                alertBody = BMSPushUtils.checkTemplateNotifications(message);
+            }
+            
+            if let titleValue = alertJson.value(forKey: "title") as? String {
+                title = titleValue
+            }
+            
+            if let subTitleValue = alertJson.value(forKey: "subTitle") as? String {
+                subTitle = subTitleValue
+            }
+            
+            if let soundValue = alertJson.value(forKey: "sound") as? String {
+                sound = soundValue
+            }
+            
+            if let attachmentUrlValue = payload.value(forKey: "attachment-url") as? String {
+                attachmentURL = attachmentUrlValue
+            }
+            if let badgeValue = templateAps.value(forKey: "badge") as? NSNumber {
+                badge = badgeValue
+            }
+            if let categoryValue = templateAps.value(forKey: "category") as? String {
+                categoryIdentifier = categoryValue
+            }
+            
+            if #available(iOS 10.0, *) {
+                let localPush = BMSLocalPushNotification(body: alertBody, title: title, subtitle: subTitle, sound: sound, badge: badge, categoryIdentifier: categoryIdentifier, attachments: attachmentURL, userInfo: additionalPaylaod)
+                localPush.showBMSPushNotification()
+                completionHandler("", "Template push success")
+            } else {
+                completionHandler("", "Template based push is not supporte dbelow iOS10")
+            }
+        } else {
+            completionHandler("", "Not a template based push Notification")
+            return
         }
     }
     
@@ -1064,8 +1166,7 @@ public class BMSPushClient: NSObject {
                 #endif
             }
         } else {
-            UserDefaults.standard.set(true, forKey: BMSPUSH_APP_INSTALL)
-            UserDefaults.standard.synchronize()
+            BMSPushUtils.saveValueToNSUserDefaults(value: true, key: BMSPUSH_APP_INSTALL)
             NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { (notifiction) in
                 
                 let when = DispatchTime.now() + 1
