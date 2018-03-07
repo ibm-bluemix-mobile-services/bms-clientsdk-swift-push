@@ -24,8 +24,8 @@ class BMSPushClientOptionsTest: XCTestCase {
         let variables = ["username":"ananth","accountNumber":"3564758697057869"]
         #if swift(>=3.0)
            notifOptions.setDeviceId(deviceId: "testDeviceId")
-           notifOptions.setPushVariables(pushVaribales: variables)
-           XCTAssertEqual(notifOptions.pushvaribales, variables)
+            notifOptions.setPushVariables(pushVariables: variables)
+           XCTAssertEqual(notifOptions.pushvariables, variables)
         #else
             notifOptions.setDeviceIdValue("testDeviceId")
         #endif

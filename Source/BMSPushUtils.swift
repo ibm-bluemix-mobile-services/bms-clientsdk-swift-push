@@ -99,7 +99,7 @@ open class BMSPushUtils: NSObject {
         let regex = "\\{\\{.*?\\}\\}"
         var text = body
         
-        guard let optionVaribales = UserDefaults.standard.value(forKey: IMFPUSH_VARIABLES) as? [String: String] else { return text }
+        guard let optionVariables = UserDefaults.standard.value(forKey: IMFPUSH_VARIABLES) as? [String: String] else { return text }
         
         do {
             let regex = try NSRegularExpression(pattern: regex)
@@ -118,7 +118,7 @@ open class BMSPushUtils: NSObject {
                 temp = temp.replacingOccurrences(of: "}}", with: "", options: NSString.CompareOptions.literal, range: nil)
                 temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
                 
-                if let templateValue = optionVaribales[temp] {
+                if let templateValue = optionVariables[temp] {
                     text = text.replacingOccurrences(of: val , with: templateValue)
                 }
             }

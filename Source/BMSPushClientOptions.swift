@@ -31,8 +31,8 @@ public class BMSPushClientOptions : NSObject {
     /// Device for registrations. This is a userinput value. If not given the default deviceId will be used.
     var deviceId: String
     
-    /// Push varibales  - A Key value pair.
-    var pushvaribales: [String:String]
+    /// Push variables  - A Key value pair.
+    var pushvariables: [String:String]
     
     // MARK: Initializers
     
@@ -42,7 +42,7 @@ public class BMSPushClientOptions : NSObject {
     public override init() {
         self.category = []
         self.deviceId = ""
-        self.pushvaribales = [:]
+        self.pushvariables = [:]
     }
     
     /**
@@ -54,7 +54,7 @@ public class BMSPushClientOptions : NSObject {
     public init (categoryName category: [BMSPushNotificationActionCategory]) {
         self.category = category
         self.deviceId = ""
-        self.pushvaribales = [:]
+        self.pushvariables = [:]
     }
     
     /**
@@ -79,10 +79,10 @@ public class BMSPushClientOptions : NSObject {
     /**
      set Push Variables for template based push Notification.
      
-     - parameter pushVaribales: a [String:String] values.
+     - parameter pushVariables: a [String:String] values.
      */
-    public func  setPushVariables(pushVaribales variables: [String:String]) {
-        self.pushvaribales = variables
+    public func  setPushVariables(pushVariables variables: [String:String]) {
+        self.pushvariables = variables
     }
 }
 

@@ -175,7 +175,7 @@ public class BMSPushClient: NSObject {
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
             self.notificationOptions = options
-            BMSPushUtils.saveValueToNSUserDefaults(value: options.pushvaribales, key: IMFPUSH_VARIABLES)
+            BMSPushUtils.saveValueToNSUserDefaults(value: options.pushvariables, key: IMFPUSH_VARIABLES)
 
             if #available(iOS 10.0, *) {
                 
