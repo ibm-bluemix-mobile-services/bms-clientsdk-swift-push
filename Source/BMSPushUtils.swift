@@ -130,7 +130,7 @@ open class BMSPushUtils: NSObject {
                         temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
                 
                         if let templateValue = optionVariables[temp] {
-                        text = text.replacingOccurrences(of: val , with: templateValue)
+                            text = text.replacingOccurrences(of: val , with: templateValue)
                         }
                     }
                 #else
@@ -140,7 +140,7 @@ open class BMSPushUtils: NSObject {
                     temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
                 
                     if let templateValue = optionVariables[temp] {
-                    text = text.replacingOccurrences(of: val , with: templateValue)
+                        text = text.replacingOccurrences(of: val , with: templateValue)
                     }
                 #endif
             }
