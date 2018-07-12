@@ -113,14 +113,36 @@ open class BMSPushUtils: NSObject {
             }
             
             for val in resultMap {
-                var temp = val
-                temp = temp.replacingOccurrences(of: "{{", with: "", options: NSString.CompareOptions.literal, range: nil)
-                temp = temp.replacingOccurrences(of: "}}", with: "", options: NSString.CompareOptions.literal, range: nil)
-                temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
+                #if swift(>=4.0)
+                    var temp = val
+                    temp = temp.replacingOccurrences(of: "{{", with: "", options: NSString.CompareOptions.literal, range: nil)
+                    temp = temp.replacingOccurrences(of: "}}", with: "", options: NSString.CompareOptions.literal, range: nil)
+                    temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
                 
-                if let templateValue = optionVariables[temp] {
-                    text = text.replacingOccurrences(of: val , with: templateValue)
-                }
+                    if let templateValue = optionVariables[temp] {
+                        text = text.replacingOccurrences(of: val , with: templateValue)
+                    }
+                #elseif swift(>=3.2)
+                    if let val = val {
+                        var temp = val
+                        temp = temp.replacingOccurrences(of: "{{", with: "", options: NSString.CompareOptions.literal, range: nil)
+                        temp = temp.replacingOccurrences(of: "}}", with: "", options: NSString.CompareOptions.literal, range: nil)
+                        temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
+                
+                        if let templateValue = optionVariables[temp] {
+                            text = text.replacingOccurrences(of: val , with: templateValue)
+                        }
+                    }
+                #else
+                    var temp = val
+                    temp = temp.replacingOccurrences(of: "{{", with: "", options: NSString.CompareOptions.literal, range: nil)
+                    temp = temp.replacingOccurrences(of: "}}", with: "", options: NSString.CompareOptions.literal, range: nil)
+                    temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
+                
+                    if let templateValue = optionVariables[temp] {
+                        text = text.replacingOccurrences(of: val , with: templateValue)
+                    }
+                #endif
             }
             return text
             
