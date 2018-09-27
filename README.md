@@ -2,7 +2,7 @@ IBM Cloud Mobile Services - Client SDK Swift Push
 ===================================================
 
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-swift-push)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/08bd0c46c0ae4485a3abc0fd8dffa4cf)](https://www.codacy.com/app/ibm-bluemix-mobile-services/bms-clientsdk-swift-push?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ibm-bluemix-mobile-services/bms-clientsdk-swift-push&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7a8222746ad84415812c0bfdf9ada631)](https://www.codacy.com/app/AnanthaKrish/bms-clientsdk-swift-push?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ibm-bluemix-mobile-services/bms-clientsdk-swift-push&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-push/badge.svg?branch=development)](https://coveralls.io/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-push?branch=development)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/BMSPush.svg)](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.git)
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
@@ -15,7 +15,7 @@ This is the Push component of the Swift SDK for [IBM Cloud Mobile Services](http
 ## Contents
 
 This package contains the Push components of the Swift SDK.
-* Push Registration and Unregister
+* Push Registration and Un-register
 * Subscribing and Unsubscribing for Tags
 
 ## Requirements
@@ -23,14 +23,14 @@ This package contains the Push components of the Swift SDK.
 * iOS 8.0+
 * Xcode 7.3, 8.0
 * Swift 2.3 - 4.0
-* Cocoapods or Carthage
+* CocoaPods or Carthage
 
 ## Installation
 
-The IBM Cloud Mobile Services Swift SDKs are available via [Cocoapods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
+The IBM Cloud Mobile Services Swift SDKs are available via [CocoaPods](http://cocoapods.org/) and [Carthage](https://github.com/Carthage/Carthage).
 
-### Cocoapods
-To install BMSPush using Cocoapods, add it to your Podfile:
+### CocoaPods
+To install BMSPush using CocoaPods, add it to your Podfile:
 
 ```ruby
 use_frameworks!
@@ -53,9 +53,9 @@ Before running the `pod install` command, make sure to use Cocoapods version [1.
 
 #### Swift 3/ Swift 4
 
-Before running the `pod install` command, make sure to use Cocoapods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
+Before running the `pod install` command, make sure to use CocoaPods version [1.1.0.beta.1](https://github.com/CocoaPods/CocoaPods/releases/tag/1.1.0.beta.1).
 
-For apps built with Swift 3.0/Swift 4.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in Xcode 8 (following the installation of BMSCore) do not convert BMSPush, BMSCore or BMSAnalyticsAPI
+For apps built with Swift 3.0/Swift 4.0, you may receive a prompt saying "Convert to Current Swift Syntax?" when opening your project in XCode 8 (following the installation of BMSCore) do not convert BMSPush, BMSCore or BMSAnalyticsAPI
 
 This will installs your dependencies and creates a new Xcode workspace.
 ***Note:*** Ensure that you always open the new Xcode workspace, instead of the original Xcode project file:
