@@ -25,10 +25,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
     
     var window: UIWindow?
     
+    #if swift(>=4.2)
+    let alertStyle = UIAlertController.Style.alert
+    let actionStyle = UIAlertAction.Style.default
+    #else
+    let alertStyle = UIAlertControllerStyle.alert
+    let actionStyle = UIAlertActionStyle.default
+    #endif
+    
     #if swift(>=3.0)
     
-         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-           
+        #if swift(>=4.2)
+    
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    
+        return true
+        }
+        #else
+        
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+            
             return true
         }
     
@@ -273,10 +289,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
         func showAlert (title:NSString , message:NSString){
             
             // create the alert
-            let alert = UIAlertController.init(title: title as String, message: message as String, preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController.init(title: title as String, message: message as String, preferredStyle: alertStyle)
             
             // add an action (button)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: actionStyle, handler: nil))
             
             // show the alert
             self.window!.rootViewController!.present(alert, animated: true, completion: nil)

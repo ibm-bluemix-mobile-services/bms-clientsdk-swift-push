@@ -67,7 +67,11 @@ class BMSLocalPushNotification: NSObject {
             notification.categoryIdentifier = self.categoryIdentifier!
         }
         if self.sound != nil {
+            #if swift(>=4.2)
+            notification.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: self.sound!))
+            #else
             notification.sound = UNNotificationSound(named: self.sound!)
+            #endif
         }
         if self.userInfo != nil, self.userInfo?.count != 0 {
             notification.userInfo = self.userInfo!
