@@ -67,6 +67,14 @@ public class BMSPushClient: NSObject {
     
     // MARK: Properties (Public)
     
+    #if swift(>=4.2)
+    let bmsNotificationName = UIApplication.didBecomeActiveNotification
+    let applicationBGstate =  UIApplication.State.background
+    #else
+    let bmsNotificationName = NSNotification.Name.UIApplicationDidBecomeActive
+    let applicationBGstate =  UIApplicationState.background
+    #endif
+    
     /// This singleton should be used for all `BMSPushClient` activity.
     public static let sharedInstance = BMSPushClient()
     
@@ -981,7 +989,7 @@ public class BMSPushClient: NSObject {
         
         var status = "";
         
-        if (UIApplication.shared.applicationState == UIApplicationState.background){
+        if (UIApplication.shared.applicationState == applicationBGstate){
             status = "SEEN";
         } else {
             status = "OPEN"
@@ -1167,7 +1175,7 @@ public class BMSPushClient: NSObject {
             }
         } else {
             BMSPushUtils.saveValueToNSUserDefaults(value: true, key: BMSPUSH_APP_INSTALL)
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { (notifiction) in
+            NotificationCenter.default.addObserver(forName: bmsNotificationName, object: nil, queue: OperationQueue.main) { (notifiction) in
                 
                 let when = DispatchTime.now() + 1
                 DispatchQueue.main.asyncAfter(deadline: when) {
