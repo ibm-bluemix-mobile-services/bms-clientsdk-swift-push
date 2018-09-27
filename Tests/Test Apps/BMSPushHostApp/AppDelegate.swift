@@ -39,10 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
     
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
-        return true
+              return true
         }
         #else
-        
+    
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
             
             return true
