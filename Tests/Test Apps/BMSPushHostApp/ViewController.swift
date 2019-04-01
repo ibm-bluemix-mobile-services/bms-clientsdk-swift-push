@@ -51,7 +51,7 @@ class ViewController: UIViewController {
             }
         }
         
-        func updateMessage () {
+    @objc func updateMessage () {
             
             var responseLabelText = self.textField.text
             responseLabelText = "\(responseLabelText) \n Response Text: \(responseText) \n\n"

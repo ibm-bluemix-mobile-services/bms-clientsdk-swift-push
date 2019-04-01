@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
             
             return true
         }
+    #endif
     
         func onChangePermission(status: Bool) {
             
