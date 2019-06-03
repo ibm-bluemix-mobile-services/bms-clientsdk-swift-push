@@ -53,11 +53,11 @@ class ViewController: UIViewController {
         
     @objc func updateMessage () {
             
+        DispatchQueue.main.async(execute: {
             var responseLabelText = self.textField.text
-            responseLabelText = "\(responseLabelText) \n Response Text: \(responseText) \n\n"
-            DispatchQueue.main.async(execute: {
-                self.textField.text = responseLabelText
-            })
+            responseLabelText = "\(String(describing: responseLabelText)) \n Response Text: \(String(describing: responseText)) \n\n"
+            self.textField.text = responseLabelText
+        })
         }
 
     

@@ -94,3 +94,5 @@ internal let BMSPUSH_APP_GUID  = "appGUID"
 internal let BMSPUSH_APP_INSTALL  = "isFirstTry"
 
 internal let IMFPUSH_VARIABLES  = "variables"
+
+internal let HAS_IMFPUSH_VARIABLES  = "hasVariables"

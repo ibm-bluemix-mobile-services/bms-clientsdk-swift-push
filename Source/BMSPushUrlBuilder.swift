@@ -21,7 +21,7 @@ import BMSCore
         
         internal  let FORWARDSLASH = "/";
         internal  let IMFPUSH = "imfpush";
-        internal let JPIMFPUSH = "jp-tok.imfpush.cloud.ibm.com"
+       // internal let JPIMFPUSH = "jp-tok.imfpush.cloud.ibm.com"
         internal  let V1 = "v1";
         internal  let APPS = "apps";
         internal  let AMPERSAND = "&";
@@ -64,9 +64,11 @@ import BMSCore
                     else{
                         reWritedomain = "stage1-dev.ng.bluemix.net"
                     }
-                } else if BMSClient.sharedInstance.bluemixRegion == BMSClient.Region.jpTok {
+                }
+                /*else if BMSClient.sharedInstance.bluemixRegion == BMSClient.Region.jpTok {
                     pwUrl_ += JPIMFPUSH
-                } else{
+                }*/
+                else{
                     pwUrl_ += IMFPUSH
                     pwUrl_ += BMSClient.sharedInstance.bluemixRegion!
                     reWritedomain = ""

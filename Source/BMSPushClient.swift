@@ -183,7 +183,12 @@ public class BMSPushClient: NSObject {
             let category : [BMSPushNotificationActionCategory] = options.category
             self.bluemixDeviceId = options.deviceId
             self.notificationOptions = options
-            BMSPushUtils.saveValueToNSUserDefaults(value: options.pushvariables, key: IMFPUSH_VARIABLES)
+            if !options.pushvariables.isEmpty && options.pushvariables.count > 0 {
+                BMSPushUtils.saveValueToNSUserDefaults(value: options.pushvariables, key: IMFPUSH_VARIABLES)
+                BMSPushUtils.saveValueToNSUserDefaults(value: true, key: HAS_IMFPUSH_VARIABLES)
+            } else {
+                BMSPushUtils.saveValueToNSUserDefaults(value: false, key: HAS_IMFPUSH_VARIABLES)
+            }
 
             if #available(iOS 10.0, *) {
                 
@@ -353,11 +358,11 @@ public class BMSPushClient: NSObject {
                             let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
                             var data:Data?
-                            let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
-                            if(varibales.isEmpty) {
+                            let variables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                            if(variables.isEmpty) {
                                 data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
                             } else {
-                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\", \"\(IMFPUSH_VARIABLES)\": \(variables)}".data(using: .utf8)
                             }
                             
                             // MARK: Registering for the First Time
@@ -412,11 +417,11 @@ public class BMSPushClient: NSObject {
                                  let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
                                 var data:Data?
-                                let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
-                                if(varibales.isEmpty) {
+                                let variables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                                if(variables.isEmpty) {
                                     data =   "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\"}".data(using: .utf8)
                                 } else {
-                                    data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                                    data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_USERID)\": \"\(WithUserId!)\", \"\(IMFPUSH_VARIABLES)\": \(variables)}".data(using: .utf8)
                                 }
                                 
                                 
@@ -533,12 +538,12 @@ public class BMSPushClient: NSObject {
                         
                         let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
-                        let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                        let variables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
                         var data:Data?
-                        if(varibales.isEmpty) {
+                        if(variables.isEmpty) {
                             data =   "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\"}".data(using: .utf8)
                         } else {
-                            data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                            data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_PLATFORM)\": \"A\", \"\(IMFPUSH_VARIABLES)\": \(variables)}".data(using: .utf8)
                         }
                         
                         
@@ -593,11 +598,11 @@ public class BMSPushClient: NSObject {
                              let getRequest = Request(url: resourceURL, method: method, headers: headers, queryParameters: nil, timeout: 60, cachePolicy: .useProtocolCachePolicy)
 
                             var data:Data?
-                            let varibales = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
-                            if(varibales.isEmpty) {
+                            let variables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+                            if(variables.isEmpty) {
                                 data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\"}".data(using: .utf8)
                             } else {
-                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_VARIABLES)\": \(varibales)}".data(using: .utf8)
+                                data =  "{\"\(IMFPUSH_DEVICE_ID)\": \"\(devId)\", \"\(IMFPUSH_TOKEN)\": \"\(token)\", \"\(IMFPUSH_VARIABLES)\": \(variables)}".data(using: .utf8)
                             }
                             
                             getRequest.send(requestBody: data!, completionHandler: { (response, error)  -> Void in
