@@ -41,7 +41,7 @@ internal struct BMSURLSessionUtility {
             
             // Analytics
             bmsRequest.setValue(UUID().uuidString, forHTTPHeaderField: "x-wl-analytics-tracking-id")
-            if let requestMetadata = BaseRequest.requestAnalyticsData {
+            if let requestMetadata = Request.requestAnalyticsData {
                 bmsRequest.setValue(requestMetadata, forHTTPHeaderField: "x-mfp-analytics-metadata")
             }
         }
@@ -308,7 +308,7 @@ internal struct BMSURLSessionUtility {
             
             // Analytics
             bmsRequest.setValue(NSUUID().UUIDString, forHTTPHeaderField: "x-wl-analytics-tracking-id")
-            if let requestMetadata = BaseRequest.requestAnalyticsData {
+            if let requestMetadata = Request.requestAnalyticsData {
                 bmsRequest.setValue(requestMetadata, forHTTPHeaderField: "x-mfp-analytics-metadata")
             }
         }

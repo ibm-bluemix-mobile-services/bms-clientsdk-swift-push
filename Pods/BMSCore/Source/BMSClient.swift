@@ -60,6 +60,20 @@ public class BMSClient {
             - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
          */
 	public static let germany = ".eu-de.bluemix.net"
+	
+       /**
+	    The Washington Bluemix region.
+         
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
+	public static let usEast = ".us-east.bluemix.net"
+    
+    /**
+	    The Tokyo Bluemix region.
+         
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
+	public static let jpTok = ".jp-tok.bluemix.net"
         
     }
     
@@ -129,10 +143,9 @@ public class BMSClient {
 
 
 
-// MARK: - Swift 2
-
 #else
 
+// MARK: - Swift 2
 
 
 /**
@@ -169,6 +182,20 @@ public class BMSClient {
              - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
          */
         public static let sydney = ".au-syd.bluemix.net"
+	
+	/**
+	    The Germany Bluemix region.
+         
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
+	public static let germany = ".eu-de.bluemix.net"
+	
+        /**
+	    The Washington Bluemix region.
+         
+            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
+         */
+	public static let usEast = ".us-east.bluemix.net"
     }
     
     

@@ -44,6 +44,11 @@ open class BMSPushUtils: NSObject {
     
     @objc dynamic open class func getPushOptionsNSUserDefaults (key:String) -> String {
         var value = ""
+        if key == IMFPUSH_VARIABLES {
+            if let hasVariable = UserDefaults.standard.value(forKey: HAS_IMFPUSH_VARIABLES) as? Bool, hasVariable != true {
+                return value
+            }
+        }
         if(UserDefaults.standard.value(forKey: key) != nil){
             let dataValue = UserDefaults.standard.value(forKey: key) as? [String: String]
             let jsonData = try! JSONSerialization.data(withJSONObject: dataValue!, options: .prettyPrinted)

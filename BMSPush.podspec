@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   s.name         = 'BMSPush'
 
-  s.version      = '3.4.2'
+  s.version      = '3.4.3'
 
   s.summary      = 'Swift client side Push SDK for IBM Bluemix Push notifications services'
   s.homepage     = 'https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push'
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Source/**/*.swift'
 
 
-  s.dependency 'BMSCore', '~> 2.0'
+  s.dependency 'BMSCore', '~> 2.4'
   s.ios.deployment_target = '8.0'
 
   s.requires_arc = true
