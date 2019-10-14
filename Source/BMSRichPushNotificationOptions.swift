@@ -17,7 +17,6 @@ import Foundation
 // MARK: - Swift 3 & Swift 4
 #if swift(>=3.0)
     import UserNotifications
-    import UserNotificationsUI
 
 /// Class to Handle iOS10 Rich push notifications.
 @available(iOS 10.0, *)

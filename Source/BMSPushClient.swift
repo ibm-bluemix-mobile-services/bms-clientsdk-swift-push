@@ -23,8 +23,6 @@ public protocol BMSPushObserver{
 #if swift(>=3.0)
 
 import UserNotifications
-import UserNotificationsUI
-
 
 public enum IMFPushErrorvalues: Int {
     

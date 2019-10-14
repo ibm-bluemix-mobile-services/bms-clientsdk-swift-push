@@ -2,8 +2,8 @@ language: objective-c
 
 matrix:
   include:
-    - osx_image: xcode8.2
     - osx_image: xcode10.1
+    - osx_image: xcode11.1
 
 before_install:
   - rvm install 2.4.0
@@ -17,14 +17,14 @@ script:
   - pod update
   - pod lib lint --allow-warnings
   - carthage update
-  - xcodebuild clean build -workspace BMSPush.xcworkspace -scheme BMSPush CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
+  - xcodebuild clean build -workspace BMSPush.xcworkspace -scheme BMSPush CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO SUPPORTS_MACCATALYST=NO
   # For Xcode 7, test with iOS 8.1
   - if [[ "${TRAVIS_JOB_NUMBER}" = *".1"* ]]; then
-      xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=8.1';
+      xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1';
     fi
   # For Xcode 8, test with iOS 10.1
   - if [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
-      xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' -enableCodeCoverage YES;
+      xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max,OS=13.1' -enableCodeCoverage YES;
     fi
   # When merging or pushing to the master branch, release a new version and publish the API documentation
   - if [ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ "${TRAVIS_BRANCH}" = "master" ] && [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
