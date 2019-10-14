@@ -17,7 +17,7 @@ script:
   - pod update
   - pod lib lint --allow-warnings
   - carthage update
-  - xcodebuild clean build -workspace BMSPush.xcworkspace -scheme BMSPush CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
+  - xcodebuild clean build -workspace BMSPush.xcworkspace -scheme BMSPush CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO SUPPORTS_MACCATALYST=NO
   # For Xcode 7, test with iOS 8.1
   - if [[ "${TRAVIS_JOB_NUMBER}" = *".1"* ]]; then
       xcodebuild test -workspace BMSPush.xcworkspace -scheme BMSPushTests -destination 'platform=iOS Simulator,name=iPhone 6,OS=8.1';
