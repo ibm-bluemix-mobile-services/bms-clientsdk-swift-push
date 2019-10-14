@@ -11,9 +11,9 @@
 *     limitations under the License.
 */
 
-
+#if !os(iOS)
 import WatchKit
-
+#endif
 
 
 // MARK: - Swift 3
