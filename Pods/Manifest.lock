@@ -7,7 +7,7 @@ DEPENDENCIES:
   - BMSCore (~> 2.4)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - BMSAnalyticsAPI
     - BMSCore
 
@@ -17,4 +17,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: e80a7d7ad79933b8fc203a435b3e57055e1352bc
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.4
