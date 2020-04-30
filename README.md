@@ -37,6 +37,7 @@ Ensure that you go through [IBM Cloud Push Notifications service documentation](
 - [Enable monitoring](#enable-monitoring)
 - [Open URL by clicking push notifications](#open-url-by-clicking-push-notifications)
 - [Parameterize Push Notifications](#parameterize-push-notifications)
+- [API documentation](#api-documentation)
 - [Samples and videos](#samples-and-videos)
 
 ## Prerequisites
@@ -559,6 +560,9 @@ if remoteNotif != nil {
 
   ```
 >**Note**: If the app is force killed , the Template based notifications may not appear in the device.
+
+## API documentation
+ Find the API documentation here - http://ibm-bluemix-mobile-services.github.io/API-docs/client-SDK/BMSPush/Swift/index.html
 
 ## Samples and videos
 
