@@ -37,7 +37,7 @@ class BMSLocalPushNotification: NSObject {
     // Apps can set the userInfo for locally scheduled notification requests. The contents of the push payload will be set as the userInfo for remote notifications.
     open var userInfo: [AnyHashable : Any]?
 
-    public init(body bodyValue: String, title titleVlaue: String? = "", subtitle subtitleVlaue: String? = "", sound soundValue: String? = "", badge badgeVlaue: NSNumber? = 0, categoryIdentifier categoryIdentifierValue: String? = "", attachments attachmentsValue: String? = "", userInfo userInfoValue:[AnyHashable : Any]? = nil ) {
+    public init(body bodyValue: String, title titleVlaue: String? = "", subtitle subtitleVlaue: String? = "", sound soundValue: String? = "", badge badgeVlaue: NSNumber? = 0, categoryIdentifier categoryIdentifierValue: String? = "", attachments attachmentsValue: String? = "", userInfo userInfoValue: [AnyHashable : Any]? = nil ) {
 
         self.attachments = attachmentsValue
         self.badge = badgeVlaue
@@ -80,7 +80,7 @@ class BMSLocalPushNotification: NSObject {
         if self.attachments != nil, self.attachments?.count != 0 {
             if let fileUrl = URL(string: self.attachments! ) {
                 // Download the attachment
-                URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
+                URLSession.shared.downloadTask(with: fileUrl) { (location, _, _) in
                     if let location = location {
                         // Move temporary file to remove .tmp extension
                         let tmpDirectory = NSTemporaryDirectory()
@@ -88,7 +88,7 @@ class BMSLocalPushNotification: NSObject {
                         let tmpUrl = URL(string: tmpFile)!
                         try? FileManager.default.moveItem(at: location, to: tmpUrl)
                         // Add the attachment to the notification content
-                        if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options:nil) {
+                        if let attachment = try? UNNotificationAttachment(identifier: "", url: tmpUrl, options: nil) {
                             notification.attachments = [attachment]
                             let request = UNNotificationRequest(identifier: "BMSLocalPushNotification", content: notification, trigger: notificationTrigger)
                             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
