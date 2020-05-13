@@ -5,3 +5,4 @@ disabled_rules: # rule identifiers to exclude from running
   - variable_name
   - line_length
   - colon
+  - trailing_semicolon

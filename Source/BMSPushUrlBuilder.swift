@@ -47,11 +47,11 @@ internal class BMSPushUrlBuilder: NSObject {
         
         super.init()
         
-        if !(clientSecret.isEmpty) {
+        if !clientSecret.isEmpty {
             clientSecretHeader = clientSecret
         }
         
-        if(!BMSPushClient.overrideServerHost.isEmpty){
+        if !BMSPushClient.overrideServerHost.isEmpty {
             pwUrl_ += BMSPushClient.overrideServerHost
             reWritedomain = BMSPushClient.overrideServerHost
         } else {
@@ -71,7 +71,7 @@ internal class BMSPushUrlBuilder: NSObject {
     func addHeader() -> [String: String] {
         
         if reWritedomain.isEmpty {
-            if(clientSecretHeader.isEmpty){
+            if clientSecretHeader.isEmpty {
                 return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON]
             }
             return [IMFPUSH_CONTENT_TYPE_KEY:IMFPUSH_CONTENT_TYPE_JSON, IMFPUSH_CLIENT_SECRET:clientSecretHeader]
@@ -115,7 +115,7 @@ internal class BMSPushUrlBuilder: NSObject {
         subscriptionURL += QUESTIONMARK
         subscriptionURL += "deviceId=\(deviceId)"
         
-        return subscriptionURL;
+        return subscriptionURL
     }
     
     func getUnSubscribetagsUrl() -> String {
@@ -143,8 +143,7 @@ internal class BMSPushUrlBuilder: NSObject {
         sendMessageDeliveryStatusUrl += messageId
         return sendMessageDeliveryStatusUrl
     }
-    
-    
+
     internal func getCollectionUrl (collectionName:String) -> String {
         
         var collectionUrl:String = pwUrl_
