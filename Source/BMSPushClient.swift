@@ -278,10 +278,8 @@ public class BMSPushClient: NSObject {
                 for i in 0..<deviceToken.count {
                     token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
                 }
-                self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-                self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
                 
-                if(self.applicationId == "" || self.clientSecret == ""){
+                if !checkForCredentials() {
                     
                     self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while registration - Error is: push is not initialized")
                     completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - Error is: push is not initialized")
@@ -460,10 +458,8 @@ public class BMSPushClient: NSObject {
             for i in 0..<deviceToken.count {
                 token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
             }
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
             
-            if(self.applicationId == "" || self.clientSecret == ""){
+            if !checkForCredentials() {
                 
                 self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while  registration - Error is: push is not initialized")
                 completionHandler("", IMFPushErrorvalues.IMFPushRegistrationError.rawValue , "Error while registration - Error is: push is not initialized")
@@ -624,10 +620,7 @@ public class BMSPushClient: NSObject {
         
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering retrieveAvailableTagsWithCompletitionHandler.")
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
-        
-        if(self.applicationId == "" || self.clientSecret == ""){
+       if !checkForCredentials() {
             
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving available tags - Error is: push is not initialized")
             completionHandler([], IMFPushErrorvalues.IMFPushRetrieveTagsError.rawValue , "Error while retrieving available tags - Error is: push is not initialized")
@@ -686,10 +679,7 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
-            
-            if(self.applicationId == "" || self.clientSecret == ""){
+            if !checkForCredentials() {
                 
                 self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while subscribing to tags - Error is: push is not initialized")
                 completionHandler([:], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue , "Error while subscribing to tags - Error is: push is not initialized")
@@ -760,10 +750,7 @@ public class BMSPushClient: NSObject {
         
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
-        
-        if(self.applicationId == "" || self.clientSecret == ""){
+        if !checkForCredentials() {
             
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while retrieving subscriptions - Error is: push is not initialized")
             completionHandler([], IMFPushErrorvalues.IMFPushTagSubscriptionError.rawValue , "Error while retrieving subscriptions - Error is: push is not initialized")
@@ -823,10 +810,7 @@ public class BMSPushClient: NSObject {
             
             let devId = self.getDeviceID()
             
-            self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-            self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
-            
-            if(self.applicationId == "" || self.clientSecret == ""){
+            if !checkForCredentials() {
                 
                 self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unsubscribing from tags - Error is: push is not initialized")
                 completionHandler([:], IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Error while unsubscribing from tags - Error is: push is not initialized")
@@ -887,10 +871,7 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering unregisterDevice.")
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
-        
-        if(self.applicationId == "" || self.clientSecret == ""){
+        if !checkForCredentials() {
             
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Error while unregistering device - Error is: push is not initialized")
             completionHandler("", IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Error while unregistering device - Error is: push is not initialized")
@@ -936,10 +917,7 @@ public class BMSPushClient: NSObject {
         self.sendAnalyticsData(logType: LogLevel.debug, logStringData: "Entering sendMessageDeliveryStatus.")
         let devId = self.getDeviceID()
         
-        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
-        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
-        
-        if(self.applicationId == "" || self.clientSecret == ""){
+       if !checkForCredentials() {
             
             self.sendAnalyticsData(logType: LogLevel.error, logStringData: "Failed to update the message status - Error is: push is not initialized")
             completionHandler("", IMFPushErrorvalues.IMFPushTagUnsubscriptionError.rawValue , "Failed to update the message status - Error is: push is not initialized")
@@ -1183,6 +1161,16 @@ public class BMSPushClient: NSObject {
         let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: categories)
         UIApplication.shared.registerUserNotificationSettings(settings)
         self.checkStatusChange()
+    }
+    
+    internal func checkForCredentials() -> Bool {
+        self.applicationId = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_APP_GUID) as? String
+        self.clientSecret = BMSPushUtils.getValueToNSUserDefaults(key: BMSPUSH_CLIENT_SECRET) as? String
+        
+        if(self.applicationId == "" || self.clientSecret == "") {
+            return false
+        }
+        return true
     }
 }
 #endif
