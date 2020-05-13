@@ -85,7 +85,6 @@ internal class BMSPushUrlBuilder: NSObject {
         
     }
     
-    
     func getSubscribedDevicesUrl(devID:String) -> String {
         
         var deviceIdUrl:String = getDevicesUrl()
@@ -143,7 +142,7 @@ internal class BMSPushUrlBuilder: NSObject {
         sendMessageDeliveryStatusUrl += messageId
         return sendMessageDeliveryStatusUrl
     }
-
+    
     internal func getCollectionUrl (collectionName:String) -> String {
         
         var collectionUrl:String = pwUrl_

@@ -6,3 +6,5 @@ disabled_rules: # rule identifiers to exclude from running
   - line_length
   - colon
   - trailing_semicolon
+line_length: 300
+force_cast: warning # implicitly

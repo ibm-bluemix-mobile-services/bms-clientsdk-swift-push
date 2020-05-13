@@ -31,7 +31,7 @@ public extension Response {
      
      This will use the public property `responseText` in the `Response` Class.
      */
-    public func subscriptions() -> NSMutableArray {
+    func subscriptions() -> NSMutableArray {
         
         let subscription = NSMutableArray()
         
@@ -51,30 +51,9 @@ public extension Response {
      
      This will use the public property `responseText` in the `Response` Class.
      */
-    public func subscribeStatus() -> NSMutableDictionary {
+    func subscribeStatus() -> NSMutableDictionary {
         
-        
-        let finalDict = NSMutableDictionary()
-        
-        if let subscriptions:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
-            
-            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
-                
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
-                
-            }
-            if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
-                
-                
-                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
-                
-            }
-            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
-                
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
-            }
-        }
-        return finalDict;
+        return getResponseDict()
     }
     
     /**
@@ -82,32 +61,9 @@ public extension Response {
      
      This will use the public property `responseText` in the `Response` Class.
      */
-    public func unsubscribeStatus() -> NSMutableDictionary {
+    func unsubscribeStatus() -> NSMutableDictionary {
         
-        
-        let finalDict = NSMutableDictionary()
-        
-        if let subscriptions:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
-            
-            
-            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
-                
-                
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
-                
-            }
-            if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
-                
-                
-                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
-                
-            }
-            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
-                
-                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
-            }
-        }
-        return finalDict;
+        return getResponseDict()
     }
     
     /**
@@ -115,7 +71,7 @@ public extension Response {
      
      This will use the public property `responseText` in the `Response` Class.
      */
-    public func availableTags() -> NSMutableArray {
+    func availableTags() -> NSMutableArray {
         
         let tags = NSMutableArray()
         
@@ -139,6 +95,31 @@ public extension Response {
             return result
         }
         return [:]
+    }
+    
+    internal func getResponseDict() -> NSMutableDictionary {
+        
+        let finalDict = NSMutableDictionary()
+        
+        if let subscriptions:NSDictionary = convertStringToDictionary(text: self.responseText!) as NSDictionary? {
+            
+            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIPTIONEXISTS) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONEXISTS as NSCopying)
+                
+            }
+            if let dictionarySub:NSDictionary = subscriptions.object(forKey: IMFPUSH_TAGSNOTFOUND) as? NSDictionary {
+                
+                
+                finalDict.setObject(dictionarySub, forKey:IMFPUSH_TAGSNOTFOUND as NSCopying)
+                
+            }
+            if let arraySub:NSArray = subscriptions.object(forKey: IMFPUSH_SUBSCRIBED) as? NSArray {
+                
+                finalDict.setObject(arraySub, forKey:IMFPUSH_SUBSCRIPTIONS as NSCopying)
+            }
+        }
+        return finalDict;
     }
 }
 
