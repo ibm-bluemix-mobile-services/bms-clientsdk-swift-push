@@ -21,18 +21,85 @@ class BMSPushUtilsTest: XCTestCase {
         
         #if swift(>=3.0)
             BMSPushUtils.saveValueToNSUserDefaults(value: "some string", key: "somestring")
-            
+        
+        XCTAssertEqual("some string", BMSPushUtils.getValueToNSUserDefaults(key: "somestring") as! String )
         #else
             BMSPushUtils.saveValueToNSUserDefaults("some string", key: "somestring")
             
         #endif
     }
     
-    func testgetPushSettingValue () {
+    func testOptionsDefaults() {
+        
+        let variables = [
+        "username":"testname",
+        "accountNumber":"3564758697057869"
+        ]
+        
+        BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
+        BMSPushUtils.saveValueToNSUserDefaults(value: true, key: HAS_IMFPUSH_VARIABLES)
+        
+        let newVariables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+        
+        if let data = newVariables.data(using: .utf8) {
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:String] {
+                    XCTAssertEqual(variables["username"], json["username"])
+                    XCTAssertEqual(variables["accountNumber"], json["accountNumber"])
+                } else {
+                    XCTFail("Failed in options check")
+                }
+                
+            } catch {
+                XCTFail("Failed in options check")
+            }
+        }
+    }
+    
+    func testOptionsDefaultlFalse() {
+        
+        let variables = [
+        "username":"testname",
+        "accountNumber":"3564758697057869"
+        ]
+        
+        BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
+        BMSPushUtils.saveValueToNSUserDefaults(value: false, key: HAS_IMFPUSH_VARIABLES)
+        
+        let newVariables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
+        
+        XCTAssertEqual(newVariables, "")
+    }
+    
+    func testTemplateNotification() {
+        
+        let variables = [
+        "username":"Johny",
+        "accountNumber":"3564758697057869"
+        ]
+        
+        BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
+        BMSPushUtils.saveValueToNSUserDefaults(value: true, key: HAS_IMFPUSH_VARIABLES)
+        
+        let data = "Hi! {{username}}, your {{accountNumber}} is activated"
+        let expected = "Hi! Johny, your 3564758697057869 is activated"
+
+        let message = BMSPushUtils.checkTemplateNotifications(data)
+        
+        XCTAssertEqual(message, expected)
+        
+    }
+    func testGetPushSettingValue () {
         
         let pushSettingsValue = BMSPushUtils.getPushSettingValue()
         NSLog("\(pushSettingsValue)")
     }
+    
+    func test () {
+           
+           let pushSettingsValue = BMSPushUtils.getPushSettingValue()
+           NSLog("\(pushSettingsValue)")
+       }
     
     func testSendLoggerData () {
         

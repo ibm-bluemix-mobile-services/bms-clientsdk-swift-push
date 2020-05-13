@@ -53,6 +53,7 @@ internal class BMSPushUrlBuilder: NSObject {
         
         if(!BMSPushClient.overrideServerHost.isEmpty){
             pwUrl_ += BMSPushClient.overrideServerHost
+            reWritedomain = BMSPushClient.overrideServerHost
         } else {
             pwUrl_ += defaultProtocol
             pwUrl_ += "://"

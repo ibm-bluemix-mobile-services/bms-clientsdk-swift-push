@@ -44,6 +44,16 @@ class BMSLocalPushNotificationTest: XCTestCase {
             // Fallback on earlier versions
         }
     }
+    
+    func testNotification() {
+        if #available(iOS 10.0, *) {
+            let localPush = BMSLocalPushNotification(body: "test message", title: "test Title", subtitle: "test subTitle", sound: "soundName", badge: 3, categoryIdentifier: "identifier", attachments: "https://attchment.png", userInfo: [:])
+            localPush.showBMSPushNotification()
+            
+        } else {
+            // Fallback on earlier versions
+        }
+    }
 
 #endif
 
