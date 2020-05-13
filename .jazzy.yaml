@@ -1,6 +1,7 @@
 module: BMSPush
 author: IBM
 github_url: https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push
+xcodebuild_arguments: ["-workspace","BMSPush.xcworkspace","-scheme","BMSPush","-sdk","iphonesimulator"]
 
 skip_undocumented: true
 clean: true
