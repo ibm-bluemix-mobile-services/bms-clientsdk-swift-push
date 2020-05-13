@@ -78,11 +78,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, BMSPushObserver {
             let categoryThird = BMSPushNotificationActionCategory(identifierName: "category2", buttonActions: [actionOne, actionTwo,actionThree,actionFour,actionFive])
             
             let notifOptions = BMSPushClientOptions()
-            //notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
+            notifOptions.setDeviceId(deviceId: "YOUR_DEVICE_ID")
             let variables = ["username":"ananth","accountNumber":"3564758697057869"]
-          //  notifOptions.setPushVariables(pushVariables: variables)
-           // notifOptions.setInteractiveNotificationCategories(categoryName: [category,categorySecond,categoryThird])
-            push.initializeWithAppGUID(appGUID: "eef8735d-7900-4ff9-8666-bb61bde021fc", clientSecret:"b08a5e57-4b88-479d-8fce-5cb9922147d4")
+            notifOptions.setPushVariables(pushVariables: variables)
+            notifOptions.setInteractiveNotificationCategories(categoryName: [category,categorySecond,categoryThird])
+            push.initializeWithAppGUID(appGUID: "<APP_GUID>", clientSecret: "<CLIENT_SECRET>")
             
         }
         func unRegisterPush () {
