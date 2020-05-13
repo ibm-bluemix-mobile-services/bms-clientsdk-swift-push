@@ -36,7 +36,7 @@ class BMSPushUtilsTest: XCTestCase {
         "accountNumber": "3564758697057869"
         ]
         
-        BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
+        BMSPushUtils.saveValueToNSUserDefaults(value: variables, key: IMFPUSH_VARIABLES)
         BMSPushUtils.saveValueToNSUserDefaults(value: true, key: HAS_IMFPUSH_VARIABLES)
         
         let newVariables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
@@ -64,7 +64,7 @@ class BMSPushUtilsTest: XCTestCase {
         "accountNumber": "3564758697057869"
         ]
         
-        BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
+        BMSPushUtils.saveValueToNSUserDefaults(value: variables, key: IMFPUSH_VARIABLES)
         BMSPushUtils.saveValueToNSUserDefaults(value: false, key: HAS_IMFPUSH_VARIABLES)
         
         let newVariables = BMSPushUtils.getPushOptionsNSUserDefaults(key: IMFPUSH_VARIABLES)
