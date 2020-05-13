@@ -90,7 +90,7 @@ To complete the integration, follow the instructions [here](https://github.com/C
 
 Choose either of the following options:
 
-- For `Swift 3.0+` apps, use `carthage update`.
+- For `Swift 3.+` apps, use `carthage update`.
 
 
 ## Initialize SDK
