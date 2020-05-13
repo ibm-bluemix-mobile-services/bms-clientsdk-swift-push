@@ -6,7 +6,7 @@ IBM Cloud Mobile Services - Client SDK Swift Push
 [![Coverage Status](https://coveralls.io/repos/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-push/badge.svg?branch=development)](https://coveralls.io/github/ibm-bluemix-mobile-services/bms-clientsdk-swift-push?branch=development)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/BMSPush.svg)](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-swift-push.git)
 
-The [IBM Cloud Push Notifications service](https://console.ng.bluemix.net/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The SDK enables iOS apps to receive push notifications sent from the service. 
+The [IBM Cloud Push Notifications service](https://cloud.ibm.com/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The SDK enables iOS apps to receive push notifications sent from the service. 
 
 Ensure that you go through [IBM Cloud Push Notifications service documentation](https://cloud.ibm.com/docs/services/mobilepush?topic=mobile-pushnotification-gettingstartedtemplate#gettingstartedtemplate) before you start.
 
@@ -117,6 +117,8 @@ Where `bluemixRegion` specifies the location where the application is hosted. Yo
 - `BMSClient.Region.unitedKingdom`
 - `BMSClient.Region.sydney`
 - `BMSClient.Region.germany`
+- `BMSClient.Region.jpTok`
+- `BMSClient.Region.usEast`
 
 The `appGUID` is the Push service instance Id value, and `clientSecret` is the Push service instance client secret value.
 
