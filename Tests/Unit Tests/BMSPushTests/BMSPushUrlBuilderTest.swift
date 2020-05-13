@@ -18,10 +18,9 @@ import BMSCore
 
 class BMSPushUrlBuilderTest: XCTestCase {
     
-    
     func testAddHeader() {
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
@@ -32,7 +31,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     func testAddHeader1() {
         
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.germany)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
@@ -54,7 +53,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     func testAddHeader3() {
         
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.sydney)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
@@ -65,7 +64,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     func testAddHeader4() {
         
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.unitedKingdom)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
@@ -76,7 +75,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     func testAddHeader5() {
         
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usEast)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
@@ -88,7 +87,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         
         BMSPushClient.overrideServerHost = "192.0.0.2:9080"
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
@@ -100,7 +99,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
         
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usEast)
 
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "")
         
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
@@ -111,8 +110,8 @@ class BMSPushUrlBuilderTest: XCTestCase {
         
         BMSPushClient.overrideServerHost = "192.0.0.2:9080"
         
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"")
-        
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "")
+
         let headers = urlBuilder.addHeader()
         if !(headers.isEmpty) {
             print("Success!!")
@@ -121,7 +120,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetSubscribedDevicesUrl(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         #if swift(>=3.0)
         let subDeviceURL = urlBuilder.getSubscribedDevicesUrl(devID: "testDevice")
@@ -135,7 +134,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetDevicesUrl(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let getDeviceURL = urlBuilder.getDevicesUrl()
         if !(getDeviceURL.isEmpty) {
@@ -145,7 +144,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetTagsUrl(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let getTagsUrl = urlBuilder.getTagsUrl()
         if !(getTagsUrl.isEmpty) {
@@ -155,7 +154,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetSubscriptionsUrl(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let getSubscriptionsUrl = urlBuilder.getSubscriptionsUrl()
         if !(getSubscriptionsUrl.isEmpty) {
@@ -165,7 +164,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetAvailableSubscriptionsUrl(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         #if swift(>=3.0)
         let getAvailableSubscriptionsUrl = urlBuilder.getAvailableSubscriptionsUrl(deviceId: "testDevice")
         #else
@@ -178,7 +177,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetUnSubscribetagsUrl(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         
         let getUnSubscribetagsUrl = urlBuilder.getUnSubscribetagsUrl()
         if !(getUnSubscribetagsUrl.isEmpty) {
@@ -188,7 +187,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetUnregisterUrl(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         #if swift(>=3.0)
         let getUnregisterUrl = urlBuilder.getUnregisterUrl(deviceId: "testDevice")
         #else
@@ -201,7 +200,7 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetSendMessageDeliveryStatus(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",clientSecret:"6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         #if swift(>=3.0)
         let getSendMessageDeliveryStatus = urlBuilder.getSendMessageDeliveryStatus(messageId: "testMessageId")
         #else

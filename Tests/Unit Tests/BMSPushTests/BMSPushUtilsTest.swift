@@ -22,7 +22,7 @@ class BMSPushUtilsTest: XCTestCase {
         #if swift(>=3.0)
             BMSPushUtils.saveValueToNSUserDefaults(value: "some string", key: "somestring")
         
-        XCTAssertEqual("some string", BMSPushUtils.getValueToNSUserDefaults(key: "somestring") as! String )
+        XCTAssertEqual("some string", BMSPushUtils.getValueToNSUserDefaults(key: "somestring") ?? "" )
         #else
             BMSPushUtils.saveValueToNSUserDefaults("some string", key: "somestring")
             
@@ -32,8 +32,8 @@ class BMSPushUtilsTest: XCTestCase {
     func testOptionsDefaults() {
         
         let variables = [
-        "username":"testname",
-        "accountNumber":"3564758697057869"
+        "username": "testname",
+        "accountNumber": "3564758697057869"
         ]
         
         BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
@@ -43,7 +43,8 @@ class BMSPushUtilsTest: XCTestCase {
         
         if let data = newVariables.data(using: .utf8) {
             do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String:String] {
+                if let json = try JSONSerialization.jsonObject(with: data,
+                              options: .mutableContainers) as? [String:String] {
                     XCTAssertEqual(variables["username"], json["username"])
                     XCTAssertEqual(variables["accountNumber"], json["accountNumber"])
                 } else {
@@ -59,8 +60,8 @@ class BMSPushUtilsTest: XCTestCase {
     func testOptionsDefaultlFalse() {
         
         let variables = [
-        "username":"testname",
-        "accountNumber":"3564758697057869"
+        "username": "testname",
+        "accountNumber": "3564758697057869"
         ]
         
         BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
@@ -74,11 +75,11 @@ class BMSPushUtilsTest: XCTestCase {
     func testTemplateNotification() {
         
         let variables = [
-        "username":"Johny",
-        "accountNumber":"3564758697057869"
+        "username": "Johny",
+        "accountNumber": "3564758697057869"
         ]
         
-        BMSPushUtils.saveValueToNSUserDefaults(value:variables, key: IMFPUSH_VARIABLES)
+        BMSPushUtils.saveValueToNSUserDefaults(value: variables, key: IMFPUSH_VARIABLES)
         BMSPushUtils.saveValueToNSUserDefaults(value: true, key: HAS_IMFPUSH_VARIABLES)
         
         let data = "Hi! {{username}}, your {{accountNumber}} is activated"

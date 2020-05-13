@@ -47,7 +47,13 @@ class BMSLocalPushNotificationTest: XCTestCase {
     
     func testNotification() {
         if #available(iOS 10.0, *) {
-            let localPush = BMSLocalPushNotification(body: "test message", title: "test Title", subtitle: "test subTitle", sound: "soundName", badge: 3, categoryIdentifier: "identifier", attachments: "https://attchment.png", userInfo: [:])
+            let localPush = BMSLocalPushNotification(
+                body: "test message",
+                title: "test Title",
+                subtitle: "test subTitle",
+                sound: "soundName", badge: 3,
+                categoryIdentifier: "identifier",
+                attachments: "https://attchment.png", userInfo: [:])
             localPush.showBMSPushNotification()
             
         } else {
