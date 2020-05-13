@@ -11,10 +11,6 @@
 *     limitations under the License.
 */
 
-internal var DUMP_TRACE:Bool = true
-
-internal let QUERY_PARAM_SUBZONE = "="
-
 internal let IMFPUSH_ACTION_DELETE  = "action=delete"
 
 internal let IMFPUSH_CONTENT_TYPE_JSON  = "application/json; charset = UTF-8"
