@@ -42,8 +42,8 @@ Ensure that you go through [IBM Cloud Push Notifications service documentation](
 ## Prerequisites
 
 * iOS 8.0 or later
-* Xcode 7.3, 8.0 or later
-* Swift 2.3 - 3.0 or later
+* Xcode 8.0 or later
+* Swift 3.0 or later
 * [Cocoapods latest version](https://github.com/CocoaPods/CocoaPods-app/releases) 
 * Carthage
 
@@ -90,7 +90,6 @@ To complete the integration, follow the instructions [here](https://github.com/C
 
 Choose either of the following options:
 
-- For `Swift 2.3` apps, use the `carthage update --toolchain com.apple.dt.toolchain.Swift_2_3.` command. 
 - For `Swift 3.0+` apps, use `carthage update`.
 
 
@@ -183,16 +182,6 @@ The following options are supported:
 			print( "Error during unregistering device \(error) and status code is:\(statusCode)")
 		}
 	}
-
-	//Swift2.3 and Older
-	BMSPushClient.sharedInstance.unregisterDevice({ (response, statusCode, error) -> Void in
-		
-		if error.isEmpty {
-			print( "Response during unregistering device : \(response) and status code is:\(statusCode)")
-		}else{
-			print( "Error during unregistering device \n  - status code: \(statusCode) \n Error :\(error) \n")
-		}
-	}
 	```
 
 	>**Note**:To unregister from the `UserId` based registration, you have to call the registration method [without userId](#register-without-userid).
@@ -216,16 +205,6 @@ Use the following code snippets into your Swift mobile application to get a list
 	    print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
 	  }
 	}
-	
-	//Swift2.3 and Older
-	BMSPushClient.sharedInstance.retrieveAvailableTagsWithCompletionHandler({ (response, statusCode, error) -> Void in
-	    
-		if error.isEmpty {
-	        print( "Response during retrieve tags : \(response)  and status code is:\(statusCode)")
-	    }else{
-	        print( "Error during retrieve tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-	    }
-	}
 	```
 
 ### Subscribe to tags
@@ -244,16 +223,6 @@ Add the following code snippets to your Swift mobile application to subscribe a 
 	        print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
 	    }
 	 }
-	
-	//Swift2.3 and Older
-	BMSPushClient.sharedInstance.subscribeToTags(response, completionHandler: { (response, statusCode, error) -> Void in
-		
-		if error.isEmpty {
-	        print( "Response during Subscribing to tags : \(response?.description)  and status code is:\(statusCode)")
-	    } else {
-	        print( "Error during subscribing tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-	    }
-	}
 	```
 
 ### Retrieve subscribed tags
@@ -272,16 +241,6 @@ Add the following code snippets to your Swift mobile application to get the  sub
 	     print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
 	   }
 	 }
-	
-	//Swift2.3 and Older
-	BMSPushClient.sharedInstance.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
-	    
-		if error.isEmpty {
-	        print( "Response during retrieving subscribed tags : \(response?.description) and status code is:\(statusCode))
-	    }else {
-	        print( "Error during retrieving subscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-	    }
-	}
 	```
 ### Unsubscribing from tags
 
@@ -298,18 +257,6 @@ Use the following code snippets to unsubsribe from tags:
 	  }else{
 	    print( "Error during  unsubscribed tags \(error)and status code is:\(statusCode)")
 	  }
-	}
-	
-	//Swift2.3 and Older
-	
-	BMSPushClient.sharedInstance.unsubscribeFromTags(response, completionHandler: { (response, statusCode, error) -> Void in
-	   
-	    if error.isEmpty {
-	        print( "Response during unsubscribed tags : \(response?.description)and status code is:\(statusCode)")
-	    }
-	    else {
-	        print( "Error during unsubscribed tags \n  - status code: \(statusCode) \n Error :\(error) \n")
-	    }
 	}
 	```
 
@@ -424,79 +371,34 @@ Add a sound file to your iOS application.
 
 To see the notification monitoring status for iOS, you have to add the following code snippets:
 
-- For Swift 3
+```
+//Send notification status when app is opened by clicking notifications
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+	let push =  BMSPushClient.sharedInstance
+	let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+	let data = respJson.data(using: String.Encoding.utf8)
+	let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+	let messageId:String = jsonResponse.value(forKey: "nid") as! String
+	push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+	    print("Send message status to the Push server")
+	}
+}
 
-	```
-	//Send notification status when app is opened by clicking notifications
-		func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+// Send notification status when the app is in background mode
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 	     
-		 let push =  BMSPushClient.sharedInstance
-	     let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
-	     let data = respJson.data(using: String.Encoding.utf8)
-	     let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-	     let messageId:String = jsonResponse.value(forKey: "nid") as! String
-	     push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
-	         print("Send message status to the Push server")
-	     }
+	let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
+	self.showAlert(title: "Recieved Push notifications", message: payLoad)
+	let push =  BMSPushClient.sharedInstance
+	let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
+	let data = respJson.data(using: String.Encoding.utf8)
+	let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+	let messageId:String = jsonResponse.value(forKey: "nid") as! String
+	push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+		completionHandler(UIBackgroundFetchResult.newData)
 	}
-
-	// Send notification status when the app is in background mode
-	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-	     
-		let payLoad = ((((userInfo as NSDictionary).value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as! NSString)
-		self.showAlert(title: "Recieved Push notifications", message: payLoad)
-		let push =  BMSPushClient.sharedInstance
-		let respJson = (userInfo as NSDictionary).value(forKey: "payload") as! String
-		let data = respJson.data(using: String.Encoding.utf8)
-		let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-		let messageId:String = jsonResponse.value(forKey: "nid") as! String
-		push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
-			completionHandler(UIBackgroundFetchResult.newData)
-		}
-	}
-	```
-
-- For Swift 2.3
-
-	```
-	func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-	  
-	  let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
-	  let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
-		  do {
-			let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
-			let nid = responseObject.valueForKey("nid") as! String
-			print(nid)
-			let push =  BMSPushClient.sharedInstance
-			push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
-				print("Send message status to the Push server")
-			})
-		  } catch let error as NSError {
-	      	print("error: \(error.localizedDescription)")
-		}
-	}
-
-	func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-		 
-		  let payLoad = ((((userInfo as NSDictionary).valueForKey("aps") as! NSDictionary).valueForKey("alert") as! NSDictionary).valueForKey("body") as! NSString)
-		  self.showAlert("Recieved Push notifications", message: payLoad)
-		  let respJson = (userInfo as NSDictionary).valueForKey("payload") as! String
-		  let data = respJson.dataUsingEncoding(NSUTF8StringEncoding)
-		  do {
-			let responseObject:NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSDictionary
-			let nid = responseObject.valueForKey("nid") as! String
-			print(nid)
-			let push =  BMSPushClient.sharedInstance
-			push.sendMessageDeliveryStatus(nid, completionHandler: { (response, statusCode, error) in
-				completionHandler(UIBackgroundFetchResult.NewData)
-			})
-		  } catch let error as NSError {
-	      	print("error: \(error.localizedDescription)")
-		 }
-		}
-	```
-
-
+}
+```
 
 >**Note**: To get the message status when the app is in background, you have to send either **MIXED** or **SILENT** push notifications. No message delivery status would be received if the app was exited forcefully. 
 
