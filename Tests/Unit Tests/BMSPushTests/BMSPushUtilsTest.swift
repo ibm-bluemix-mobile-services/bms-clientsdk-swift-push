@@ -22,7 +22,7 @@ class BMSPushUtilsTest: XCTestCase {
         #if swift(>=3.0)
             BMSPushUtils.saveValueToNSUserDefaults(value: "some string", key: "somestring")
         
-        XCTAssertEqual("some string", BMSPushUtils.getValueToNSUserDefaults(key: "somestring") ?? "" )
+        XCTAssertEqual("some string", BMSPushUtils.getValueToNSUserDefaults(key: "somestring") as? String ?? "" )
         #else
             BMSPushUtils.saveValueToNSUserDefaults("some string", key: "somestring")
             
@@ -44,7 +44,7 @@ class BMSPushUtilsTest: XCTestCase {
         if let data = newVariables.data(using: .utf8) {
             do {
                 if let json = try JSONSerialization.jsonObject(with: data,
-                              options: .mutableContainers) as? [String:String] {
+                              options: .mutableContainers) as? [String: String] {
                     XCTAssertEqual(variables["username"], json["username"])
                     XCTAssertEqual(variables["accountNumber"], json["accountNumber"])
                 } else {

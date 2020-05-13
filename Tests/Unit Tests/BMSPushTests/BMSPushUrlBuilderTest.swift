@@ -200,7 +200,8 @@ class BMSPushUrlBuilderTest: XCTestCase {
     
     func testGetSendMessageDeliveryStatus(){
         BMSClient.sharedInstance.initialize(bluemixRegion: BMSClient.Region.usSouth)
-        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216", clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
+        let urlBuilder = BMSPushUrlBuilder(applicationID: "dabf5067-5553-48e2-ac96-6e2c03aab216",
+                                           clientSecret: "6d0cfa42-cf69-4e72-8073-9ff2de3ddf77")
         #if swift(>=3.0)
         let getSendMessageDeliveryStatus = urlBuilder.getSendMessageDeliveryStatus(messageId: "testMessageId")
         #else
