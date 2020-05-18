@@ -38,8 +38,9 @@ public class BMSPushNotificationAction : NSObject {
      - parameter authenticationRequired: Authenticationenbling option for your actions.
      - parameter activationMode: ActivationMode for your actions.
      */
-    public init (identifierName identifier: String, buttonTitle title: String, isAuthenticationRequired authenticationRequired: Bool,
-          defineActivationMode activationMode: UIUserNotificationActivationMode) {
+    public init (identifierName identifier: String, buttonTitle title: String,
+                 isAuthenticationRequired authenticationRequired: Bool,
+                 defineActivationMode activationMode: UIUserNotificationActivationMode) {
         self.identifier = identifier
         self.title = title
         self.authenticationRequired = authenticationRequired

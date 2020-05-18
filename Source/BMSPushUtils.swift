@@ -124,7 +124,7 @@ open class BMSPushUtils: NSObject {
                 temp = temp.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
                 
                 if let templateValue = optionVariables[temp] {
-                    text = text.replacingOccurrences(of: val , with: templateValue)
+                    text = text.replacingOccurrences(of: val, with: templateValue)
                 }
             }
             return text
@@ -134,88 +134,4 @@ open class BMSPushUtils: NSObject {
         }
     }
 }
-
-
-
-
-
-/**************************************************************************************************/
-
-
-
-
-
-// MARK: - Swift 2
-
-#else
-    
-/**
- Utils class for `BMSPush`
- */
-internal class BMSPushUtils: NSObject {
-    
-    static var loggerMessage:String = ""
-    
-    class func saveValueToNSUserDefaults (value:String, key:String) {
-        
-        NSUserDefaults.standardUserDefaults().setObject(value, forKey: key)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        loggerMessage = ("Saving value to NSUserDefaults with Key: \(key) and Value: \(value)")
-        self.sendLoggerData()
-    }
-    
-    class func getValueToNSUserDefaults (key:String) -> String{
-        var value = ""
-        if(NSUserDefaults.standardUserDefaults().valueForKey(key) != nil) {
-            value = NSUserDefaults.standardUserDefaults().stringForKey(key)!
-        }
-        loggerMessage = ("Getting value for NSUserDefaults Key: \(key) and Value: \(value)")
-        self.sendLoggerData()
-        return value ;
-    }
-    
-    class func getPushSettingValue() -> Bool {
-        
-        
-        var pushEnabled = false
-        
-        if  ((UIDevice.currentDevice().systemVersion as NSString).floatValue >= 8.0) {
-            
-            if (UIApplication.sharedApplication().isRegisteredForRemoteNotifications()) {
-                pushEnabled = true
-            }
-            else {
-                pushEnabled = false
-            }
-        } else {
-            
-            let grantedSettings = UIApplication.sharedApplication().currentUserNotificationSettings()
-            
-            if grantedSettings!.types.rawValue & UIUserNotificationType.Alert.rawValue != 0 {
-                // Alert permission granted
-                pushEnabled = true
-            }
-            else{
-                pushEnabled = false
-            }
-        }
-        
-        return pushEnabled;
-    }
-    
-    class func sendLoggerData () {
-        
-        let devId = BMSPushClient.sharedInstance.getDeviceID()
-        let testLogger = Logger.logger(name: devId)
-        Logger.logLevelFilter = LogLevel.debug
-        testLogger.debug(message: loggerMessage)
-        Logger.logLevelFilter = LogLevel.info
-        testLogger.info(message: loggerMessage)
-        
-    }
-    
-    
-}
-
-
 #endif

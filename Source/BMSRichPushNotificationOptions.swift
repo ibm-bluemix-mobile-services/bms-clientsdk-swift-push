@@ -39,7 +39,7 @@ open class BMSPushRichPushNotificationOptions:UNNotificationServiceExtension {
             
             if let fileUrl = URL(string: urlString ) {
                 // Download the attachment
-                URLSession.shared.downloadTask(with: fileUrl) { (location, response, error) in
+                URLSession.shared.downloadTask(with: fileUrl) { (location, _, _) in
                     if let location = location {
                         // Move temporary file to remove .tmp extension
                         let tmpDirectory = NSTemporaryDirectory()
