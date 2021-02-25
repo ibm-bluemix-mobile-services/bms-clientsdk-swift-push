@@ -10,8 +10,8 @@ See the [issue template](issue_template.md).
 
 # Coding Style
 
-- [Android coding style reference 1](https://source.android.com/setup/contribute/code-style)
-- [Android coding style reference 2](https://developer.android.com/kotlin/style-guide)
+- [Swift coding style reference 1](https://swift.org/documentation/api-design-guidelines/)
+- [Swift coding style reference 2](https://google.github.io/swift/)
 - [Android coding style reference 3](https://source.android.com/devices/architecture/hidl/code-style)
 
 # Pull Requests
