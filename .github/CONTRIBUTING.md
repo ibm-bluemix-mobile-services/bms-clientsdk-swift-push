@@ -12,7 +12,7 @@ See the [issue template](issue_template.md).
 
 - [Swift coding style reference 1](https://swift.org/documentation/api-design-guidelines/)
 - [Swift coding style reference 2](https://google.github.io/swift/)
-- [Android coding style reference 3](https://source.android.com/devices/architecture/hidl/code-style)
+- [Swift and Xcode reference](https://developer.apple.com/swift/resources/)
 
 # Pull Requests
 
