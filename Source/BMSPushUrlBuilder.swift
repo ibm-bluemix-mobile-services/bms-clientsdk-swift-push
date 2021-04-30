@@ -166,8 +166,6 @@ internal class BMSPushUrlBuilder: NSObject {
             return "eu-gb"
         case BMSClient.Region.usEast:
             return "us-east"
-        case BMSClient.Region.jpOsa:
-            return "jp-osa"
         default:
             return "us-south"
         }
