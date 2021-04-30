@@ -75,12 +75,6 @@ public class BMSClient {
          */
 	public static let jpTok = ".jp-tok.bluemix.net"
 	    
-    /**
-	    The Osaka Bluemix region.
-         
-            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
-         */
-	public static let jpOsa = ".jp-osa.bluemix.net"
         
     }
     
@@ -204,12 +198,6 @@ public class BMSClient {
          */
 	public static let usEast = ".us-east.bluemix.net"
 	    
-        /**
-	    The Washington Bluemix region.
-         
-            - note: Use this in the `BMSClient.initialize(bluemixAppRoute:bluemixAppGUID:bluemixRegion:)` method.
-         */
-	public static let jpOsa = ".jp-osa.bluemix.net"
     }
     
     
